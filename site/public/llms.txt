@@ -1,0 +1,32 @@
+# GIF Compress
+> Free online GIF compression tools — processed in your browser, nothing uploaded. Reduce animated GIF file size by up to 70% without quality loss.
+
+## Tools
+- GIF Compressor: https://gif-compressor.com/compress-gif/ — Reduce animated GIF size by up to 70% with no quality loss. Three modes: Quality, Balanced, Maximum.
+- GIF Optimizer: https://gif-compressor.com/gif-optimizer/ — Advanced compression engine with per-parameter control over colors, frames, and encoding.
+- Reduce GIF Size: https://gif-compressor.com/reduce-gif-size/ — Platform-specific compression targets for Discord, Twitter, email, and websites.
+- GIF to MP4: https://gif-compressor.com/gif-to-mp4/ — Convert animated GIF to MP4 video. 80-95% file size reduction.
+- GIF to WebP: https://gif-compressor.com/gif-to-webp/ — Convert GIF to WebP format. 60-90% smaller with full alpha transparency.
+- Resize GIF: https://gif-compressor.com/resize-gif/ — Change GIF dimensions online, scale by percentage, or set exact width/height.
+- Crop GIF: https://gif-compressor.com/crop-gif/ — Trim animated GIF edges, set custom aspect ratios.
+
+## Guides
+- How GIF Compression Works: https://gif-compressor.com/blog/how-gif-compression-works/ — Technical deep-dive into color reduction, frame optimization, and LZW encoding.
+- Batch Compress GIFs: https://gif-compressor.com/blog/batch-compress-gifs-guide/ — Save hours with our batch compression workflow.
+- GIF vs WebP vs MP4: https://gif-compressor.com/blog/gif-vs-webp-vs-mp4/ — Complete format comparison with benchmarks.
+- Why GIF Files Are So Large: https://gif-compressor.com/blog/why-gif-files-are-so-large/ — Understanding the 1987 format that refuses to die.
+- GIF Compression for Social Media: https://gif-compressor.com/blog/gif-compression-for-social-media/ — Complete guide for Discord, Twitter, and more.
+
+## Key Features
+- 100% client-side processing — files never uploaded to any server
+- Real-time preview with before/after comparison slider
+- Platform presets for Discord (8MB), Twitter (5MB), email (1MB)
+- Batch processing with ZIP download
+- Powered by gifsicle 1.92 via WebAssembly
+
+## FAQ
+https://gif-compressor.com/faq/
+## Privacy
+https://gif-compressor.com/privacy/
+## Terms
+https://gif-compressor.com/terms/

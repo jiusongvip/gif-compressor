@@ -1,0 +1,83 @@
+---
+import Base from "../layouts/Base.astro";
+import GifTool from "../components/GifTool.astro";
+
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GIF Compressor for Email",
+  "url": Astro.url.href,
+  "description": "Compress GIFs for email. Shrink animated GIFs under Gmail's 102KB clipping limit, under 1MB for email campaigns. Instant browser-based compression.",
+  "applicationCategory": "Multimedia",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["Gmail 102KB Target", "Email 1MB Target", "Email Campaign Optimized", "Real-time Preview", "Browser-based Processing"]
+});
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is the maximum GIF file size for email?", "acceptedAnswer": { "@type": "Answer", "text": "There is no universal email GIF size limit, but Gmail clips messages over 102KB (the entire HTML body including all images). For reliable delivery: keep individual GIFs under 500KB, total email size under 1MB, and animations under 3 seconds." } },
+    { "@type": "Question", "name": "Do all email clients support animated GIFs?", "acceptedAnswer": { "@type": "Answer", "text": "Most modern email clients support animated GIFs: Gmail, Apple Mail, Outlook.com, and Yahoo Mail all render animation. Outlook 2007-2019 (desktop) only shows the first frame. Always design with a strong first frame that communicates the message even without animation." } },
+    { "@type": "Question", "name": "How do I prevent Gmail from clipping my email with a GIF?", "acceptedAnswer": { "@type": "Answer", "text": "Gmail clips the entire email body at 102KB. To stay under: compress GIFs to under 500KB, use 32-64 colors, limit to 2-3 GIFs per email, and keep total email HTML code lean. Use the email preset in our tool for automatic optimization." } },
+    { "@type": "Question", "name": "Should I use GIF or MP4 in email?", "acceptedAnswer": { "@type": "Answer", "text": "Use GIF for email. MP4 and WebP are not reliably supported across email clients. GIF is the only animated format that works in most inboxes. For long animations, link to a hosted MP4 instead of embedding." } }
+  ]
+});
+---
+<Base
+  title="Compress GIF for Email — Under 1MB for Campaigns &amp; 102KB for Gmail"
+  description="Compress animated GIFs for email. Shrink under Gmail's 102KB clipping threshold and under 1MB for email campaigns. Works in all major email clients. Instant browser-based compression."
+  schema={[webAppSchema, faqSchema].join("\n")}
+>
+<div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+  <h1 class="text-2xl font-bold text-slate-900 leading-tight">Compress GIF for <span class="text-accent">Email</span></h1>
+  <p class="text-sm text-slate-500 mt-2 max-w-2xl leading-relaxed">
+    Shrink animated GIFs for email. Avoid Gmail's 102KB message clipping, target under 1MB for campaigns, and keep animations under 3 seconds. Works across all major email clients.
+  </p>
+</div>
+<section class="max-w-4xl mx-auto px-4"><GifTool /></section>
+
+<article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+  <h2 class="text-xl font-bold text-slate-900 mb-4">The Email GIF Problem — Why It Is So Hard</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Email is the toughest platform for animated GIFs. There is no single "limit" — instead there is a patchwork of restrictions across clients, ISPs, and corporate firewalls. Get it wrong and your beautifully animated GIF either does not play, gets stripped, or causes the entire email to be clipped mid-sentence.</p>
+
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Email client</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">GIF support</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Size limit</th><th class="py-2.5 text-slate-500 font-medium text-xs">Notes</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Gmail</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">Full animation</td><td class="py-2.5 pr-4 text-xs">102KB message body</td><td class="py-2.5 text-xs text-slate-500">Clips entire message. All images count.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Apple Mail</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">Full animation</td><td class="py-2.5 pr-4 text-xs">No specific limit</td><td class="py-2.5 text-xs text-slate-500">Most forgiving. Under 2MB for fast load.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Outlook (desktop)</td><td class="py-2.5 pr-4 text-xs text-red-500 font-medium">First frame only</td><td class="py-2.5 pr-4 text-xs">No specific limit</td><td class="py-2.5 text-xs text-slate-500">Critical: design first frame as static message.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Outlook.com</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">Full animation</td><td class="py-2.5 pr-4 text-xs">No specific limit</td><td class="py-2.5 text-xs text-slate-500">Web version supports animation.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Yahoo Mail</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">Full animation</td><td class="py-2.5 pr-4 text-xs">No specific limit</td><td class="py-2.5 text-xs text-slate-500">Under 1MB for reliable loading.</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Corporate (Exchange)</td><td class="py-2.5 pr-4 text-xs text-slate-400">Varies</td><td class="py-2.5 pr-4 text-xs">Varies</td><td class="py-2.5 text-xs text-slate-500">Many block external images by default.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Gmail's 102KB Clipping: How It Works</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">Gmail does not reject large emails — it clips them. When the raw HTML of your message (including all base64-encoded images) exceeds 102KB, Gmail truncates the message at that point and inserts a "[Message clipped] View entire message" link.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">This is devastating for email campaigns. If the clipping point falls in the middle of your CTA, product description, or footer, those elements are invisible unless the reader clicks to expand. In practice, most people do not click.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">A single 2MB GIF, base64-encoded in the HTML, is approximately 2.7MB of text. That alone is 27 times Gmail's clipping threshold. This is why email GIFs need aggressive, purpose-built compression that goes far beyond what platforms like Discord require.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Step-by-Step: Compress a GIF for Email</h2>
+  <ol class="space-y-4 mb-6">
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">1. Trim the animation to 3 seconds or less.</strong> Long animations balloon file size. Shorten your GIF before anything else — this is the most effective email optimization.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Resize to 200-400px width.</strong> Email columns are narrow. A 400px-wide GIF fits most layouts. <a href="/resize-gif" class="text-accent hover:underline">Resize first</a> — this removes pixel data the compressor does not need to process.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">3. Click the &lt; 1MB email preset.</strong> This targets safe territory for all clients except Gmail. For Gmail specifically, you need to compress further.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">4. For Gmail-safe GIFs, use Maximum mode at 70-90.</strong> Reduce the color palette to 32-64. At this level, you will see visible quality loss — but the alternative is no animation at all.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">5. Design the first frame as a fallback.</strong> It must communicate the full message without animation, because Outlook desktop users will only see this frame.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">6. Test across clients.</strong> Send test emails to Gmail, Apple Mail, Outlook desktop, and Outlook.com. Check on both desktop and mobile.</li>
+  </ol>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Email GIF Best Practices</h2>
+  <div class="space-y-3 mb-6">
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Limit to 2-3 GIFs per email</h4><p class="text-xs text-slate-500 mt-1">Each GIF adds to the base64-encoded email size. If you need multiple animated elements, use static images for secondary content and animate only the hero or CTA.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Use 32-64 colors</h4><p class="text-xs text-slate-500 mt-1">Email GIFs do not need 256 colors — most campaign animations are simple graphics with flat colors. A 32-color palette is often visually identical to 256 colors at email display sizes but creates a much smaller file.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Avoid transparency in email GIFs</h4><p class="text-xs text-slate-500 mt-1">Some email clients render transparent GIFs with a black or white background. Instead, set a solid background color that matches your email design. This also improves compression because solid backgrounds compress better.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Always host externally, never embed</h4><p class="text-xs text-slate-500 mt-1">Host your compressed GIF on a CDN and reference it via <code>&lt;img&gt;</code> tag in your email HTML. Do not encode the GIF as base64 inline — this inflates the message size beyond Gmail's 102KB limit instantly.</p></div>
+  </div>
+
+  <div class="mt-8 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">Related: <a href="/compress-gif-for-discord" class="text-accent hover:underline">Compress for Discord</a> &middot; <a href="/compress-gif-for-twitter" class="text-accent hover:underline">Compress for Twitter</a> &middot; <a href="/reduce-gif-size" class="text-accent hover:underline">Platform Size Guide</a> &middot; <a href="/gif-optimizer" class="text-accent hover:underline">Advanced Optimizer</a></p>
+  </div>
+</article>
+</Base>

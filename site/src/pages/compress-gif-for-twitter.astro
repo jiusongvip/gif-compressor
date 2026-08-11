@@ -1,0 +1,89 @@
+---
+import Base from "../layouts/Base.astro";
+import GifTool from "../components/GifTool.astro";
+
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GIF Compressor for Twitter",
+  "url": Astro.url.href,
+  "description": "Compress GIFs for Twitter (X). Shrink animated GIFs under 5MB for web and 3MB for mobile. Instant browser-based compression with live preview.",
+  "applicationCategory": "Multimedia",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["Twitter 5MB Target", "Twitter 3MB Mobile Target", "Twitter Aspect Ratios", "Real-time Preview", "MP4 Fallback Guide"]
+});
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is Twitter's GIF size limit?", "acceptedAnswer": { "@type": "Answer", "text": "Twitter limits GIFs to 5MB on the web and 3MB on the mobile app. The mobile limit is strictly enforced — if your GIF works on a phone, it works everywhere on Twitter." } },
+    { "@type": "Question", "name": "Does Twitter convert GIFs to MP4?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Twitter automatically converts all uploaded GIFs to MP4 on their servers. This server-side re-encoding can degrade quality. Compressing your GIF to a smaller size before uploading gives Twitter less data to work with, often resulting in less aggressive re-encoding and better final quality." } },
+    { "@type": "Question", "name": "What dimensions should Twitter GIFs be?", "acceptedAnswer": { "@type": "Answer", "text": "Twitter displays GIFs at 500-600px wide in the feed. A 16:9 aspect ratio (1200x675) or 1:1 square (800x800) are the most common. Resize to these dimensions before compressing for best results." } },
+    { "@type": "Question", "name": "Why does my GIF look worse on Twitter after uploading?", "acceptedAnswer": { "@type": "Answer", "text": "Twitter re-encodes all GIFs to MP4 on their servers, often with aggressive compression settings. To minimize quality loss: compress your GIF before uploading to keep the file small, use Balanced mode, and avoid complex gradients that break during re-encoding." } }
+  ]
+});
+---
+<Base
+  title="Compress GIF for Twitter (X) — Under 5MB Web &amp; 3MB Mobile"
+  description="Compress animated GIFs for Twitter (X). Shrink under 5MB for web and 3MB for mobile. Avoid Twitter's MP4 re-encoding quality loss. Instant browser-based compression."
+  schema={[webAppSchema, faqSchema].join("\n")}
+>
+<div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+  <h1 class="text-2xl font-bold text-slate-900 leading-tight">Compress GIF for <span class="text-accent">Twitter / X</span></h1>
+  <p class="text-sm text-slate-500 mt-2 max-w-2xl leading-relaxed">
+    Shrink animated GIFs for Twitter. Hit the 5MB web and 3MB mobile limits with platform-specific presets. Pre-compress to avoid Twitter's aggressive MP4 re-encoding that degrades quality.
+  </p>
+</div>
+<section class="max-w-4xl mx-auto px-4"><GifTool /></section>
+
+<article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+  <h2 class="text-xl font-bold text-slate-900 mb-4">Twitter GIF Size Rules — What Actually Works</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Twitter's GIF rules are deceptively simple but subtly different from other platforms. The key thing to understand is that Twitter does not actually serve your GIF — it converts every GIF to MP4 on upload. Your "compressed GIF" is received, re-encoded, and served as video. This means your compression strategy on Twitter is fundamentally different from Discord or email.</p>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Platform</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Max GIF size</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Serves as</th><th class="py-2.5 text-slate-500 font-medium text-xs">Key constraint</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter Web</td><td class="py-2.5 pr-4 text-xs">5MB</td><td class="py-2.5 pr-4 text-xs">MP4</td><td class="py-2.5 text-xs text-slate-500">16:9 or 1:1 ratio. Desktop first.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter Mobile</td><td class="py-2.5 pr-4 text-xs">3MB</td><td class="py-2.5 pr-4 text-xs">MP4</td><td class="py-2.5 text-xs text-slate-500">Stricter enforcement. The real limit.</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter Ads</td><td class="py-2.5 pr-4 text-xs">1MB</td><td class="py-2.5 pr-4 text-xs">MP4</td><td class="py-2.5 text-xs text-slate-500">Strictest. Maximum mode required.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">The Twitter MP4 Problem — and How to Beat It</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">Twitter converts every GIF to MP4 using server-side re-encoding. This is not optional — it happens to every GIF, every time. The problem: Twitter's re-encoding is aggressive and often produces visibly degraded results, especially on GIFs with text, fine details, or smooth gradients.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">The counterintuitive solution: <strong class="text-slate-800">upload a smaller, pre-compressed GIF.</strong> When Twitter receives a compact, optimized GIF, the re-encoder has less work to do and produces a cleaner MP4. When it receives a bloated 15MB GIF that barely squeaks under the limit, the re-encoder must work aggressively, producing visible artifacts.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Think of it like sending a photo to a printer. Send a clean, properly sized image and you get a sharp print. Send a pixelated mess and the printer's scaling makes it worse.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Step-by-Step: Compress a GIF for Twitter</h2>
+  <ol class="space-y-4 mb-6">
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">1. Start with the right dimensions.</strong> <a href="/resize-gif" class="text-accent hover:underline">Resize to 600px width</a>. Twitter displays GIFs at this width in-feed. Anything larger wastes data and makes the re-encoder work harder.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Click the &lt; 5MB Twitter preset.</strong> This targets the web limit. For guaranteed mobile compatibility, click it again and aim for under 3MB.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">3. Choose your mode based on content.</strong> Quality mode for photos and gradients (20-35% savings). Balanced mode for general content (35-55% savings). Maximum mode for memes and simple graphics (50-70% savings).</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">4. Test before posting.</strong> Use the live comparison slider to verify quality. Pay special attention to text readability — Twitter's re-encoding is hardest on small text.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">5. Upload the compressed GIF.</strong> Twitter will re-encode it, but because the source is compact and clean, the result will be much closer to your original quality.</li>
+  </ol>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Best Aspect Ratios for Twitter GIFs</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Twitter crops or letterboxes GIFs to fit its feed layout. Using the right aspect ratio prevents unexpected cropping:</p>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Feed post (16:9)</p><p class="text-lg font-bold text-accent">1200x675px</p><p class="text-[10px] text-slate-400 mt-1">Most common. No cropping.</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Square (1:1)</p><p class="text-lg font-bold text-accent">800x800px</p><p class="text-[10px] text-slate-400 mt-1">Works everywhere. Safe choice.</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Vertical (9:16)</p><p class="text-lg font-bold text-accent">1080x1920px</p><p class="text-[10px] text-slate-400 mt-1">Video tab. May be cropped in feed.</p></div>
+  </div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Twitter GIF Compression Cheat Sheet</h2>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">GIF type</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Target size</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Mode</th><th class="py-2.5 text-slate-500 font-medium text-xs">Tip</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">Reaction / meme</td><td class="py-2.5 pr-4 text-xs">under 2MB</td><td class="py-2.5 pr-4 text-xs">Balanced 60-80</td><td class="py-2.5 text-xs text-slate-500">Resize to 500px first. These GIFs live fast.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">Product showcase</td><td class="py-2.5 pr-4 text-xs">under 3MB</td><td class="py-2.5 pr-4 text-xs">Quality 40-60</td><td class="py-2.5 text-xs text-slate-500">Preserve detail. Avoid gradients.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">Text-heavy infographic</td><td class="py-2.5 pr-4 text-xs">under 3MB</td><td class="py-2.5 pr-4 text-xs">Quality 30-50</td><td class="py-2.5 text-xs text-slate-500">Text readability is priority. Do not over-compress.</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs">Twitter Ad creative</td><td class="py-2.5 pr-4 text-xs">under 1MB</td><td class="py-2.5 pr-4 text-xs">Maximum 70-90</td><td class="py-2.5 text-xs text-slate-500">Consider converting to <a href="/gif-to-mp4" class="text-accent hover:underline">MP4 directly</a>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="mt-8 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">Related: <a href="/compress-gif-for-discord" class="text-accent hover:underline">Compress for Discord</a> &middot; <a href="/compress-gif-for-email" class="text-accent hover:underline">Compress for Email</a> &middot; <a href="/reduce-gif-size" class="text-accent hover:underline">Platform Size Guide</a> &middot; <a href="/gif-to-mp4" class="text-accent hover:underline">GIF to MP4</a></p>
+  </div>
+</article>
+</Base>

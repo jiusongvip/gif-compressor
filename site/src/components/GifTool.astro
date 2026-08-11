@@ -1,0 +1,183 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<div id="gif-tool" class="w-full">
+  <!-- Drop Zone -->
+  <div id="drop-zone" aria-label="Drop zone for GIF files" class="tool-card p-8 md:p-12 text-center cursor-pointer transition-all duration-150">
+    <div class="mx-auto w-14 h-14 md:w-16 md:h-16 mb-4 md:mb-6 rounded-2xl bg-accent/5 flex items-center justify-center">
+      <Icon name="upload" size={32} class="text-accent" />
+    </div>
+    <h2 class="text-lg font-semibold text-slate-900 mb-1.5">Drop your GIF here</h2>
+    <p class="text-sm text-slate-400 mb-5 max-w-xs mx-auto leading-relaxed">
+      Click to browse, paste from clipboard, or enter a URL
+    </p>
+    <div class="flex flex-col items-center gap-3">
+      <div class="flex items-center justify-center gap-3">
+        <button id="select-btn" aria-label="Select a GIF file" type="button"
+          class="px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98]">
+          Select File
+        </button>
+        <span class="text-xs text-slate-400">Max 100MB</span>
+      </div>
+      <div class="flex items-center gap-2 w-full max-w-sm" onclick="event.stopPropagation()">
+        <input type="text" id="url-input" aria-label="GIF URL input" placeholder="Or paste a GIF URL..."
+          class="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-lg text-slate-600 placeholder:text-slate-300
+            focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-colors" />
+        <button id="url-load-btn" aria-label="Load GIF from URL" type="button"
+          class="px-3 py-2 text-xs font-medium text-accent border border-accent/30 rounded-lg hover:bg-accent/5
+            active:scale-[0.98] transition-colors whitespace-nowrap">
+          Load
+        </button>
+      </div>
+    </div>
+    <input type="file" id="file-input" accept="image/gif,.gif" class="hidden" />
+  </div>
+
+  <!-- Progress Bar -->
+  <div id="progress-bar" class="hidden mt-4 w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+    <div id="progress-fill" class="h-full bg-accent rounded-full transition-all duration-300 ease-out" style="width:0%"></div>
+  </div>
+  <p id="progress-text" class="text-xs text-slate-400 mt-1.5 text-center"></p>
+
+  <!-- Tool Panel -->
+  <div id="tool-panel" class="hidden mt-6 space-y-4">
+    <!-- Preview: Comparison Slider -->
+    <div class="tool-card overflow-hidden">
+      <div class="p-3 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Preview</span>
+          <span class="text-[10px] text-slate-400">— drag to compare</span>
+        </div>
+        <div class="flex items-center gap-1 text-[10px] text-slate-400">
+          <span>Original</span>
+          <span class="mx-1">|</span>
+          <span class="text-accent font-medium">Compressed</span>
+        </div>
+      </div>
+      <div class="comparison-wrap relative w-full bg-slate-50" style="aspect-ratio: 1;">
+        <img id="comparison-orig" class="absolute inset-0 w-full h-full object-contain" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Original" width="600" height="600" />
+        <img id="comparison-comp" class="absolute inset-0 w-full h-full object-contain" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Compressed" width="600" height="600" style="clip-path: inset(0 0 0 50%);" />
+        <div id="compare-line" class="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg pointer-events-none z-10" style="left: 50%;"></div>
+        <input type="range" id="compare-handle" aria-label="Before and after comparison slider" min="0" max="100" value="50"
+          class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20" />
+      </div>
+    </div>
+
+    <!-- Controls & Info Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <!-- Left: Side-by-side stills -->
+      <div class="tool-card p-4 lg:col-span-1">
+        <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-3">Side by side</p>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <p class="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">Original</p>
+            <div class="aspect-square bg-slate-50 rounded-md border border-slate-100 flex items-center justify-center overflow-hidden">
+              <img id="preview-orig" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Original GIF" width="200" height="200" class="max-w-full max-h-full object-contain" />
+            </div>
+            <p id="orig-size" class="text-[10px] text-slate-400 mt-1.5"></p>
+          </div>
+          <div>
+            <p class="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">Compressed</p>
+            <div class="aspect-square bg-slate-50 rounded-md border border-slate-100 flex items-center justify-center overflow-hidden">
+              <img id="preview-comp" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Compressed GIF preview" width="200" height="200" class="max-w-full max-h-full object-contain" />
+            </div>
+            <p id="comp-size" class="text-[10px] text-slate-400 mt-1.5"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Controls -->
+      <div class="tool-card p-4 lg:col-span-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Left column: Analysis + Mode + Presets -->
+          <div class="space-y-4">
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Analysis</p>
+              <div id="analysis" class="space-y-1 text-xs">
+                <div class="flex justify-between py-1"><span class="text-slate-500">Frames</span><span id="stat-frames" class="text-slate-900 font-medium tabular-nums">-</span></div>
+                <div class="flex justify-between py-1"><span class="text-slate-500">Colors</span><span id="stat-colors" class="text-slate-900 font-medium tabular-nums">-</span></div>
+                <div class="flex justify-between py-1"><span class="text-slate-500">Type</span><span id="stat-type" class="text-slate-900 font-medium">-</span></div>
+                <div class="flex justify-between py-1"><span class="text-slate-500">Best method</span><span id="stat-method" class="text-accent font-semibold">-</span></div>
+              </div>
+            </div>
+
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Mode</p>
+              <div class="grid grid-cols-3 gap-1 bg-slate-100 rounded-lg p-1">
+                <button data-mode="quality" class="mode-btn py-1.5 text-[11px] font-medium rounded-md transition-colors bg-accent text-white">Quality</button>
+                <button data-mode="balanced" class="mode-btn py-1.5 text-[11px] font-medium rounded-md transition-colors text-slate-500 hover:text-slate-900">Balanced</button>
+                <button data-mode="max" class="mode-btn py-1.5 text-[11px] font-medium rounded-md transition-colors text-slate-500 hover:text-slate-900">Max</button>
+              </div>
+            </div>
+
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Target size</p>
+              <div id="preset-buttons" class="flex flex-wrap gap-1.5"></div>
+            </div>
+          </div>
+
+          <!-- Right column: Level + Breakdown + Actions -->
+          <div class="space-y-4 flex flex-col">
+            <div>
+              <div class="flex justify-between mb-2">
+                <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Level</p>
+                <span id="level-val" class="text-xs text-slate-900 font-medium tabular-nums">75</span>
+              </div>
+              <input type="range" id="level-slider" aria-label="Compression level" min="0" max="100" value="75"
+                class="w-full h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer accent-accent
+                  [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
+                  [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-sm
+                  [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110" />
+            </div>
+
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Breakdown</p>
+              <div id="breakdown" class="space-y-1 text-xs">
+                <div class="flex justify-between py-1"><span class="text-slate-500">Color reduction</span><span id="bd-color" class="text-slate-400 tabular-nums">-</span></div>
+                <div class="flex justify-between py-1"><span class="text-slate-500">Frame optimization</span><span id="bd-frames" class="text-slate-400 tabular-nums">-</span></div>
+                <div class="flex justify-between py-1"><span class="text-slate-500">LZW encoding</span><span id="bd-lzw" class="text-slate-400 tabular-nums">-</span></div>
+                <div class="flex justify-between py-1 border-t border-slate-100 mt-1 pt-2 font-semibold"><span class="text-slate-900">Total saved</span><span id="bd-total" class="text-accent tabular-nums">-</span></div>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2 mt-auto pt-2">
+                          <div class="flex items-center gap-2 mb-3">
+              <span id="speed-badge" class="hidden text-[10px] text-accent font-medium"></span>
+            </div>
+              <button id="download-btn" aria-label="Download compressed GIF" disabled
+                class="w-full py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors
+                  active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 inline-flex items-center justify-center gap-2">
+                <Icon name="download" size={16} class="text-white" />
+                Download Compressed GIF
+              </button>
+              <button id="reset-btn" aria-label="Compress another GIF"
+                class="w-full py-2 text-xs text-slate-400 hover:text-slate-600 transition-colors">
+                Compress another GIF
+              </button>
+            </div>
+
+            <!-- Post-compression funnel -->
+            <div id="post-compress-funnel" class="hidden mt-3 pt-3 border-t border-slate-100">
+              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Save even more</p>
+              <div class="space-y-1.5">
+                <a href="/gif-to-webp" class="flex items-center gap-1.5 text-[11px] text-accent hover:underline">
+                  <span>&rarr;</span> Convert to WebP (save ~80% more)
+                </a>
+                <a href="/gif-to-mp4" class="flex items-center gap-1.5 text-[11px] text-accent hover:underline">
+                  <span>&rarr;</span> Convert to MP4 (save ~90% more)
+                </a>
+                <a href="/resize-gif" class="flex items-center gap-1.5 text-[11px] text-accent hover:underline">
+                  <span>&rarr;</span> Resize GIF for smaller dimensions
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-4 py-2 rounded-lg shadow-lg z-50 opacity-100 pointer-events-none"></div></div>
+
+<script type="module" src="/js/gif-compressor.js"></script>
+<script type="module" src="/js/batch-compressor.js"></script>

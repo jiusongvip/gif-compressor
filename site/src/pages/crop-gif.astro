@@ -1,0 +1,311 @@
+---
+import Base from "../layouts/Base.astro";
+
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Can I crop an animated GIF without losing animation?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our crop tool preserves all animation frames and timing. You can select any region and the animation continues to play exactly as before, just trimmed to the selected area." } },
+    { "@type": "Question", "name": "What aspect ratios can I crop to?", "acceptedAnswer": { "@type": "Answer", "text": "You can crop freely or use preset ratios: 1:1 (square), 4:3, 16:9, 3:2, and 9:16 (vertical). Square is ideal for social media profile pictures and stickers." } },
+    { "@type": "Question", "name": "Does cropping a GIF reduce its file size?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Cropping removes pixels from every frame, which directly reduces file size. Combine with compression for maximum savings: crop first, then compress." } }
+  ]
+});
+
+
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GIF Cropper",
+  "url": Astro.url.href,
+  "description": "Crop animated GIFs online free. Remove unwanted edges, set custom aspect ratios, and trim GIF frames.",
+  "applicationCategory": "Multimedia",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["GIF Cropping", "Custom Aspect Ratios", "Edge Trimming", "Browser-based Processing", "Instant Processing"]
+});---
+
+
+
+<Base
+  title="Crop GIF Online Free - Trim Animated GIFs in Your Browser"
+  description="We built this cropper because we found ourselves switching between three different tools just to trim a GIF for social media. Now you can remove edges, set aspect ratios, and download — all in your browser, with no uploads and instant preview."
+ schema={[webAppSchema, faqSchema].join("\n")}>
+<div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+  <h1 class="text-2xl font-bold text-slate-900 leading-tight">
+    Crop GIF <span class="text-accent">Online</span>
+  </h1>
+  <p class="text-sm text-slate-500 mt-2 max-w-xl leading-relaxed">
+    Trim the edges of your animated GIF. Set custom aspect ratios, remove watermarks, or focus on the important part. All processed in your browser.
+  </p>
+</div>
+
+<div class="max-w-4xl mx-auto px-4">
+  <div id="crop-tool" class="tool-card p-10 md:p-14 text-center cursor-pointer transition-all duration-150">
+    <div class="mx-auto w-16 h-16 mb-6 rounded-2xl bg-accent/5 flex items-center justify-center">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-accent" stroke-width="1.5"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+    </div>
+    <h2 class="text-lg font-semibold text-slate-900 mb-2">Drop your GIF here</h2>
+    <p class="text-sm text-slate-400 mb-5">Select a GIF to start cropping</p>
+    <button id="select-btn" type="button" class="px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98]">Select GIF File</button>
+    <input type="file" id="file-input" accept="image/gif,.gif" class="hidden" />
+    <div class="flex items-center justify-center gap-2 w-full max-w-sm mt-3 mx-auto" onclick="event.stopPropagation()">
+      <input type="text" id="url-input" placeholder="Or paste a GIF URL..."
+        class="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-lg text-slate-600 placeholder:text-slate-300 focus:outline-none focus:border-accent/50" />
+      <button id="url-load-btn" type="button"
+        class="px-3 py-2 text-xs font-medium text-accent border border-accent/30 rounded-lg hover:bg-accent/5 transition-colors whitespace-nowrap">
+        Load
+      </button>
+    </div>
+  </div>
+
+  <div id="editor-panel" class="hidden mt-6 tool-card overflow-hidden">
+    <div class="flex flex-col lg:flex-row">
+      <div class="flex-1 p-4 relative bg-slate-50 flex items-center justify-center min-h-[400px]" id="crop-container">
+        <canvas id="crop-canvas" class="max-w-full"></canvas>
+        <div id="crop-overlay" class="absolute border-2 border-accent bg-accent/10 cursor-move hidden" style="left:0;top:0;width:100px;height:100px"></div>
+      </div>
+      <div class="w-px bg-slate-100 hidden lg:block"></div>
+      <div class="p-5 lg:w-64 flex flex-col gap-4">
+        <div>
+          <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Crop Size</p>
+          <div class="grid grid-cols-2 gap-2">
+            <div><label class="text-[10px] text-slate-400">X</label><input type="number" id="crop-x" class="w-full px-2 py-1.5 border border-slate-200 rounded text-xs focus:outline-none focus:border-accent" value="0" /></div>
+            <div><label class="text-[10px] text-slate-400">Y</label><input type="number" id="crop-y" class="w-full px-2 py-1.5 border border-slate-200 rounded text-xs focus:outline-none focus:border-accent" value="0" /></div>
+            <div><label class="text-[10px] text-slate-400">W</label><input type="number" id="crop-w" class="w-full px-2 py-1.5 border border-slate-200 rounded text-xs focus:outline-none focus:border-accent" value="200" /></div>
+            <div><label class="text-[10px] text-slate-400">H</label><input type="number" id="crop-h" class="w-full px-2 py-1.5 border border-slate-200 rounded text-xs focus:outline-none focus:border-accent" value="200" /></div>
+          </div>
+        </div>
+        <div>
+          <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Preset Ratios</p>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button data-ratio="1:1" class="ratio-btn py-1.5 text-[11px] border border-slate-200 rounded hover:border-accent hover:text-accent transition-colors">1:1</button>
+            <button data-ratio="4:3" class="ratio-btn py-1.5 text-[11px] border border-slate-200 rounded hover:border-accent hover:text-accent transition-colors">4:3</button>
+            <button data-ratio="16:9" class="ratio-btn py-1.5 text-[11px] border border-slate-200 rounded hover:border-accent hover:text-accent transition-colors">16:9</button>
+            <button data-ratio="3:4" class="ratio-btn py-1.5 text-[11px] border border-slate-200 rounded hover:border-accent hover:text-accent transition-colors">3:4</button>
+            <button data-ratio="9:16" class="ratio-btn py-1.5 text-[11px] border border-slate-200 rounded hover:border-accent hover:text-accent transition-colors">9:16</button>
+            <button data-ratio="free" class="ratio-btn py-1.5 text-[11px] border border-slate-200 rounded hover:border-accent hover:text-accent transition-colors bg-slate-100">Free</button>
+          </div>
+        </div>
+        <button id="apply-btn" class="w-full py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98] disabled:opacity-40">Apply Crop</button>
+        <button id="download-btn" class="w-full py-2.5 border border-accent text-accent text-sm font-medium rounded-lg hover:bg-accent/5 transition-colors active:scale-[0.98] hidden">Download Cropped GIF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+  <h2 class="text-xl font-bold text-slate-900 mb-4">Why Crop a GIF? 5 Common Scenarios</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Cropping removes unwanted areas from your GIF — permanently deleting those pixels from every frame. Unlike compression (which reduces file size by optimizing internal data), cropping physically cuts away content. This makes it both a creative and a file-size tool.</p>
+  <ul class="space-y-3 mb-6">
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Remove watermarks and logos.</strong> Downloaded a GIF with a watermark in the corner? Crop it out and reclaim clean content.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Fit a specific aspect ratio.</strong> A 16:9 GIF needs to become 1:1 for a profile picture. Cropping — not stretching — is the correct approach.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Focus on the subject.</strong> Your GIF shows a person reacting, but the frame is mostly background. Crop to the face and body.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Clean up screen recordings.</strong> Recordings often have browser chrome, taskbars, or desktop clutter at the edges. Crop to the content area.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Reduce file size instantly.</strong> Cropping 20% off each edge removes 36% of the pixels per frame. Combined with compression afterwards, total savings can exceed 80%.</li>
+  </ul>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Crop First, Then Compress — The Correct Order</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">The optimization order matters. If you compress first and crop second, you wasted CPU cycles and quality on pixels you then delete. Always crop first to permanently remove unwanted data, then compress the smaller result. For maximum savings: <strong class="text-slate-800">Crop → Resize → Compress</strong>. This triple approach routinely achieves 85-95% total file size reduction.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Best Aspect Ratios for Every Platform</h2>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Platform</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Best ratio</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Ideal dimensions</th><th class="py-2.5 text-slate-500 font-medium text-xs">Why</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord chat</td><td class="py-2.5 pr-4 text-xs">Any (up to 8MB)</td><td class="py-2.5 pr-4 text-xs">480-600px wide</td><td class="py-2.5 text-xs text-slate-500">No forced ratio. Crop for focus.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter / X feed</td><td class="py-2.5 pr-4 text-xs">16:9 or 1:1</td><td class="py-2.5 pr-4 text-xs">1200×675 or 800×800</td><td class="py-2.5 text-xs text-slate-500">Feed crops to these ratios on some views</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Instagram Stories</td><td class="py-2.5 pr-4 text-xs">9:16</td><td class="py-2.5 pr-4 text-xs">1080×1920</td><td class="py-2.5 text-xs text-slate-500">Full-screen vertical. Convert to MP4.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Instagram Post</td><td class="py-2.5 pr-4 text-xs">1:1 or 4:5</td><td class="py-2.5 pr-4 text-xs">1080×1080 or 1080×1350</td><td class="py-2.5 text-xs text-slate-500">Square or vertical. Feed standard.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">YouTube thumbnail</td><td class="py-2.5 pr-4 text-xs">16:9</td><td class="py-2.5 pr-4 text-xs">1280×720</td><td class="py-2.5 text-xs text-slate-500">Standard video thumbnail ratio</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Email header</td><td class="py-2.5 pr-4 text-xs">Any (under 1MB)</td><td class="py-2.5 pr-4 text-xs">600px wide max</td><td class="py-2.5 text-xs text-slate-500">Email columns are narrow</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">LinkedIn post</td><td class="py-2.5 pr-4 text-xs">1:1 or 1.91:1</td><td class="py-2.5 pr-4 text-xs">1200×627 or 1200×1200</td><td class="py-2.5 text-xs text-slate-500">Link preview vs feed post</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Website hero banner</td><td class="py-2.5 pr-4 text-xs">16:9 or 21:9</td><td class="py-2.5 pr-4 text-xs">1200×675 or 1600×686</td><td class="py-2.5 text-xs text-slate-500">Full-width. Under 500KB for CWV.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Freeform Crop vs Preset Ratios</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-800">Freeform</strong> gives you complete control — drag the crop box anywhere, any size. Use this when the exact composition matters more than the final ratio. Good for removing watermarks or isolating a subject.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4"><strong class="text-slate-800">Preset ratios</strong> lock the crop to a specific aspect ratio. Use 1:1 for profile pictures and stickers. Use 16:9 for video thumbnails and hero banners. Use 9:16 for Stories and vertical video. Presets ensure your output matches platform expectations exactly.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Cropping vs Resizing: What Is the Difference?</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-800">Cropping</strong> cuts away parts of the image — you are selecting a region and discarding everything outside it. The result has new dimensions based on your selection. Content is permanently removed.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4"><strong class="text-slate-800">Resizing</strong> scales the entire image — you are changing the pixel dimensions while keeping all content. Nothing is discarded; everything is scaled proportionally (or stretched, if aspect ratio is unlocked).</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Use cropping to change composition. Use <a href="/resize-gif" class="text-accent hover:underline">resizing</a> to change dimensions. Use both together for complete control: crop to the right composition and aspect ratio, then resize to the exact pixel dimensions you need.</p>
+
+  
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Crop GIFs for Specific Platforms — Exact Recipes</h2>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Discord Profile Picture (1:1 Square)</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">Discord profile pictures display at 128×128 but you should upload at 512×512 for crisp rendering on high-DPI screens. The crop must be square and centered on the subject:</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li>Select the <strong class="text-slate-800">1:1 ratio</strong> preset</li>
+    <li>Position the crop box centered on the face or main subject</li>
+    <li>Click Apply Crop</li>
+    <li>Use the <a href="/resize-gif" class="text-accent hover:underline">Resize tool</a> to set the cropped GIF to exactly 512×512</li>
+    <li>Compress to under 8MB (far below Discord's free tier limit for profile pictures)</li>
+  </ol>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Instagram Story (9:16 Vertical)</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">Instagram Stories are full-screen vertical at 1080×1920. Most source GIFs are landscape — cropping to 9:16 means losing most of the width:</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li>Select the <strong class="text-slate-800">9:16 ratio</strong> preset</li>
+    <li>Position the crop box on the most important vertical slice of your content</li>
+    <li>After cropping, <a href="/resize-gif" class="text-accent hover:underline">resize to 1080×1920</a></li>
+    <li>Consider converting to <a href="/gif-to-mp4" class="text-accent hover:underline">MP4</a> — Instagram automatically converts GIF uploads to video and MP4 gives you better quality control</li>
+  </ol>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Twitter Header (3:1 Ultra-Wide)</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">Twitter profile headers are 1500×500 (3:1 ratio). This extreme aspect ratio means you will lose most of the image:</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li>Switch to <strong class="text-slate-800">Freeform</strong> mode (no preset supports 3:1)</li>
+    <li>Set the crop dimensions manually: width should be the full image width, height should be width ÷ 3</li>
+    <li>Center vertically on the most interesting horizontal band</li>
+    <li>After cropping, resize to 1500×500</li>
+    <li>Keep the animated header under 5MB — Twitter applies its own compression on top</li>
+  </ol>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">YouTube Thumbnail (16:9)</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">YouTube thumbnails are 1280×720 (16:9). For animated thumbnails (which YouTube supports as short GIF-like previews), use the 16:9 crop:</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li>Select the <strong class="text-slate-800">16:9 ratio</strong> preset</li>
+    <li>Position to include the most compelling visual elements — YouTube thumbnails are small in search results</li>
+    <li>Resize to 1280×720 after cropping</li>
+    <li>Keep under 2MB — YouTube has file size limits for custom thumbnails</li>
+  </ol>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Crop + Resize + Compress: The Complete Workflow</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">The three operations — crop, resize, and compress — form a pipeline. Each step permanently removes data, making the next step more effective. The correct order is immutable:</p>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Step</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Operation</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Starting size</th><th class="py-2.5 text-slate-500 font-medium text-xs">Result</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-accent">1</td><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Crop</td><td class="py-2.5 pr-4 text-xs">8.2 MB</td><td class="py-2.5 text-xs">5.1 MB (removed 38% of area)</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-accent">2</td><td class="py-2.5 pr-4 text-xs font-medium text-slate-700"><a href="/resize-gif" class="text-accent hover:underline">Resize</a> to 600px</td><td class="py-2.5 pr-4 text-xs">5.1 MB</td><td class="py-2.5 text-xs">1.4 MB (reduced pixel count by 73%)</td></tr>
+      <tr class="border-b border-slate-100 bg-accent/[0.02]"><td class="py-2.5 pr-4 text-xs font-medium text-accent">3</td><td class="py-2.5 pr-4 text-xs font-medium text-slate-700"><a href="/" class="text-accent hover:underline">Compress</a> at Balanced 60</td><td class="py-2.5 pr-4 text-xs">1.4 MB</td><td class="py-2.5 text-xs text-accent font-medium">420 KB (95% total reduction)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">The workflow is deterministic: crop → resize → compress. Any other order wastes processing on pixels you will later discard. This three-step pipeline is how professional media pipelines handle asset preparation, and it is why our tools are designed to work as a connected suite rather than isolated utilities.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">When Cropping Is the Wrong Tool</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Cropping permanently removes content. If you later need the full image, there is no undo. Before cropping, ask yourself:</p>
+  <ul class="space-y-2 mb-6">
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Is the unwanted area truly unnecessary?</strong> A watermark, blank border, or taskbar in a screen recording is fair game. But cropping out context that someone might need later is irreversible — keep the original file.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Would resizing achieve the same goal?</strong> If you just want a smaller file, <a href="/resize-gif" class="text-accent hover:underline">resizing</a> scales everything proportionally without removing content. Cropping should be reserved for when you specifically want to remove part of the image.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Is the crop ratio platform-compatible?</strong> Cropping to an unusual aspect ratio may look fine on your screen but will be letterboxed or further cropped by the target platform. Always check the platform's expected ratios before cropping.</li>
+  </ul>
+<div class="mt-8 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">Related: <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a> &middot; <a href="/" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/gif-to-webp" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-optimizer" class="text-accent hover:underline">GIF Optimizer</a></p>
+  </div>
+</article>
+</Base>
+
+<script>
+  const dropZone = document.getElementById("crop-tool");
+  const fileInput = document.getElementById("file-input");
+  const selectBtn = document.getElementById("select-btn");
+  const editorPanel = document.getElementById("editor-panel");
+  const canvas = document.getElementById("crop-canvas");
+  const overlay = document.getElementById("crop-overlay");
+  const cropX = document.getElementById("crop-x");
+  const cropY = document.getElementById("crop-y");
+  const cropW = document.getElementById("crop-w");
+  const cropH = document.getElementById("crop-h");
+  const applyBtn = document.getElementById("apply-btn");
+  const downloadBtn = document.getElementById("download-btn");
+  const urlInput = document.getElementById("url-input");
+  const urlLoadBtn = document.getElementById("url-load-btn");
+  let img = null, isDragging = false, startX = 0, startY = 0;
+
+  selectBtn.addEventListener("click", (e) => { e.stopPropagation(); fileInput.click(); });
+  dropZone.addEventListener("click", () => fileInput.click());
+  fileInput.addEventListener("change", (e) => { if (e.target.files[0]) loadFile(e.target.files[0]); });
+  urlLoadBtn.addEventListener("click", async () => {
+    const u = (urlInput.value || "").trim();
+    if (!u) return;
+    try {
+      const r = await fetch(u);
+      if (!r.ok) throw new Error;
+      const b = await r.blob();
+      urlInput.value = "";
+      loadFile(new File([b], u.split("/").pop() || "remote.gif", { type: "image/gif" }));
+    } catch { alert("Could not load GIF from URL."); }
+  });
+  urlInput.addEventListener("keydown", (e) => { if (e.key === "Enter") urlLoadBtn.click(); });
+  dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("border-accent","bg-accent/5"); });
+  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("border-accent","bg-accent/5"));
+  dropZone.addEventListener("drop", (e) => { e.preventDefault(); dropZone.classList.remove("border-accent","bg-accent/5"); if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+
+  function loadFile(file) {
+    img = new Image();
+    img.src = URL.createObjectURL(file);
+    img.onload = () => {
+      const maxW = Math.min(800, img.naturalWidth);
+      canvas.width = maxW;
+      canvas.height = maxW * img.naturalHeight / img.naturalWidth;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      cropW.value = Math.round(canvas.width * 0.5);
+      cropH.value = Math.round(canvas.height * 0.5);
+      cropX.value = Math.round(canvas.width * 0.25);
+      cropY.value = Math.round(canvas.height * 0.25);
+      updateOverlay();
+      dropZone.classList.add("hidden");
+      editorPanel.classList.remove("hidden");
+    };
+  }
+
+  function updateOverlay() {
+    overlay.style.left = cropX.value + "px";
+    overlay.style.top = cropY.value + "px";
+    overlay.style.width = cropW.value + "px";
+    overlay.style.height = cropH.value + "px";
+    overlay.classList.remove("hidden");
+  }
+
+  [cropX, cropY, cropW, cropH].forEach(el => el.addEventListener("input", updateOverlay));
+
+  document.querySelectorAll(".ratio-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".ratio-btn").forEach(b => { b.classList.remove("bg-slate-100"); });
+      btn.classList.add("bg-slate-100");
+      if (btn.dataset.ratio === "free") return;
+      const [w, h] = btn.dataset.ratio.split(":").map(Number);
+      const size = Math.min(canvas.width / w, canvas.height / h);
+      cropW.value = Math.round(size * w);
+      cropH.value = Math.round(size * h);
+      cropX.value = Math.round((canvas.width - cropW.value) / 2);
+      cropY.value = Math.round((canvas.height - cropH.value) / 2);
+      updateOverlay();
+    });
+  });
+
+  overlay.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    startX = e.clientX - parseInt(overlay.style.left);
+    startY = e.clientY - parseInt(overlay.style.top);
+  });
+  document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    cropX.value = Math.max(0, Math.min(e.clientX - startX, canvas.width - parseInt(overlay.style.width)));
+    cropY.value = Math.max(0, Math.min(e.clientY - startY, canvas.height - parseInt(overlay.style.height)));
+    updateOverlay();
+  });
+  document.addEventListener("mouseup", () => { isDragging = false; });
+
+  applyBtn.addEventListener("click", () => {
+    const x = parseInt(cropX.value), y = parseInt(cropY.value), w = parseInt(cropW.value), h = parseInt(cropH.value);
+    if (w <= 0 || h <= 0) return;
+    const outC = document.createElement("canvas");
+    outC.width = w; outC.height = h;
+    outC.getContext("2d").drawImage(canvas, x, y, w, h, 0, 0, w, h);
+    canvas.width = w; canvas.height = h;
+    canvas.getContext("2d").drawImage(outC, 0, 0);
+    overlay.classList.add("hidden");
+    downloadBtn.classList.remove("hidden");
+    canvas.toBlob((blob) => {
+      downloadBtn.onclick = () => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a"); a.href = url; a.download = "cropped.gif"; a.click();
+      };
+    }, "image/gif");
+  });
+</script>

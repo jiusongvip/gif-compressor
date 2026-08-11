@@ -1,0 +1,123 @@
+---
+import Base from "../layouts/Base.astro";
+import GifTool from "../components/GifTool.astro";
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is the maximum file size Discord accepts for GIFs?", "acceptedAnswer": { "@type": "Answer", "text": "Discord free accounts accept GIFs up to 8MB. Discord Nitro increases this to 25MB. For best results, compress to 2-5MB for fast loading in chat." } },
+    { "@type": "Question", "name": "How do I make a GIF small enough for Twitter?", "acceptedAnswer": { "@type": "Answer", "text": "Twitter limits GIFs to 5MB on web and 3MB on mobile. Use the Balanced compression mode at level 70-90, or resize to 600px width first for dramatic savings." } },
+    { "@type": "Question", "name": "What size should email GIFs be?", "acceptedAnswer": { "@type": "Answer", "text": "For email campaigns, keep GIFs under 500KB total. Gmail clips messages over 102KB — meaning your entire HTML plus all images must stay under that. Use aggressive palette reduction (32-64 colors) and keep animations under 3 seconds." } }
+  ]
+});
+
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GIF Size Reducer",
+  "url": Astro.url.href,
+  "description": "Reduce GIF file size instantly with platform-specific targets for Discord, Twitter, email, and websites.",
+  "applicationCategory": "Multimedia",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["Discord Preset (8MB)", "Twitter Preset (5MB)", "Email Preset (1MB)", "Platform-specific Compression", "Live Preview"]
+});
+---
+<Base
+  title="Reduce GIF Size Online — Shrink GIF File Size for Discord, Twitter, Email &amp; More"
+  description="Reduce GIF file size instantly with platform-specific targets. Make GIFs smaller for Discord (under 8MB), Twitter (under 5MB), WhatsApp (under 16MB), email (under 1MB), and websites. Real-time preview, 100% private."
+  schema={[webAppSchema, faqSchema].join("\n")}
+>
+<div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+  <h1 class="text-2xl font-bold text-slate-900 leading-tight">Reduce GIF Size <span class="text-accent">Instantly</span></h1>
+  <p class="text-sm text-slate-500 mt-2 max-w-2xl leading-relaxed">
+    Make your animated GIF smaller in seconds. Platform-specific compression targets for Discord, Twitter, email, WhatsApp, and websites — all with live preview and zero upload.
+  </p>
+</div>
+<section class="max-w-4xl mx-auto px-4"><GifTool /></section>
+
+<article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+  <h2 class="text-xl font-bold text-slate-900 mb-4">Platform Size Limits — Complete Reference</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">
+    Every platform has different GIF size restrictions. Use this reference table to find your target, then use the platform preset buttons in the tool above to automatically set the right compression level.
+  </p>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Platform</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Max size</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Preset</th><th class="py-2.5 text-slate-500 font-medium text-xs">Notes</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord</td><td class="py-2.5 pr-4 text-xs">8MB (free), 25MB (Nitro)</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 8MB</span></td><td class="py-2.5 text-xs text-slate-500">Auto-compress to 2-5MB for fast chat loading</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter / X</td><td class="py-2.5 pr-4 text-xs">5MB (web), 3MB (mobile)</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 5MB</span></td><td class="py-2.5 text-xs text-slate-500">Mobile app enforces stricter limits</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Gmail</td><td class="py-2.5 pr-4 text-xs">25MB attach, 102KB inline</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 1MB</span></td><td class="py-2.5 text-xs text-slate-500">Gmail clips messages >102KB. Keep total under 500KB.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Outlook</td><td class="py-2.5 pr-4 text-xs">20MB attach</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 1MB</span></td><td class="py-2.5 text-xs text-slate-500">Under 1MB for reliable inline display</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">WhatsApp</td><td class="py-2.5 pr-4 text-xs">16MB</td><td class="py-2.5 pr-4 text-xs text-slate-400">-</td><td class="py-2.5 text-xs text-slate-500">Compress to 2-5MB for fast mobile delivery</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Telegram</td><td class="py-2.5 pr-4 text-xs">2GB</td><td class="py-2.5 pr-4 text-xs text-slate-400">-</td><td class="py-2.5 text-xs text-slate-500">No practical limit, compress for speed</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Slack</td><td class="py-2.5 pr-4 text-xs">1GB</td><td class="py-2.5 pr-4 text-xs text-slate-400">-</td><td class="py-2.5 text-xs text-slate-500">Under 5MB for quick inline preview</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Reddit</td><td class="py-2.5 pr-4 text-xs">20MB</td><td class="py-2.5 pr-4 text-xs text-slate-400">-</td><td class="py-2.5 text-xs text-slate-500">Under 5MB for fast loading in feeds</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Facebook</td><td class="py-2.5 pr-4 text-xs">25MB</td><td class="py-2.5 pr-4 text-xs text-slate-400">-</td><td class="py-2.5 text-xs text-slate-500">Uploads auto-convert to video sometimes</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Website (Core Web Vitals)</td><td class="py-2.5 pr-4 text-xs">500KB (hero), 200KB (inline)</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 500KB</span></td><td class="py-2.5 text-xs text-slate-500">Critical for Google LCP scores</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">7 Proven Ways to Reduce GIF File Size</h2>
+  <ol class="space-y-4 mb-6">
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Reduce colors.</strong> Cut from 256 to 128 or 64 colors. For memes and simple graphics, 32-64 is often enough. Expect 30-50% savings.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Drop frames.</strong> Halve the frame rate from 30fps to 15fps. Most animations look nearly identical at half the file size.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Apply lossy LZW.</strong> Enable lossy compression at level 60-80 to merge similar colors. Saves 30-40% with minimal quality loss.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800"><a href="/resize-gif" class="text-accent hover:underline">Resize dimensions.</a></strong> A 1200px GIF scaled to 600px is 75% smaller — before any compression is applied.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800"><a href="/crop-gif" class="text-accent hover:underline">Crop unnecessary areas.</a></strong> Remove borders, watermarks, and empty space. Every cropped pixel reduces file size.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Remove duplicate frames.</strong> Many GIFs have identical consecutive frames. The tool detects and removes these automatically.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Convert format.</strong> <a href="/gif-to-webp" class="text-accent hover:underline">WebP</a> saves 60-90%. <a href="/gif-to-mp4" class="text-accent hover:underline">MP4</a> saves 80-95%. The nuclear option when a GIF is simply the wrong format.</li>
+  </ol>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Step-by-Step: Reduce GIF Size for Each Platform</h2>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">For Discord</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">Discord is the most common GIF-sharing platform. Free users get 8MB per upload. The trick is to stay well under the limit so your GIF loads instantly in chat rather than appearing as a download link.</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li>Upload your GIF to the tool above</li>
+    <li>Click the <strong class="text-slate-800">&lt; 8MB</strong> platform preset</li>
+    <li>If the GIF was under 8MB to begin with, use Balanced mode at level 40-60 for a smaller but still crisp result</li>
+    <li>Use the comparison slider to verify quality</li>
+    <li>Download and share</li>
+  </ol>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">For Twitter / X</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">Twitter enforces 5MB on web and 3MB on mobile. The mobile limit is the real constraint — if it works on mobile, it works everywhere.</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li>Click the <strong class="text-slate-800">&lt; 5MB</strong> platform preset</li>
+    <li>If still over, switch to Maximum mode and push the slider higher</li>
+    <li>For very large GIFs, <a href="/resize-gif" class="text-accent hover:underline">resize to 600px width</a> first — this alone often brings 15MB GIFs under Twitter limits</li>
+    <li>Preview and download</li>
+  </ol>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">For Email</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">Email is the toughest platform. Gmail clips messages over 102KB, meaning every byte counts. Outlook, Apple Mail, and other clients have varying limits. The safest approach:</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li>Click the <strong class="text-slate-800">&lt; 1MB</strong> platform preset</li>
+    <li>Keep animations under 3 seconds — trim longer GIFs first</li>
+    <li>Use Quality mode (level 40-60) to preserve readability of any overlaid text</li>
+    <li>Consider <a href="/gif-to-webp" class="text-accent hover:underline">WebP</a> if your email platform supports it</li>
+    <li>Test in multiple email clients before sending</li>
+  </ol>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Quick Compression Targets</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-6">
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Discord</p><p class="text-lg font-bold text-accent">under 8MB</p><p class="text-[10px] text-slate-400 mt-1">Balanced, level 60-80</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Twitter</p><p class="text-lg font-bold text-accent">under 3MB</p><p class="text-[10px] text-slate-400 mt-1">Balanced, level 70-90</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Email</p><p class="text-lg font-bold text-accent">under 500KB</p><p class="text-[10px] text-slate-400 mt-1">Quality, level 30-50</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Web</p><p class="text-lg font-bold text-accent">under 200KB</p><p class="text-[10px] text-slate-400 mt-1">Max, level 70-95</p></div>
+  </div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Why Our Tool vs. Other GIF Reducers</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+    <div class="tool-card p-3"><span class="text-accent font-bold text-xs">&check;</span> <span class="text-xs text-slate-600">Client-side processing — your GIF never leaves your browser</span></div>
+    <div class="tool-card p-3"><span class="text-accent font-bold text-xs">&check;</span> <span class="text-xs text-slate-600">Real-time comparison slider — see before/after instantly</span></div>
+    <div class="tool-card p-3"><span class="text-accent font-bold text-xs">&check;</span> <span class="text-xs text-slate-600">Platform presets — one-click targets for Discord, Twitter, email</span></div>
+    <div class="tool-card p-3"><span class="text-accent font-bold text-xs">&check;</span> <span class="text-xs text-slate-600">Smart analysis — auto-detects GIF type and recommends strategy</span></div>
+  </div>
+
+  <div class="mt-8 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">Related: <a href="/compress-gif" class="text-accent hover:underline">Compress GIF Guide</a> &middot; <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a> &middot; <a href="/gif-optimizer" class="text-accent hover:underline">Advanced Optimizer</a> &middot; <a href="/gif-to-mp4" class="text-accent hover:underline">GIF to MP4</a></p>
+  </div>
+</article>
+</Base>

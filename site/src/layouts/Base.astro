@@ -1,0 +1,73 @@
+---
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+
+export interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  schema?: string;
+}
+
+const { title, description = "Free online GIF compression tool. Reduce animated GIF file size instantly. Processed in your browser - files never uploaded.", ogImage = "/og-default.png", schema } = Astro.props;
+
+const path = Astro.url.pathname;
+const segments = path.replace(/\/$/, '').split('/').filter(Boolean);
+const breadcrumbItems = [{ name: 'Home', url: '/' }];
+let accum = '';
+for (const seg of segments) {
+  accum += '/' + seg;
+  breadcrumbItems.push({ name: seg.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()), url: accum });
+}
+const breadcrumbSchema = breadcrumbItems.length > 1 ? JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbItems.map((item, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "name": item.name,
+    "item": new URL(item.url, Astro.url).href
+  }))
+}) : null;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <link rel="canonical" href={Astro.url.href} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#2563EB" />
+    {schema && <script type="application/ld+json" set:html={schema} />}
+    {breadcrumbSchema && <script type="application/ld+json" set:html={breadcrumbSchema} />}
+  </head>
+  <body class="min-h-[100dvh] flex flex-col">
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
+    <Nav />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,54 @@
+---
+const tools = [
+  { href: "/", label: "Compress GIF" },
+  { href: "/resize-gif", label: "Resize GIF" },
+  { href: "/crop-gif", label: "Crop GIF" },
+  { href: "/gif-to-webp", label: "GIF to WebP" },
+  { href: "/gif-to-mp4", label: "GIF to MP4" },
+  { href: "/gif-optimizer", label: "GIF Optimizer" },
+];
+const info = [
+  { href: "/faq", label: "FAQ" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+];
+---
+<footer class="border-t border-slate-200 bg-white mt-20">
+  <div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="col-span-2 md:col-span-1">
+        <a href="/" class="text-sm font-semibold text-slate-900">
+          <span class="text-accent">GIF</span> Compress
+        </a>
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed max-w-[24ch]">
+          Free online GIF compression. Processed in your browser, files never uploaded.
+        </p>
+      </div>
+      <div>
+        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 block">Tools</span>
+        <ul class="space-y-2">
+          {tools.map((t) => (
+            <li><a href={t.href} class="text-xs text-slate-400 hover:text-slate-700 transition-colors">{t.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 block">Info</span>
+        <ul class="space-y-2">
+          {info.map((i) => (
+            <li><a href={i.href} class="text-xs text-slate-400 hover:text-slate-700 transition-colors">{i.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 block">GIF Compressor</span>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Compress animated GIFs online free. Reduce file size while keeping animation quality.
+        </p>
+      </div>
+    </div>
+    <div class="mt-10 pt-6 border-t border-slate-100 flex justify-between items-center">
+      <p class="text-xs text-slate-400">&copy; {new Date().getFullYear()} GIF Compress</p>
+    </div>
+  </div>
+</footer>

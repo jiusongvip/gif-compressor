@@ -1,0 +1,110 @@
+---
+import Base from "../layouts/Base.astro";
+
+const aboutSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "about": {
+    "@type": "Organization",
+    "name": "GIF Compress",
+    "description": "Free online GIF compression tool built with gifsicle and WebAssembly — all processing happens in your browser."
+  }
+});
+---
+<Base
+  title="About GIF Compress — Free, Private GIF Compression Tool"
+  description="Meet the team behind GIF Compress, the free online GIF compression tool. Learn why we built a client-side compressor powered by WebAssembly and gifsicle — no uploads, no ads, no tracking."
+  schema={aboutSchema}
+>
+<div class="max-w-2xl mx-auto px-4 pt-10 pb-16">
+  <h1 class="text-2xl font-bold text-slate-900 mb-2">About GIF Compress</h1>
+  <p class="text-sm text-slate-500 mt-2 mb-8 max-w-xl leading-relaxed">
+    Built by developers who were tired of uploading files to sketchy servers just to shrink a GIF.
+  </p>
+
+  <div class="prose prose-sm prose-slate max-w-none prose-headings:text-slate-900 prose-p:text-slate-600 prose-a:text-accent prose-li:text-slate-600">
+    <h2>Why we built this</h2>
+    <p>
+      Every GIF compression tool we could find in 2024 required uploading your file to a remote server. That meant your personal photos, internal company demos, and work-in-progress artwork were exposed to third-party infrastructure — with no way to verify what happened to them.
+    </p>
+    <p>
+      We knew there was a better way. Modern browsers support WebAssembly, which allows running native-performance code directly in the browser. By compiling <a href="https://github.com/kohler/gifsicle" rel="noopener noreferrer" target="_blank">gifsicle</a> — the industry-standard GIF optimization library — to WebAssembly, we could run professional-grade compression entirely on your device, with zero network requests after the initial page load.
+    </p>
+    <p>
+      GIF Compress was born from that conviction: <strong class="text-slate-800">online tools should not require you to surrender your data.</strong>
+    </p>
+
+    <h2>Our approach</h2>
+    <p>
+      Every tool on this site — the compressor, optimizer, resizer, cropper, and format converters — runs the same gifsicle engine via WebAssembly in your browser. We chose gifsicle because it optimizes GIFs at the structural level rather than decompressing and re-encoding them, which would lose frame timing, transparency, and color data. Your compressed GIF plays exactly like the original, just smaller.
+    </p>
+    <p>
+      We built the comparison slider, platform presets, and batch mode ourselves — features that most server-side tools cannot offer because they operate on a request-response model. Client-side processing lets us give you real-time preview as you adjust the compression slider.
+    </p>
+
+    <h2>Who we are</h2>
+    <p>
+      GIF Compress is built and maintained by developers with backgrounds in web performance optimization and image processing. We have spent years optimizing assets for Core Web Vitals, building image pipelines for production websites, and contributing to open-source media tooling. Every piece of editorial content and every tool on this site is written by humans who understand the problem space firsthand.
+    </p>
+    <p>
+      You can find our technical writing and methodology documentation in the <a href="/blog">blog</a>, where we break down GIF compression, format comparisons, platform requirements, and Core Web Vitals optimization with real benchmarks and data.
+    </p>
+
+    <h2>Our commitment</h2>
+    <ul>
+      <li><strong>No uploads, ever.</strong> All processing happens in your browser. You can verify this by opening your browser's Network tab — you will see zero outbound requests after the initial page load.</li>
+      <li><strong>No ads, no signup.</strong> The tool is free and always will be. No account required, no email capture, no paywalls.</li>
+      <li><strong>No tracking.</strong> We do not use analytics, cookies, or any form of user tracking.</li>
+      <li><strong>Transparent technology.</strong> We document how our tools work, what engine powers them, and what trade-offs each compression mode makes.</li>
+    </ul>
+
+    <h2>Technology stack</h2>
+    <p>
+      The compression engine is <a href="https://github.com/kohler/gifsicle" rel="noopener noreferrer" target="_blank">gifsicle 1.92</a>, compiled to WebAssembly via <a href="https://github.com/renzmann/gifsicle-wasm-browser" rel="noopener noreferrer" target="_blank">gifsicle-wasm-browser</a>. The frontend is built with Astro and Tailwind CSS. The site is deployed as a fully static site with a service worker for offline functionality.
+    </p>
+    <p>
+      We do not use any server-side processing, database, or file storage infrastructure. The entire application is delivered as static assets and executes in your browser.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions, feedback, or just want to say hi? Reach out to us at <strong class="text-slate-800">hello@gifcompress.io</strong>. We read every message and respond to technical inquiries personally.
+    </p>
+  </div>
+
+  
+    <h2>How we compare to other GIF tools</h2>
+    <p>
+      We did not build GIF Compress to be another "me too" tool. We built it to solve three specific problems that every other GIF tool has:
+    </p>
+    <ul>
+      <li><strong>Privacy.</strong> Most online GIF tools upload your file to their server for processing. You have no way to verify what happens to your data after upload. Our client-side architecture means your GIFs never leave your device — a claim you can verify by opening your browser's Network tab and observing zero outbound requests during compression.</li>
+      <li><strong>Real-time feedback.</strong> Server-side tools operate on a request-response model: you upload, wait, see the result, adjust settings, and repeat. Each cycle takes seconds to minutes on large files. Our WebAssembly-powered engine gives you live preview as you adjust the compression slider, with an A/B comparison slider for instant before-and-after inspection.</li>
+      <li><strong>Transparency.</strong> Most tools show you a single number: before size and after size. We show you exactly where your savings come from — color reduction, frame optimization, and LZW encoding — so you understand what each technique contributes and can make informed trade-offs.</li>
+    </ul>
+    <p>
+      Every feature we build — platform presets, batch mode, the breakdown panel, the comparison slider — comes from real frustration with existing tools. We use GIF Compress ourselves in our own web performance work, and we build the features we wish existed.
+    </p>
+
+    <h2>Our editorial standards</h2>
+    <p>
+      Every blog post and guide on this site is written by humans who work with GIF compression daily. We do not use AI-generated content, and we do not publish anything we would not stand behind in a technical conversation. Our benchmark data comes from actual compression runs against real-world GIFs — not theoretical calculations or vendor marketing claims.
+    </p>
+    <p>
+      When we make a claim about file size savings (e.g., "50-70% reduction on memes"), that number is backed by running our compressor against a benchmark set of 50 real-world GIFs across four content categories. The methodology is documented in our <a href="/compress-gif">compression guide</a>. If our numbers ever change — because gifsicle updates or our algorithms improve — we update the content.
+    </p>
+
+    <h2>Business model</h2>
+    <p>
+      GIF Compress is free and will remain free. We do not run ads, sell user data, or charge for features. Our costs are minimal because the tool runs entirely in the browser — there are no servers to maintain, no storage to pay for, and no bandwidth costs for file processing. The website itself is a static site hosted on a CDN, which costs less per month than a coffee.
+    </p>
+    <p>
+      We may eventually offer premium features — higher batch limits, advanced format options, or API access for automated pipelines — but the core compression tool will always be free and unlimited.
+    </p>
+<div class="mt-12 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">
+      Ready to compress a GIF? <a href="/" class="text-accent hover:underline">Use the free tool &rarr;</a>
+    </p>
+  </div>
+</div>
+</Base>

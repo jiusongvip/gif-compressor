@@ -1,0 +1,78 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const authorMap = {
+  "james-chen": { name: "James Chen", title: "Web Performance Engineer", url: "/about" }
+};
+const author = authorMap[post.data.author || "james-chen"] || authorMap["james-chen"];
+
+const publishDate = post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+const updatedDate = post.data.updatedDate
+  ? post.data.updatedDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+  : null;
+
+const schema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "datePublished": post.data.publishDate.toISOString(),
+  "dateModified": (post.data.updatedDate || post.data.publishDate).toISOString(),
+  "author": { "@type": "Person", "name": author.name, "description": author.title, "url": new URL(author.url, Astro.url.origin).href }
+});
+---
+<Base
+  title={post.data.title}
+  description={post.data.description}
+  schema={schema}
+>
+<div class="max-w-2xl mx-auto px-4 pt-8 pb-12">
+  <div class="flex items-center gap-2 mb-3">
+    <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">{publishDate}</p>
+    {updatedDate && updatedDate !== publishDate ? (
+      <span class="text-[10px] text-slate-300">&middot; Updated: {updatedDate}</span>
+    ) : null}
+  </div>
+  <h1 class="text-2xl font-bold text-slate-900 leading-tight">{post.data.title}</h1>
+  <div class="flex items-center gap-3 mt-2 mb-1">
+    <div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-accent text-[9px] font-bold shrink-0">
+      {author.name.split(" ").map(n => n[0]).join("")}
+    </div>
+    <div>
+      <p class="text-xs font-medium text-slate-700">{author.name}</p>
+      <p class="text-[10px] text-slate-400">{author.title}</p>
+    </div>
+  </div>
+  <p class="text-sm text-slate-500 mt-3 leading-relaxed">{post.data.description}</p>
+
+  <article class="mt-8 prose prose-slate prose-sm max-w-none
+    prose-headings:text-slate-900 prose-headings:font-semibold
+    prose-h2:text-base prose-h2:mt-8 prose-h2:mb-3
+    prose-h3:text-sm prose-h3:mt-6 prose-h3:mb-2
+    prose-p:text-slate-600 prose-p:leading-relaxed
+    prose-li:text-slate-600 prose-li:text-sm
+    prose-strong:text-slate-800
+    prose-a:text-accent prose-a:no-underline hover:prose-a:underline
+    prose-code:text-accent prose-code:bg-slate-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-xs
+    prose-pre:bg-slate-900 prose-pre:text-slate-100
+    prose-table:text-sm prose-th:text-slate-500 prose-td:text-slate-600
+    prose-thead:border-slate-200 prose-tr:border-slate-100">
+    <Content />
+  </article>
+
+  <div class="mt-12 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">
+      Need to actually compress a GIF? <a href="/" class="text-accent hover:underline">Use our free GIF compressor &rarr;</a>
+    </p>
+  </div>
+</div>
+</Base>

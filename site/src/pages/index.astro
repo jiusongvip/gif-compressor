@@ -1,0 +1,324 @@
+---
+import Base from "../layouts/Base.astro";
+import GifTool from "../components/GifTool.astro";
+import Icon from "../components/Icon.astro";
+
+const schema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GIF Compress",
+  "url": Astro.url.href,
+  "description": "Free online GIF compressor. Reduce animated GIF file size instantly in your browser. No upload needed, 100% private.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["100% Private", "No Upload", "Instant Preview", "Batch Processing", "Real-time Comparison"]
+});
+
+const orgSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "GIF Compress",
+  "url": Astro.url.href,
+  "description": "Free online GIF compressor — reduce animated GIF file size instantly in your browser."
+});
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How does GIF compression work?", "acceptedAnswer": { "@type": "Answer", "text": "GIF compression uses gifsicle-powered optimization to reduce colors per frame, apply lossy LZW encoding, and remove redundant data. The result is 20-70% smaller files with preserved animation quality." } },
+    { "@type": "Question", "name": "Will compression affect my GIF animation?", "acceptedAnswer": { "@type": "Answer", "text": "At moderate levels the animation stays smooth and visually identical. At higher compression levels you may notice slight color reduction. Use the live preview to verify quality before downloading." } },
+    { "@type": "Question", "name": "Is my GIF file safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. All processing happens in your browser using WebAssembly. Files are never uploaded to any server. Your GIFs stay 100% private on your device." } },
+    { "@type": "Question", "name": "What is the maximum file size?", "acceptedAnswer": { "@type": "Answer", "text": "You can compress GIFs up to 100MB. For best performance with large files, use Balanced mode and the compression slider at level 50-70.." } },
+    { "@type": "Question", "name": "How do I compress a GIF for Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Discord free accounts limit GIFs to 8MB. Use the Discord preset button or Balanced mode at level 60-80. Resize to 600px width first for best results." } },
+    { "@type": "Question", "name": "Can I compress multiple GIFs at once?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Toggle Batch mode to compress multiple GIFs simultaneously with the same settings. All compressed files download as a single ZIP." } }
+  ]
+});
+
+const howToSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Compress a GIF",
+  "description": "Three simple steps to compress animated GIFs online for free.",
+  "step": [
+    { "@type": "HowToStep", "name": "Upload your GIF", "text": "Drop your GIF file into the upload area, paste from clipboard, or paste a URL.", "position": 1 },
+    { "@type": "HowToStep", "name": "Adjust compression", "text": "Choose Quality, Balanced, or Maximum mode. Drag the slider to set compression level. Use platform presets for Discord, Twitter, or email targets.", "position": 2 },
+    { "@type": "HowToStep", "name": "Download", "text": "Click Download to save your compressed GIF. Compare before and after using the preview slider.", "position": 3 }
+  ]
+});
+---
+<Base
+  title="Free Online GIF Compressor — Reduce Size by Up to 70%"
+  description="Compress GIF files online for free. Reduce GIF size by up to 70% while keeping animation quality. Works in your browser - no upload needed, 100% private."
+  schema={[schema, orgSchema, faqSchema, howToSchema].join("\n")}
+>
+  <section class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+    <h1 class="text-2xl font-bold text-slate-900 leading-tight">
+      Compress GIF Files <span class="text-accent">&mdash; Free, Instant, Private</span>
+    </h1>
+    <p class="text-[10px] text-slate-400 mb-1">Built by web performance engineers &middot; <a href="/about" class="text-accent hover:underline">About us</a> &middot; Last updated: August 2026</p>
+    <p class="text-sm text-slate-500 mt-2 max-w-xl leading-relaxed">
+      Shrink animations by up to <strong class="text-slate-900">70%</strong> in seconds. Compare the before and after, then download. Nothing ever leaves your browser.
+    </p>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4">
+    <GifTool />
+  </section>
+
+  <div class="max-w-4xl mx-auto px-4 mt-6 text-center">
+    <span id="usage-counter" class="text-[10px] text-slate-400 tracking-wide">0 GIFs compressed</span>
+  </div>
+<section class="max-w-4xl mx-auto px-4 mt-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="flex gap-3 items-start">
+        <div class="w-8 h-8 rounded-lg bg-accent/5 flex items-center justify-center shrink-0 mt-0.5">
+          <Icon name="lightning" size={18} class="text-accent" />
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-slate-900">Instant Preview</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Adjust the slider and <strong class="text-slate-700">see the result instantly</strong>. No waiting, no uploading.</p>
+        </div>
+      </div>
+      <div class="flex gap-3 items-start">
+        <div class="w-8 h-8 rounded-lg bg-accent/5 flex items-center justify-center shrink-0 mt-0.5">
+          <Icon name="shield-check" size={18} class="text-accent" />
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-slate-900">100% Private</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">All processing runs <strong class="text-slate-700">in your browser</strong>. Your files are never uploaded to any server.</p>
+        </div>
+      </div>
+      <div class="flex gap-3 items-start">
+        <div class="w-8 h-8 rounded-lg bg-accent/5 flex items-center justify-center shrink-0 mt-0.5">
+          <Icon name="sliders-horizontal" size={18} class="text-accent" />
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-slate-900">Smart Optimization</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Auto-detects animation type and picks the <strong class="text-slate-700">optimal compression strategy</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4 mt-16">
+    <h2 class="text-base font-semibold text-slate-900 mb-6">How much can you save?</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+      <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Simple graphic</p><p class="text-lg font-bold text-accent">50-70%</p><p class="text-[10px] text-slate-400 mt-1">Memes, stickers, icons</p></div>
+      <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Reaction GIF</p><p class="text-lg font-bold text-accent">35-55%</p><p class="text-[10px] text-slate-400 mt-1">Movie clips, TV moments</p></div>
+      <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Product demo</p><p class="text-lg font-bold text-accent">40-60%</p><p class="text-[10px] text-slate-400 mt-1">UI recordings, showcases</p></div>
+      <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Photo / video</p><p class="text-lg font-bold text-accent">20-40%</p><p class="text-[10px] text-slate-400 mt-1">Complex scenes, gradients</p></div>
+    </div>
+    <p class="text-xs text-slate-400 mt-4 text-center">Actual savings depend on your GIF's content. Use the <strong class="text-slate-600">Breakdown panel</strong> in the tool to see exactly where your savings come from.</p>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4 mt-16">
+    <h2 class="text-base font-semibold text-slate-900 mb-6">Built for wherever you share GIFs</h2>
+    <p class="text-xs text-slate-400 mb-1">All compression powered by <a href="https://github.com/kohler/gifsicle" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">gifsicle</a>. Optimizing for <a href="https://web.dev/vitals/" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">Core Web Vitals</a>? See our <a href="/gif-optimizer" class="text-accent hover:underline">advanced optimizer</a>.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <a href="/compress-gif-for-discord" class="tool-card p-5 group">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-8 rounded-lg bg-[#5865F2]/10 flex items-center justify-center shrink-0">
+            <span class="text-[#5865F2] text-sm font-bold">D</span>
+          </div>
+          <h3 class="text-sm font-semibold text-slate-900">Discord</h3>
+        </div>
+        <p class="text-xs text-slate-500 leading-relaxed">Under 8MB for free tier. Reactions, memes, and stickers that load instantly in chat.</p>
+        <p class="text-[10px] text-accent mt-2 group-hover:underline">Compress for Discord &rarr;</p>
+      </a>
+      <a href="/compress-gif-for-twitter" class="tool-card p-5 group">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
+            <span class="text-slate-700 text-sm font-bold">𝕏</span>
+          </div>
+          <h3 class="text-sm font-semibold text-slate-900">Twitter / X</h3>
+        </div>
+        <p class="text-xs text-slate-500 leading-relaxed">Under 3MB for mobile, 5MB for web. GIFs that survive Twitter's MP4 auto-conversion.</p>
+        <p class="text-[10px] text-accent mt-2 group-hover:underline">Compress for Twitter &rarr;</p>
+      </a>
+      <a href="/compress-gif-for-email" class="tool-card p-5 group">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+            <span class="text-accent text-sm font-bold">@</span>
+          </div>
+          <h3 class="text-sm font-semibold text-slate-900">Email</h3>
+        </div>
+        <p class="text-xs text-slate-500 leading-relaxed">Under Gmail's 102KB clipping threshold. Animated CTAs, product showcases, and campaign GIFs.</p>
+        <p class="text-[10px] text-accent mt-2 group-hover:underline">Compress for Email &rarr;</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4 mt-16">
+    <h2 class="text-base font-semibold text-slate-900 mb-6">Who is this for</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="tool-card p-5">
+        <h3 class="text-sm font-semibold text-slate-900">Content Creators &amp; Meme Makers</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Share reaction GIFs on <a href="/compress-gif-for-discord" class="text-accent hover:underline">Discord</a> and <a href="/compress-gif-for-twitter" class="text-accent hover:underline">Twitter</a> without hitting file size limits. One-click platform presets make it effortless.</p>
+      </div>
+      <div class="tool-card p-5">
+        <h3 class="text-sm font-semibold text-slate-900">Web Developers &amp; Designers</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Optimize GIFs for Core Web Vitals. Use the <a href="/gif-optimizer" class="text-accent hover:underline">advanced optimizer</a> to hit exact file size targets for LCP scores. Batch process entire asset libraries.</p>
+      </div>
+      <div class="tool-card p-5">
+        <h3 class="text-sm font-semibold text-slate-900">Email Marketers</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Add animated GIFs to campaigns without triggering Gmail's 102KB clipping. Our <a href="/compress-gif-for-email" class="text-accent hover:underline">email compression guide</a> covers every client.</p>
+      </div>
+      <div class="tool-card p-5">
+        <h3 class="text-sm font-semibold text-slate-900">E-Commerce Teams</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Product demo GIFs under 200KB for fast product pages. Consistent quality across your entire catalog with batch mode and <a href="/resize-gif" class="text-accent hover:underline">resize</a> options.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4 mt-16">
+    <h2 class="text-base font-semibold text-slate-900 mb-4">How it works</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="flex items-center gap-3">
+        <span class="w-6 h-6 rounded-full bg-accent text-white text-xs font-semibold flex items-center justify-center shrink-0">1</span>
+        <p class="text-sm text-slate-600">Drop your GIF, paste it, or click to select</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="w-6 h-6 rounded-full bg-accent text-white text-xs font-semibold flex items-center justify-center shrink-0">2</span>
+        <p class="text-sm text-slate-600">Adjust compression level, preview updates live</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="w-6 h-6 rounded-full bg-accent text-white text-xs font-semibold flex items-center justify-center shrink-0">3</span>
+        <p class="text-sm text-slate-600">Download your compressed GIF</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4 mt-16">
+    <h2 class="text-base font-semibold text-slate-900 mb-6">Why choose GIF Compress</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr class="border-b-2 border-slate-200 text-left">
+            <th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Feature</th>
+            <th class="py-2.5 pr-4 text-center text-accent font-semibold text-xs w-28">GIF Compress</th>
+            <th class="py-2.5 text-center text-slate-400 font-medium text-xs w-28">Other tools</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs text-slate-600">Real-time preview</td><td class="py-2.5 text-center"><span class="text-accent font-bold">&check;</span></td><td class="py-2.5 text-center"><span class="text-slate-300">&cross;</span></td></tr>
+          <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs text-slate-600">In-browser processing (private)</td><td class="py-2.5 text-center"><span class="text-accent font-bold">&check;</span></td><td class="py-2.5 text-center"><span class="text-slate-300">&cross;</span></td></tr>
+          <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs text-slate-600">Platform presets (Discord, Twitter)</td><td class="py-2.5 text-center"><span class="text-accent font-bold">&check;</span></td><td class="py-2.5 text-center"><span class="text-slate-300">&cross;</span></td></tr>
+          <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs text-slate-600">Smart compression analysis</td><td class="py-2.5 text-center"><span class="text-accent font-bold">&check;</span></td><td class="py-2.5 text-center"><span class="text-slate-300">&cross;</span></td></tr>
+          <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs text-slate-600">Batch processing</td><td class="py-2.5 text-center"><span class="text-accent font-bold">&check;</span></td><td class="py-2.5 text-center"><span class="text-slate-500 text-xs">&check; few</span></td></tr>
+          <tr><td class="py-2.5 pr-4 text-xs text-slate-600">No ads, no signup</td><td class="py-2.5 text-center"><span class="text-accent font-bold">&check;</span></td><td class="py-2.5 text-center"><span class="text-slate-500 text-xs">&check; mixed</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4 mt-16">
+    <h2 class="text-base font-semibold text-slate-900 mb-6">Powered by gifsicle — the industry standard for GIF optimization</h2>
+    <div class="tool-card p-6">
+      <p class="text-xs text-slate-600 leading-relaxed">Our compression engine is built on <strong class="text-slate-800"><a href="https://github.com/kohler/gifsicle" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">gifsicle</a></strong>, the same open-source tool used by professional image pipelines worldwide. Unlike conventional tools that decompress and re-encode GIFs (losing frame timing and color data), gifsicle optimizes at the structural level. Every detail of the original animation is preserved. The result: <strong class="text-slate-800">smaller files that look and play exactly like the original</strong>.
+      <div class="grid grid-cols-3 gap-3 mt-4">
+        <div class="text-center"><p class="text-xs text-slate-400">Optimization engine</p><p class="text-sm font-semibold text-slate-900">gifsicle 1.92</p></div>
+        <div class="text-center"><p class="text-xs text-slate-400">Runtime</p><p class="text-sm font-semibold text-slate-900">WebAssembly (WASM)</p></div>
+        <div class="text-center"><p class="text-xs text-slate-400">Privacy</p><p class="text-sm font-semibold text-slate-900">100% Client-Side</p></div>
+      </div>
+    </div>
+  </section>
+
+<section class="max-w-4xl mx-auto px-4 mt-16">
+    <h2 class="text-base font-semibold text-slate-900 mb-6">Frequently asked questions</h2>
+    <div class="space-y-4">
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          How does GIF compression work?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform"><Icon name="caret-down" size={14} /></span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">GIF compression works by reducing the number of colors in each frame, optimizing frame data, and applying lossy LZW compression. The tool automatically analyzes your GIF and picks the best combination of these techniques.</p>
+      </details>
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          Will compression affect my GIF animation?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform"><Icon name="caret-down" size={14} /></span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">At moderate compression levels, the animation remains smooth. At higher levels, you may notice slight quality reduction or reduced frame count. Use the live preview to find the right balance.</p>
+      </details>
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          Is my GIF file safe?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform"><Icon name="caret-down" size={14} /></span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">Absolutely. All processing happens inside your browser. Your GIF file is never uploaded to any server. Nothing leaves your device.</p>
+      </details>
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          What is the maximum file size?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform"><Icon name="caret-down" size={14} /></span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">You can compress GIFs up to 100MB. For larger files, check our advanced GIF Optimizer tool.</p>
+      </details>
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          How do I compress a GIF for Discord?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform"><Icon name="caret-down" size={14} /></span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">Discord free accounts limit GIF uploads to 8MB. Use the <strong class="text-slate-700">&lt; 8MB Discord preset</strong> in the tool, or set Balanced mode at level 60-80. For best results, <a href="/resize-gif" class="text-accent hover:underline">resize to 600px width</a> before compressing. See our <a href="/compress-gif-for-discord" class="text-accent hover:underline">full Discord GIF compression guide</a>.</p>
+      </details>
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          Can I compress multiple GIFs at once?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform"><Icon name="caret-down" size={14} /></span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">Yes. Toggle <strong class="text-slate-700">Batch mode</strong> in the tool to compress multiple GIFs simultaneously. All files are processed with the same compression settings and packaged into a single ZIP download. Ideal for social media managers, e-commerce teams, and anyone managing large GIF libraries.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4 mt-16">
+    <h2 class="text-base font-semibold text-slate-900 mb-6">More GIF tools</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <a href="/resize-gif" class="tool-card p-4 group">
+        <Icon name="arrows-out" size={20} class="text-slate-400 group-hover:text-accent transition-colors mb-2" />
+        <p class="text-sm font-medium text-slate-900">Resize GIF</p>
+        <p class="text-xs text-slate-400 mt-1">Change dimensions</p>
+      </a>
+      <a href="/crop-gif" class="tool-card p-4 group">
+        <Icon name="scissors" size={20} class="text-slate-400 group-hover:text-accent transition-colors mb-2" />
+        <p class="text-sm font-medium text-slate-900">Crop GIF</p>
+        <p class="text-xs text-slate-400 mt-1">Trim edges</p>
+      </a>
+      <a href="/gif-to-webp" class="tool-card p-4 group">
+        <Icon name="image" size={20} class="text-slate-400 group-hover:text-accent transition-colors mb-2" />
+        <p class="text-sm font-medium text-slate-900">GIF to WebP</p>
+        <p class="text-xs text-slate-400 mt-1">Save 80%+ space</p>
+      </a>
+      <a href="/gif-to-mp4" class="tool-card p-4 group">
+        <Icon name="file-gif" size={20} class="text-slate-400 group-hover:text-accent transition-colors mb-2" />
+        <p class="text-sm font-medium text-slate-900">GIF to MP4</p>
+        <p class="text-xs text-slate-400 mt-1">Video conversion</p>
+      </a>
+      <a href="/gif-optimizer" class="tool-card p-4 group">
+        <Icon name="sliders-horizontal" size={20} class="text-slate-400 group-hover:text-accent transition-colors mb-2" />
+        <p class="text-sm font-medium text-slate-900">GIF Optimizer</p>
+        <p class="text-xs text-slate-400 mt-1">Advanced control</p>
+      </a>
+      <a href="/compress-gif-for-discord" class="tool-card p-4 group">
+        <span class="text-[#5865F2] text-sm font-bold">D</span>
+        <p class="text-sm font-medium text-slate-900 mt-1">For Discord</p>
+        <p class="text-xs text-slate-400 mt-1">Under 8MB</p>
+      </a>
+      <a href="/compress-gif-for-twitter" class="tool-card p-4 group">
+        <span class="text-slate-700 text-sm font-bold">𝕏</span>
+        <p class="text-sm font-medium text-slate-900 mt-1">For Twitter</p>
+        <p class="text-xs text-slate-400 mt-1">Under 3MB</p>
+      </a>
+      <a href="/compress-gif-for-email" class="tool-card p-4 group">
+        <span class="text-accent text-sm font-bold">@</span>
+        <p class="text-sm font-medium text-slate-900 mt-1">For Email</p>
+        <p class="text-xs text-slate-400 mt-1">Under 1MB</p>
+      </a>
+    </div>
+    <p class="text-xs text-slate-400 text-center mt-6">
+      Want to learn more? Check our <a href="/faq" class="text-accent hover:underline">full FAQ</a> or browse the <a href="/compress-gif" class="text-accent hover:underline">compression guide</a>.
+    </p>
+  </section>
+</Base>

@@ -1,0 +1,306 @@
+---
+import Base from "../layouts/Base.astro";
+
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Does resizing a GIF affect its animation?", "acceptedAnswer": { "@type": "Answer", "text": "No. All frames are resized proportionally and animation timing is preserved. The GIF plays exactly as before, just at the new dimensions." } },
+    { "@type": "Question", "name": "What dimensions should I resize my GIF to?", "acceptedAnswer": { "@type": "Answer", "text": "For social media: 600-800px width. For Discord stickers: 320px. For website performance: 400-600px. For email inline: 200-400px." } },
+    { "@type": "Question", "name": "Should I resize or compress first?", "acceptedAnswer": { "@type": "Answer", "text": "Always resize first, then compress. Resizing permanently removes pixel data, giving the compressor less data to work with. Together they often achieve 70-85% total file size reduction." } }
+  ]
+});
+
+
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GIF Resizer",
+  "url": Astro.url.href,
+  "description": "Resize animated GIFs online free. Change GIF width and height, scale by percentage, or set exact dimensions.",
+  "applicationCategory": "Multimedia",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["GIF Resizing", "Percentage Scaling", "Exact Dimensions", "Browser-based Processing", "Instant Processing"]
+});---
+
+
+
+<Base
+  title="Resize GIF - Change GIF Dimensions Online Free"
+  description="Resize animated GIFs online free. Change GIF width and height, scale by percentage, or set exact dimensions. Instant processing in your browser."
+ schema={[webAppSchema, faqSchema].join("\n")}>
+  <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+    <h1 class="text-2xl font-bold text-slate-900 leading-tight">
+      Resize GIF <span class="text-accent">Online</span>
+    </h1>
+    <p class="text-sm text-slate-500 mt-2 max-w-xl leading-relaxed">
+      We recommend always resizing your GIF before compressing — it removes pixel data permanently and gives the compression engine less work to do, often doubling your final savings. Our resizer preserves frame timing and animation quality while working entirely on your device.
+    </p>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4">
+    <div id="resize-tool" class="tool-card p-10 md:p-14 text-center cursor-pointer transition-all duration-150">
+      <div class="mx-auto w-16 h-16 mb-6 rounded-2xl bg-accent/5 flex items-center justify-center">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-accent" stroke-width="1.5"><path d="M9 21H3v-6M21 3h-6v6M21 3l-7 7M3 21l7-7"/></svg>
+      </div>
+      <h2 class="text-lg font-semibold text-slate-900 mb-2">Drop your GIF here</h2>
+      <p class="text-sm text-slate-400 mb-5 max-w-xs mx-auto leading-relaxed">Resize animated GIFs to any dimensions</p>
+      <button id="select-btn" type="button"
+        class="px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98]">
+        Select GIF File
+      </button>
+      <input type="file" id="file-input" accept="image/gif,.gif" class="hidden" />
+      <div class="flex items-center justify-center gap-2 w-full max-w-sm mt-3 mx-auto" onclick="event.stopPropagation()">
+        <input type="text" id="url-input" placeholder="Or paste a GIF URL..."
+          class="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-lg text-slate-600 placeholder:text-slate-300 focus:outline-none focus:border-accent/50" />
+        <button id="url-load-btn" type="button"
+          class="px-3 py-2 text-xs font-medium text-accent border border-accent/30 rounded-lg hover:bg-accent/5 transition-colors whitespace-nowrap">
+          Load
+        </button>
+      </div>
+    </div>
+
+    <div id="editor-panel" class="hidden mt-6 tool-card p-6">
+      <div class="flex flex-col md:flex-row gap-6">
+        <div class="flex-1">
+          <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Original</p>
+          <div class="aspect-video bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center overflow-hidden">
+            <img id="preview-orig" src="" alt="Original" class="max-w-full max-h-full object-contain" />
+          </div>
+          <p id="orig-size" class="text-xs text-slate-400 mt-2"></p>
+        </div>
+        <div class="w-px bg-slate-100 hidden md:block"></div>
+        <div class="flex-1">
+          <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Resized</p>
+          <div class="aspect-video bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center overflow-hidden">
+            <canvas id="preview-resized" class="max-w-full max-h-full object-contain"></canvas>
+          </div>
+          <p id="resized-dims" class="text-xs text-slate-400 mt-2"></p>
+        </div>
+      </div>
+
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block mb-1.5">Width (px)</label>
+          <input type="number" id="width-inp" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-accent" placeholder="Auto" />
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block mb-1.5">Height (px)</label>
+          <input type="number" id="height-inp" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-accent" placeholder="Auto" />
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block mb-1.5">Scale (%)</label>
+          <input type="number" id="scale-inp" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-accent" value="100" min="1" max="400" />
+        </div>
+      </div>
+      <div class="mt-4 flex items-center gap-3">
+        <label class="flex items-center gap-2 text-xs text-slate-500 cursor-pointer">
+          <input type="checkbox" id="keep-ratio" checked class="accent-accent" /> Keep aspect ratio
+        </label>
+      </div>
+
+      <div class="mt-6 text-center">
+        <button id="download-btn" disabled
+          class="px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed">
+          Download Resized GIF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+    <h2 class="text-xl font-bold text-slate-900 mb-4">Why Resize a GIF?</h2>
+    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+      Resizing is the single most effective way to reduce a GIF's file size — more effective than any compression technique. A 1200px-wide GIF resized to 600px is <strong class="text-slate-800">75% smaller</strong> before any compression is applied. That is 75% gone just by changing dimensions. Combine resize with compression, and total savings routinely exceed 90%.
+    </p>
+    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+      Most GIFs are shared at resolutions far larger than they need to be. A reaction GIF in a Discord chat displays at about 400-500px wide. A Twitter feed GIF renders at 500-600px. An email GIF might be 200px wide. Uploading a 1920px GIF to any of these platforms is wasting bandwidth on pixels nobody will ever see.
+    </p>
+
+    <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Resize Before Compress — Always</h2>
+    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+      The order matters. Resizing permanently removes pixel data. If you compress first and resize second, you compressed data that you then throw away. If you resize first, the compressor has less data to process, runs faster, and produces a smaller result.
+    </p>
+    <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+      <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Workflow</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Starting size</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">After resize</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">After compress</th><th class="py-2.5 text-slate-500 font-medium text-xs">Total savings</th></tr></thead>
+      <tbody>
+        <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Compress only</td><td class="py-2.5 pr-4 text-xs">10MB</td><td class="py-2.5 pr-4 text-xs text-slate-400">-</td><td class="py-2.5 pr-4 text-xs">4.5MB</td><td class="py-2.5 text-xs text-accent font-medium">55%</td></tr>
+        <tr class="border-b border-slate-100 bg-accent/[0.02]"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Resize → Compress</td><td class="py-2.5 pr-4 text-xs">10MB</td><td class="py-2.5 pr-4 text-xs">2.5MB</td><td class="py-2.5 pr-4 text-xs">800KB</td><td class="py-2.5 text-xs text-accent font-medium">92%</td></tr>
+        <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Compress → Resize</td><td class="py-2.5 pr-4 text-xs">10MB</td><td class="py-2.5 pr-4 text-xs">4.5MB</td><td class="py-2.5 pr-4 text-xs">1.1MB</td><td class="py-2.5 text-xs text-accent font-medium">89%</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Recommended Dimensions by Use Case</h2>
+    <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+      <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Use case</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Recommended width</th><th class="py-2.5 text-slate-500 font-medium text-xs">Why</th></tr></thead>
+      <tbody>
+        <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord chat</td><td class="py-2.5 pr-4 text-xs">400-600px</td><td class="py-2.5 text-xs text-slate-500">Displays inline at ~400px. Larger is wasted.</td></tr>
+        <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord stickers</td><td class="py-2.5 pr-4 text-xs">320px</td><td class="py-2.5 text-xs text-slate-500">Sticker size limit. Square aspect ratio.</td></tr>
+        <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter / X feed</td><td class="py-2.5 pr-4 text-xs">500-600px</td><td class="py-2.5 text-xs text-slate-500">Feed display width on most devices.</td></tr>
+        <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Email inline</td><td class="py-2.5 pr-4 text-xs">200-400px</td><td class="py-2.5 text-xs text-slate-500">Email columns are narrow. Keep GIFs small.</td></tr>
+        <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Website hero</td><td class="py-2.5 pr-4 text-xs">1200-1600px</td><td class="py-2.5 text-xs text-slate-500">Full-width hero. Balance quality with Core Web Vitals.</td></tr>
+        <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Website inline</td><td class="py-2.5 pr-4 text-xs">400-800px</td><td class="py-2.5 text-xs text-slate-500">Content column width. Keep under 200KB.</td></tr>
+        <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Blog post</td><td class="py-2.5 pr-4 text-xs">600-800px</td><td class="py-2.5 text-xs text-slate-500">Typical content width. Under 500KB total.</td></tr>
+        <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">WhatsApp / Messenger</td><td class="py-2.5 pr-4 text-xs">400-500px</td><td class="py-2.5 text-xs text-slate-500">Mobile-first. Fast delivery over cellular.</td></tr>
+        <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Instagram Story</td><td class="py-2.5 pr-4 text-xs">1080x1920px</td><td class="py-2.5 text-xs text-slate-500">9:16 portrait. Convert to MP4 for Instagram.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Scaling Up vs Scaling Down</h2>
+    <p class="text-sm text-slate-600 leading-relaxed mb-3">
+      <strong class="text-slate-800">Scaling down</strong> (making a GIF smaller) is lossless in terms of the content you keep. You are removing pixels, not guessing at them. The result looks crisp because you are discarding information rather than inventing it.
+    </p>
+    <p class="text-sm text-slate-600 leading-relaxed mb-3">
+      <strong class="text-slate-800">Scaling up</strong> (enlarging a GIF) involves interpolation — the tool must guess what pixels go between the original ones. This produces blur, softness, and visible artifacts. GIF's 256-color palette makes upscaling artifacts much more visible than on formats with smooth gradients.
+    </p>
+    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+      For best results, never scale a GIF up more than 20%. If you need a larger version, go back to the original source (video, image sequence) and create a new GIF at the target resolution.
+    </p>
+
+    <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Aspect Ratio: Keep It or Change It?</h2>
+    <p class="text-sm text-slate-600 leading-relaxed mb-3">
+      <strong class="text-slate-800">Keep aspect ratio</strong> (the default) preserves proportions. Your GIF will not look stretched or squashed. The tool automatically calculates the matching dimension when you change one side. This is the right choice 95% of the time.
+    </p>
+    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+      <strong class="text-slate-800">Unlock aspect ratio</strong> when you need specific pixel dimensions that do not match the original — usually for platform requirements. A 1920×1080 GIF resized to 600×600 (square) will look stretched unless you also crop. In that case, <a href="/crop-gif" class="text-accent hover:underline">crop first</a>, then resize.
+    </p>
+
+    <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Resize + Compress: The Complete Workflow</h2>
+    <ol class="space-y-2 mb-6">
+      <li class="text-sm text-slate-600"><strong class="text-slate-800">1. Determine your target dimensions.</strong> Check the table above for your use case. When in doubt, 600px wide.</li>
+      <li class="text-sm text-slate-600"><strong class="text-slate-800">2. Resize to target.</strong> Use this tool. Keep aspect ratio on. Enter either width or height and let the other auto-calculate.</li>
+      <li class="text-sm text-slate-600"><strong class="text-slate-800">3. Download the resized GIF.</strong> Check visual quality at the new dimensions.</li>
+      <li class="text-sm text-slate-600"><strong class="text-slate-800">4. Compress the resized GIF.</strong> Take the resized file to the <a href="/" class="text-accent hover:underline">GIF Compressor</a>. With dimensions already reduced, compression will be much more effective.</li>
+      <li class="text-sm text-slate-600"><strong class="text-slate-800">5. Check the final result.</strong> Use the comparison slider to verify quality. Total savings of 80-95% are typical.</li>
+    </ol>
+
+    <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Resize by Percentage vs Exact Pixels</h2>
+    <p class="text-sm text-slate-600 leading-relaxed mb-3">
+      Use <strong class="text-slate-800">percentage scaling</strong> when you want proportional reduction without calculating exact numbers. Setting scale to 50% halves both dimensions — and reduces the file size by approximately 75%. Setting it to 25% reduces by about 94%. This is a quick way to dramatically shrink a GIF for thumbnails or previews.
+    </p>
+    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+      Use <strong class="text-slate-800">exact pixel dimensions</strong> when you have a specific target — platform requirements, layout constraints, or Core Web Vitals thresholds.
+    </p>
+
+    <div class="mt-8 pt-6 border-t border-slate-100">
+      <p class="text-xs text-slate-400">Related: <a href="/" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/crop-gif" class="text-accent hover:underline">Crop GIF</a> &middot; <a href="/gif-to-webp" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-to-mp4" class="text-accent hover:underline">GIF to MP4</a></p>
+    </div>
+  </article>
+
+  <div class="max-w-4xl mx-auto px-4 mt-8 mb-8">
+    <h2 class="text-base font-semibold text-slate-900 mb-4">More tools</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <a href="/" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">Compress GIF</p><p class="text-xs text-slate-400 mt-1">Reduce file size</p></a>
+      <a href="/crop-gif" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">Crop GIF</p><p class="text-xs text-slate-400 mt-1">Trim edges</p></a>
+      <a href="/gif-to-webp" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">GIF to WebP</p><p class="text-xs text-slate-400 mt-1">Modern format</p></a>
+      <a href="/gif-to-mp4" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">GIF to MP4</p><p class="text-xs text-slate-400 mt-1">Video conversion</p></a>
+    </div>
+  </div>
+</Base>
+
+<script>
+  const dropZone = document.getElementById("resize-tool");
+  const fileInput = document.getElementById("file-input");
+  const selectBtn = document.getElementById("select-btn");
+  const editorPanel = document.getElementById("editor-panel");
+  const previewOrig = document.getElementById("preview-orig");
+  const previewResized = document.getElementById("preview-resized");
+  const downloadBtn = document.getElementById("download-btn");
+  const widthInp = document.getElementById("width-inp");
+  const heightInp = document.getElementById("height-inp");
+  const scaleInp = document.getElementById("scale-inp");
+  const keepRatio = document.getElementById("keep-ratio");
+  const urlInput = document.getElementById("url-input");
+  const urlLoadBtn = document.getElementById("url-load-btn");
+
+  let origW = 0, origH = 0, imgEl = null, resultBlob = null;
+
+  selectBtn.addEventListener("click", (e) => { e.stopPropagation(); fileInput.click(); });
+  dropZone.addEventListener("click", () => fileInput.click());
+  fileInput.addEventListener("change", (e) => { if (e.target.files[0]) loadFile(e.target.files[0]); });
+
+  dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("border-accent", "bg-accent/5"); });
+  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("border-accent", "bg-accent/5"));
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault(); dropZone.classList.remove("border-accent", "bg-accent/5");
+    if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+  });
+
+  downloadBtn.addEventListener("click", () => {
+    if (!resultBlob) return;
+    const url = URL.createObjectURL(resultBlob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "resized.gif"; a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  urlLoadBtn.addEventListener("click", async () => {
+    const u = (urlInput.value || "").trim();
+    if (!u) return;
+    try {
+      const r = await fetch(u);
+      if (!r.ok) throw new Error;
+      const b = await r.blob();
+      urlInput.value = "";
+      loadFile(new File([b], u.split("/").pop() || "remote.gif", { type: "image/gif" }));
+    } catch { alert("Could not load GIF from URL."); }
+  });
+  urlInput.addEventListener("keydown", (e) => { if (e.key === "Enter") urlLoadBtn.click(); });
+
+  function loadFile(file) {
+    previewOrig.src = URL.createObjectURL(file);
+    document.getElementById("orig-size").textContent = formatSize(file.size);
+    imgEl = new Image();
+    imgEl.src = URL.createObjectURL(file);
+    imgEl.onload = () => {
+      origW = imgEl.naturalWidth; origH = imgEl.naturalHeight;
+      widthInp.value = origW; heightInp.value = origH;
+      scaleInp.value = 100;
+      dropZone.classList.add("hidden"); editorPanel.classList.remove("hidden");
+      updatePreview();
+    };
+  }
+
+  widthInp.addEventListener("input", () => {
+    const w = parseInt(widthInp.value);
+    if (keepRatio.checked && w > 0 && origW > 0) {
+      heightInp.value = Math.round(w * origH / origW);
+    }
+    scaleInp.value = origW > 0 ? Math.round(w / origW * 100) : 100;
+    updatePreview();
+  });
+  heightInp.addEventListener("input", () => {
+    const h = parseInt(heightInp.value);
+    if (keepRatio.checked && h > 0 && origH > 0) {
+      widthInp.value = Math.round(h * origW / origH);
+    }
+    scaleInp.value = origH > 0 ? Math.round(h / origH * 100) : 100;
+    updatePreview();
+  });
+  scaleInp.addEventListener("input", () => {
+    const s = parseInt(scaleInp.value);
+    if (s > 0) { widthInp.value = Math.round(origW * s / 100); heightInp.value = Math.round(origH * s / 100); }
+    updatePreview();
+  });
+
+  function updatePreview() {
+    if (!imgEl) return;
+    const w = parseInt(widthInp.value) || origW;
+    const h = parseInt(heightInp.value) || origH;
+    if (w <= 0 || h <= 0) return;
+    const canvas = previewResized;
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(imgEl, 0, 0, w, h);
+    document.getElementById("resized-dims").textContent = w + " x " + h + " px";
+    canvas.toBlob((blob) => { resultBlob = blob; downloadBtn.disabled = false; }, "image/gif");
+  }
+
+  function formatSize(bytes) {
+    if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + " MB";
+    if (bytes >= 1024) return (bytes / 1024).toFixed(0) + " KB";
+    return bytes + " B";
+  }
+</script>

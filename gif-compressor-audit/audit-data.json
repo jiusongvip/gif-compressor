@@ -1,0 +1,337 @@
+{
+  "summary": {
+    "health_score": 41,
+    "business_type": "SaaS / Free Online Tool",
+    "top_findings": [
+      "All 17 canonical URLs resolve to localhost:4321 (Astro site config not set)",
+      "No robots.txt and no sitemap.xml — bots have no crawl directives",
+      "No structured data on the homepage (no WebApplication or Organization schema)",
+      "OG image /og-default.png returns 404 on every page — social sharing broken",
+      "8 empty img src attributes across all tool pages"
+    ],
+    "quick_wins": [
+      "Set site in astro.config.mjs — fixes all canonicals in 2 minutes",
+      "Generate and drop in robots.txt + sitemap.xml",
+      "Add WebApplication JSON-LD to homepage",
+      "Generate a real og-default.png (1200x630 PNG)",
+      "Fix em dash encoding: use &mdash; instead of raw unicode \\u2014"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 32,
+      "what_works": [
+        "Clean, semantic URLs with no query parameters",
+        "All pages are plain HTML — no JS-rendering dependency",
+        "Mobile viewport meta present on every page",
+        "PWA manifest and service worker for offline capability"
+      ],
+      "findings": [
+        {
+          "title": "Canonical URLs resolve to localhost:4321",
+          "severity": "Critical",
+          "description": "Astro site config is empty, so Astro.url.href defaults to the dev server address. Affects all 17 pages. Google would index every URL as http://localhost:4321/...",
+          "recommendation": "Set site: 'https://yourdomain.com' in astro.config.mjs"
+        },
+        {
+          "title": "No robots.txt file",
+          "severity": "Critical",
+          "description": "No robots.txt exists in dist/ or public/. Bots have no crawl directives — critical for launch.",
+          "recommendation": "Create public/robots.txt with Allow: / and Sitemap: directive"
+        },
+        {
+          "title": "No sitemap.xml",
+          "severity": "Critical",
+          "description": "No sitemap generated. Astro sitemap integration not installed. Google Discovery depends on sitemaps for new sites.",
+          "recommendation": "Install @astrojs/sitemap and add to astro.config.mjs integrations"
+        },
+        {
+          "title": "No robots meta tag on any page",
+          "severity": "High",
+          "description": "Without a robots.txt, there is no page-level index/nofollow control via meta robots either.",
+          "recommendation": "Add robots meta via Base.astro layout"
+        },
+        {
+          "title": "Service worker may cache HTML aggressively",
+          "severity": "Medium",
+          "description": "Default Workbox precache can cause stale content. Cache strategy should be audited before launch.",
+          "recommendation": "Review sw.js caching strategy — ensure HTML uses network-first"
+        },
+        {
+          "title": "Single monolithic CSS blocks first paint",
+          "severity": "Medium",
+          "description": "29 KB single CSS file (_astro/_slug_.BFpP6dMR.css) loads on every page. Most tool pages use only ~40% of these styles.",
+          "recommendation": "Extract critical CSS per page, or split into per-viewport chunks"
+        },
+        {
+          "title": "No llms.txt file",
+          "severity": "Low",
+          "description": "AI crawlers (ChatGPT, Perplexity, Google AI) have no structured content manifest.",
+          "recommendation": "Create public/llms.txt with tool listing and blog post URLs"
+        }
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 68,
+      "what_works": [
+        "Well-researched, original content on every tool page",
+        "Step-by-step tutorials with technical depth",
+        "Excellent readability — short paragraphs, clear headings",
+        "Unique privacy angle (browser-based processing) as differentiator"
+      ],
+      "findings": [
+        {
+          "title": "Thin content on 4 pages",
+          "severity": "High",
+          "description": "Terms (265w), Blog Index (287w), GIF to MP4 (297w), Privacy (358w) risk being classified as low-value by Google. Terms/Privacy need 500-800 words minimum for trust signals.",
+          "recommendation": "Expand Terms to 600+ words, Privacy to 800+ words. Add intro paragraph to Blog Index. Add comparison table to GIF to MP4 page."
+        },
+        {
+          "title": "optimize-gifs-core-web-vitals.md not in dist",
+          "severity": "High",
+          "description": "This blog post exists in src/content/blog/ but was not built. If intended for launch, it needs inclusion.",
+          "recommendation": "Include in the build or remove from source."
+        },
+        {
+          "title": "6 landing pages in src not built",
+          "severity": "High",
+          "description": "Pages targeting high-intent queries (compress-gif-for-discord, -email, -twitter, -to-256kb, -under-1mb, -under-8mb) exist in src but are not in dist.",
+          "recommendation": "Complete and ship these pages — they target high-search-volume queries."
+        },
+        {
+          "title": "Blog index uses H2s for article cards",
+          "severity": "Medium",
+          "description": "Article titles are marked up as H2 without wrapping in article or ul/li structure. This flattens the document outline.",
+          "recommendation": "Wrap each blog card in <article> with H2 as heading."
+        },
+        {
+          "title": "Resize GIF page lacks instructional depth",
+          "severity": "Medium",
+          "description": "Only 'More tools' as the single H2 after the dropzone. Needs competitive instructional content.",
+          "recommendation": "Add how-to steps, use cases, and aspect ratio guidance."
+        }
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 58,
+      "what_works": [
+        "Unique, keyword-rich title tags on every page (60-70 chars)",
+        "Unique meta descriptions under 160 chars with strong CTAs",
+        "OG and Twitter card tags present on every page",
+        "Proper html lang='en' attribute"
+      ],
+      "findings": [
+        {
+          "title": "Title separator encoding issue on 8 pages",
+          "severity": "Critical",
+          "description": "8 pages use raw unicode em dash (\\u2014) in <title> instead of &mdash;. Can cause garbled display in SERPs on some crawlers.",
+          "recommendation": "Replace raw \\u2014 with &mdash; in all affected page titles."
+        },
+        {
+          "title": "Footer uses semantic H4 for navigation",
+          "severity": "High",
+          "description": "Footer headings 'Tools', 'Info', 'GIF Compressor' use <h4>, creating broken heading hierarchy on every page.",
+          "recommendation": "Change footer headings from <h4> to <span> with the same CSS styling."
+        },
+        {
+          "title": "Resize GIF page drops from H1 to H2 without content",
+          "severity": "High",
+          "description": "The only H2 after the dropzone is 'More tools' — a utility nav section. Makes the page look content-thin to crawlers.",
+          "recommendation": "Add substantive H2 sections (How to Resize, Use Cases, Best Practices)."
+        },
+        {
+          "title": "No visible breadcrumb navigation",
+          "severity": "Medium",
+          "description": "Breadcrumbs only exist in JSON-LD, not in the visible UI. Visible breadcrumbs improve UX and internal linking.",
+          "recommendation": "Add visible breadcrumbs in Base.astro layout or on a per-page basis."
+        },
+        {
+          "title": "Double-encoded ampersand in blog card title",
+          "severity": "Medium",
+          "description": "Blog index shows &amp;amp; instead of &amp; on the Discord/Twitter blog card due to template rendering issue.",
+          "recommendation": "Fix template rendering to avoid double HTML entity encoding."
+        }
+      ]
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 35,
+      "what_works": [
+        "BreadcrumbList schema on every page via Base.astro",
+        "FAQPage schema on 5 tool pages",
+        "All schema is valid JSON-LD"
+      ],
+      "findings": [
+        {
+          "title": "No structured data on homepage",
+          "severity": "Critical",
+          "description": "Homepage lacks WebApplication and Organization schema. This is the single most important page for structured data.",
+          "recommendation": "Add WebApplication (free tool) + Organization (brand entity) JSON-LD to index.astro."
+        },
+        {
+          "title": "WebApplication schema missing on tool pages",
+          "severity": "High",
+          "description": "8 tool pages lack WebApplication schema, blocking Google tool-rich-result opportunities.",
+          "recommendation": "Add WebApplication JSON-LD specific to each tool on each tool page."
+        },
+        {
+          "title": "Blog posts lack Article/BlogPosting schema",
+          "severity": "Medium",
+          "description": "No BlogPosting structured data on any of the 5 blog posts. Blocks article carousel eligibility.",
+          "recommendation": "Add BlogPosting schema in blog layout template with datePublished, headline, and author."
+        },
+        {
+          "title": "HowTo schema opportunity on compress-gif page",
+          "severity": "Medium",
+          "description": "The 'How to Compress a GIF' section is a perfect HowTo rich result candidate but lacks HowTo + HowToStep schema.",
+          "recommendation": "Add HowTo JSON-LD with numbered HowToStep items."
+        }
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "score": 62,
+      "what_works": [
+        "Total dist size is only 350 KB — exceptionally lightweight",
+        "No large framework — vanilla JS tools (45 KB total)",
+        "Google Fonts preconnect hints present",
+        "Service worker for repeat-visit caching"
+      ],
+      "findings": [
+        {
+          "title": "Monolithic CSS blocks first paint",
+          "severity": "Medium",
+          "description": "29 KB CSS file is render-blocking. On slow 3G this is ~0.5s. Most tool pages use only ~40% of rules.",
+          "recommendation": "Extract critical CSS per page or use CSS code splitting."
+        },
+        {
+          "title": "Google Fonts blocks text rendering",
+          "severity": "Medium",
+          "description": "External font CSS blocks text rendering despite preconnect. No display=swap parameter.",
+          "recommendation": "Self-host the Geist font or add display=swap to the Google Fonts URL."
+        },
+        {
+          "title": "JS files load on every page",
+          "severity": "Medium",
+          "description": "batch-compressor.js (13 KB) and gif-to-mp4.js (5 KB) load on all pages, not just their respective tool pages.",
+          "recommendation": "Use dynamic imports or per-page script loading."
+        },
+        {
+          "title": "Empty img src causes wasted network requests",
+          "severity": "Low",
+          "description": "8 empty src='' tags cause browsers to retry the current page URL as an image request.",
+          "recommendation": "Use a 1x1 transparent data URI or CSS background instead."
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 25,
+      "what_works": [
+        "Alt text present on all image tags"
+      ],
+      "findings": [
+        {
+          "title": "OG image /og-default.png does not exist",
+          "severity": "Critical",
+          "description": "All 17 pages reference /og-default.png in og:image and twitter:image. Social sharing produces zero-image link cards.",
+          "recommendation": "Create a 1200x630 PNG and place at public/og-default.png."
+        },
+        {
+          "title": "Empty img src on placeholder images",
+          "severity": "High",
+          "description": "8 empty src='' tags across tool pages with alt text like 'Original GIF' and 'Result'. src='' causes wasted requests.",
+          "recommendation": "Use transparent 1x1 placeholder data URI."
+        },
+        {
+          "title": "Favicon is SVG-only, no PNG fallback",
+          "severity": "Medium",
+          "description": "Older browsers and services (Slack unfurl, Apple touch icon) require PNG favicons.",
+          "recommendation": "Add PNG favicon and Apple touch icon to public/."
+        }
+      ]
+    },
+    {
+      "name": "AI Search Readiness",
+      "score": 35,
+      "what_works": [
+        "High-quality technical blog content is inherently citable",
+        "Privacy angle (browser-based processing) is a strong differentiator signal"
+      ],
+      "findings": [
+        {
+          "title": "No llms.txt file",
+          "severity": "High",
+          "description": "AI crawlers have no structured content manifest. llms.txt significantly improves AI citation rates for tool sites.",
+          "recommendation": "Create public/llms.txt with tool listing and blog post URLs."
+        },
+        {
+          "title": "No WebApplication schema for AI tool categorization",
+          "severity": "High",
+          "description": "Without structured data declaring the site as a free tool, AI search engines cannot properly categorize and cite it.",
+          "recommendation": "Add WebApplication schema on homepage and tool pages."
+        },
+        {
+          "title": "Blog posts lack Article schema for citation readiness",
+          "severity": "Medium",
+          "description": "Technical blog content is highly citable but lacks structured citation data (datePublished, author, headline).",
+          "recommendation": "Add BlogPosting schema to all blog posts."
+        }
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {
+        "name": "Phase 1: Critical Fixes",
+        "timeframe": "Day 1 (before launch)",
+        "items": [
+          "Set site in astro.config.mjs → fixes all canonicals",
+          "Create robots.txt and install @astrojs/sitemap",
+          "Add WebApplication + Organization schema to homepage",
+          "Generate og-default.png (1200x630)",
+          "Fix title em dash encoding on 8 pages",
+          "Fix empty img src attributes on tool pages"
+        ]
+      },
+      {
+        "name": "Phase 2: High-Impact Improvements",
+        "timeframe": "Week 1",
+        "items": [
+          "Add WebApplication schema to all 8 tool pages",
+          "Add BlogPosting schema to 5 blog posts",
+          "Add HowTo schema on compress-gif page",
+          "Fix footer heading hierarchy (h4 to span)",
+          "Expand thin content pages (Terms, Privacy, Blog Index, GIF to MP4)"
+        ]
+      },
+      {
+        "name": "Phase 3: Content & Authority",
+        "timeframe": "Weeks 2-3",
+        "items": [
+          "Complete and ship 6 landing pages (Discord, Twitter, Email, 256kb, 1MB, 8MB)",
+          "Publish optimize-gifs-core-web-vitals blog post",
+          "Add contextual internal linking between tool pages",
+          "Create llms.txt for AI crawlers"
+        ]
+      },
+      {
+        "name": "Phase 4: Monitoring & Iteration",
+        "timeframe": "Ongoing",
+        "items": [
+          "Set up Google Search Console with sitemap submission",
+          "Set up Bing Webmaster Tools with IndexNow",
+          "Run Lighthouse CI on every deploy",
+          "Publish 1-2 blog posts/month targeting adjacent GIF keywords"
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/"
+  }
+}

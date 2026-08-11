@@ -1,0 +1,96 @@
+---
+import Base from "../layouts/Base.astro";
+import GifTool from "../components/GifTool.astro";
+
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Compress GIF Under 1MB",
+  "url": Astro.url.href,
+  "description": "Compress animated GIFs under 1MB. Perfect for email campaigns, Gmail attachment limits, and fast-loading web embeds. Instant browser-based compression.",
+  "applicationCategory": "Multimedia",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["Under 1MB Target", "Email Optimized", "Gmail Compatible", "Core Web Vitals Ready", "Real-time Preview"]
+});
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Why compress a GIF under 1MB?", "acceptedAnswer": { "@type": "Answer", "text": "Under 1MB is the sweet spot for email campaigns, website embeds, and messaging apps. Gmail clips messages over 102KB total, so individual GIFs must be compact. Website hero GIFs under 1MB score well on Core Web Vitals. Most messaging apps load sub-1MB GIFs instantly." } },
+    { "@type": "Question", "name": "How do I compress a GIF to under 1MB?", "acceptedAnswer": { "@type": "Answer", "text": "Use the email preset in our tool. For best results: resize to 400px width, reduce colors to 64 or fewer, and use Balanced mode at level 40-60. For very large source files, resize first — reducing a 1920px GIF to 400px cuts 95% of pixels before compression even begins." } }
+  ]
+});
+---
+<Base
+  title="Compress GIF Under 1MB — Perfect for Email &amp; Fast Web Loading"
+  description="Compress animated GIFs under 1MB. Ideal for email campaigns, Gmail limits, website performance, and instant-loading web embeds. Instant browser-based compression."
+  schema={[webAppSchema, faqSchema].join("\n")}
+>
+<div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+  <h1 class="text-2xl font-bold text-slate-900 leading-tight">Compress GIF <span class="text-accent">Under 1MB</span></h1>
+  <p class="text-sm text-slate-500 mt-2 max-w-2xl leading-relaxed">
+    Shrink your animated GIF under 1MB. This is the critical threshold for email delivery, Core Web Vitals compliance, and instant-loading social media content.
+  </p>
+</div>
+<section class="max-w-4xl mx-auto px-4"><GifTool /></section>
+
+<article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+  <h2 class="text-xl font-bold text-slate-900 mb-4">When You Need a GIF Under 1MB</h2>
+  <ul class="space-y-3 mb-6">
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Email campaigns.</strong> Gmail's 102KB message clipping means your individual GIFs must be compact. With a 1MB limit, your email can include a compressed hero GIF plus text without crossing the threshold.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Website performance.</strong> Google's Core Web Vitals measure Largest Contentful Paint (LCP). A GIF under 1MB as a hero element loads in under 2 seconds on most connections — keeping your LCP in the "good" range.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Instant messaging.</strong> WhatsApp, Telegram, and iMessage all load sub-1MB content instantly. Larger files buffer and may be compressed by the platform's servers.</li>
+  </ul>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">The Resize-First Strategy for Sub-1MB GIFs</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">For most GIFs, getting under 1MB starts with resizing — not compressing. A 1920×1080 GIF contains over 2 million pixels per frame. A 400×225 GIF contains 90,000 — a 95% reduction in pixel count before any compression technique is applied. The lesson: always resize first, then compress.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Compression Settings for Sub-1MB Results</h2>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Starting size</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Resize to</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Mode</th><th class="py-2.5 text-slate-500 font-medium text-xs">Expected result</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">2-5MB</td><td class="py-2.5 pr-4 text-xs">600px</td><td class="py-2.5 pr-4 text-xs">Balanced 50</td><td class="py-2.5 text-xs text-accent font-medium">200-500KB</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">5-15MB</td><td class="py-2.5 pr-4 text-xs">400px</td><td class="py-2.5 pr-4 text-xs">Balanced 60</td><td class="py-2.5 text-xs text-accent font-medium">300-800KB</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">15-50MB</td><td class="py-2.5 pr-4 text-xs">300px</td><td class="py-2.5 pr-4 text-xs">Maximum 70</td><td class="py-2.5 text-xs text-accent font-medium">400-900KB</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs">50MB+</td><td class="py-2.5 pr-4 text-xs">200px</td><td class="py-2.5 pr-4 text-xs">Maximum 90</td><td class="py-2.5 text-xs text-accent font-medium">500-950KB</td></tr>
+    </tbody>
+  </table></div>
+
+  
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Step-by-Step: Compress Any GIF Under 1MB</h2>
+  <ol class="space-y-4 mb-6">
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">1. Start with the right dimensions.</strong> If your GIF is 1920×1080, you are carrying 2 million pixels per frame. <a href="/resize-gif" class="text-accent hover:underline">Resize to 400-600px width</a>. This step alone often brings 15MB GIFs down to 3-4MB before any compression.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Drop your GIF into the tool and click the Email &lt; 1MB preset.</strong> This automatically targets the 1MB threshold using Balanced mode at an appropriate level.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">3. Check the Breakdown panel.</strong> See where your savings come from. If color reduction is doing all the heavy lifting and the result looks banded, try reducing frame rate instead and backing off the palette reduction.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">4. For stubborn files, layer the techniques.</strong> Some GIFs need every tool: resize to 400px, then compress at Maximum 70. If still over, <a href="/crop-gif" class="text-accent hover:underline">crop unnecessary areas</a>. If still over, <a href="/gif-to-webp" class="text-accent hover:underline">convert to WebP</a> — same animation, 40-60% smaller file.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">5. Download and test.</strong> The comparison slider shows you the before and after at the exact same animation frame. Use it to verify that motion reads correctly and critical visual elements are preserved.</li>
+  </ol>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">1MB Across Platforms: What It Means in Practice</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">A GIF under 1MB opens doors across every platform. Here is what sub-1MB gets you on each major destination:</p>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Platform</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">1MB status</th><th class="py-2.5 text-slate-500 font-medium text-xs">What it means</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord (free)</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">7MB under the 8MB limit</td><td class="py-2.5 text-xs text-slate-500">Loads instantly inline. Zero chance of appearing as a download link.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter / X</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">2MB under the 3MB mobile limit</td><td class="py-2.5 text-xs text-slate-500">Passes mobile enforcement. Less aggressive Twitter re-encoding.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Gmail</td><td class="py-2.5 pr-4 text-xs text-amber-600 font-medium">Still large for message body</td><td class="py-2.5 text-xs text-slate-500">Host externally, do not base64-encode. A 1MB GIF encoded inline adds ~1.4MB to the message — 14× the clipping limit. Use an <code>&lt;img&gt;</code> tag pointing to a CDN URL instead.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">WhatsApp</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">Well under 16MB limit</td><td class="py-2.5 text-xs text-slate-500">Sends and loads on mobile in under 2 seconds on 4G.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Website (CWV)</td><td class="py-2.5 pr-4 text-xs text-amber-600 font-medium">Above the 500KB hero target</td><td class="py-2.5 text-xs text-slate-500">OK for below-fold content. For hero/LCP elements, compress further to <a href="/compress-gif-to-256kb" class="text-accent hover:underline">under 500KB</a>.</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Slack</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">Well under 1GB limit</td><td class="py-2.5 text-xs text-slate-500">Plays inline instantly. No download prompt.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Email-Specific 1MB Strategy</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">Email is the primary use case for the 1MB target, but there is nuance. The raw file size of your GIF is only one part of the equation. The way you embed it matters just as much:</p>
+  <div class="space-y-3 mb-6">
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Host externally (CDN), reference via &lt;img&gt;</h4><p class="text-xs text-slate-500 mt-1">Do not base64-encode GIFs into your email HTML. A 1MB GIF becomes ~1.4MB of base64 text, instantly blowing past Gmail's 102KB clipping threshold. Instead, host the compressed GIF on a CDN (Cloudflare R2, AWS S3, or your own server) and reference it with a standard <code>&lt;img src="https://your-cdn.com/gif.gif"&gt;</code> tag. The file downloads separately and does not count toward Gmail's message body limit.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Use absolute URLs only</h4><p class="text-xs text-slate-500 mt-1">Relative URLs (<code>/images/gif.gif</code>) break in email. Always use full absolute URLs (<code>https://yourdomain.com/images/gif.gif</code>). Test this — it is the most common email GIF failure mode.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Include width and height attributes</h4><p class="text-xs text-slate-500 mt-1">Add explicit <code>width</code> and <code>height</code> to your <code>&lt;img&gt;</code> tag. Without them, Outlook may not reserve space, causing layout collapse. This matters more in email than on the web because email clients have varying default behaviors for images without dimensions.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Design for the first-frame fallback</h4><p class="text-xs text-slate-500 mt-1">Outlook desktop (2007-2021) only shows the first frame of animated GIFs. Design your first frame to communicate the complete message — text, CTA, brand — without depending on the animation. If the first frame is a blank white square, your email fails for a significant portion of recipients.</p></div>
+  </div>
+<div class="mt-8 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">Related: <a href="/compress-gif-under-8mb" class="text-accent hover:underline">Compress Under 8MB</a> &middot; <a href="/compress-gif-to-256kb" class="text-accent hover:underline">Compress to 256KB</a> &middot; <a href="/compress-gif-for-email" class="text-accent hover:underline">Compress for Email</a> &middot; <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a></p>
+  </div>
+</article>
+</Base>

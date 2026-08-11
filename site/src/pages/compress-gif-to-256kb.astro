@@ -1,0 +1,94 @@
+---
+import Base from "../layouts/Base.astro";
+import GifTool from "../components/GifTool.astro";
+
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Compress GIF to 256KB",
+  "url": Astro.url.href,
+  "description": "Compress animated GIFs to 256KB or less. Perfect for Discord emoji, Core Web Vitals inline images, and extreme email optimization. Maximum compression with live preview.",
+  "applicationCategory": "Multimedia",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["256KB Target", "Discord Emoji Ready", "Core Web Vitals Inline", "Maximum Compression", "Real-time Preview"]
+});
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Why compress a GIF to 256KB?", "acceptedAnswer": { "@type": "Answer", "text": "256KB is the Discord emoji limit, the ideal inline image size for Core Web Vitals (under 200KB recommended), and a common target for extreme email optimization. At 256KB, GIFs load near-instantly on any connection." } },
+    { "@type": "Question", "name": "How do I compress a GIF to 256KB without destroying quality?", "acceptedAnswer": { "@type": "Answer", "text": "The key is resizing first: a 128x128 GIF at 10fps fits easily in 256KB with decent quality. Resize to the smallest acceptable dimensions, reduce colors to 32-64, use Maximum mode at level 80-90, and drop frame rate to 8-12fps." } },
+    { "@type": "Question", "name": "What can I use a 256KB GIF for?", "acceptedAnswer": { "@type": "Answer", "text": "Discord animated emoji (128x128px, 256KB limit), Core Web Vitals inline images (under 200KB target), extreme email optimization, Twitter ads, and any situation where bandwidth or file size constraints are extremely tight." } }
+  ]
+});
+---
+<Base
+  title="Compress GIF to 256KB — Discord Emoji Size &amp; Core Web Vitals Target"
+  description="Compress animated GIFs to 256KB. Perfect for Discord emoji, Core Web Vitals inline images, and extreme email optimization. Maximum compression with live quality comparison."
+  schema={[webAppSchema, faqSchema].join("\n")}
+>
+<div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+  <h1 class="text-2xl font-bold text-slate-900 leading-tight">Compress GIF to <span class="text-accent">256KB</span></h1>
+  <p class="text-sm text-slate-500 mt-2 max-w-2xl leading-relaxed">
+    Extreme compression for the tightest file size constraints. Discord emoji limit, Core Web Vitals inline images, and situations where every kilobyte counts.
+  </p>
+</div>
+<section class="max-w-4xl mx-auto px-4"><GifTool /></section>
+
+<article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+  <h2 class="text-xl font-bold text-slate-900 mb-4">What Fits in 256KB?</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">256KB is a challenging target that requires deliberate trade-offs. The good news: for the right content at the right dimensions, 256KB is more than enough. A 128×128 emoji at 10fps with 32 colors easily fits in 150-200KB while looking crisp. A 400×225 reaction GIF needs aggressive compression but can still look good at Maximum mode level 85+.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">The 256KB Compression Playbook</h2>
+  <div class="space-y-3 mb-6">
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">1. Resize to the smallest acceptable dimensions</h4><p class="text-xs text-slate-500 mt-1">128×128 for Discord emoji. 200×200 for inline web images. 100×100 for extreme cases. Every halving of dimensions reduces pixel count by 75%.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">2. Drop to 32 colors</h4><p class="text-xs text-slate-500 mt-1">At 128×128 display size, 32 colors is often visually identical to 256. The human eye cannot distinguish subtle color variations at small sizes. This alone cuts 40-60% of file size.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">3. Reduce frame rate to 8-12fps</h4><p class="text-xs text-slate-500 mt-1">At small display sizes, lower frame rates are less noticeable. A 128×128 emoji at 10fps looks perfectly fluid. Keep the frames that carry the emotional expression — drop the in-between ones.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">4. Push Maximum mode to 85-95</h4><p class="text-xs text-slate-500 mt-1">At this level, you will see artifacts. But at 128×128, those artifacts are often invisible or acceptable. Use the live preview to find the highest level that still looks acceptable.</p></div>
+  </div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">When 256KB Makes Sense</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Discord emoji</p><p class="text-lg font-bold text-accent">256KB limit</p><p class="text-[10px] text-slate-400 mt-1">128x128px at 32 colors</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Core Web Vitals</p><p class="text-lg font-bold text-accent">under 200KB</p><p class="text-[10px] text-slate-400 mt-1">Inline images, good LCP</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Twitter Ads</p><p class="text-lg font-bold text-accent">under 1MB</p><p class="text-[10px] text-slate-400 mt-1">256KB is well within limits</p></div>
+  </div>
+
+  
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Step-by-Step: Compress a GIF to 256KB</h2>
+  <ol class="space-y-4 mb-6">
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">1. Drop your GIF into the tool above.</strong> Works with files up to 100MB. You can also paste from clipboard or provide a URL — no upload needed, everything stays on your device.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Set the mode to Maximum.</strong> At 256KB targets, Quality and Balanced modes will not cut it. Maximum mode at level 85-95 applies aggressive color reduction, frame dropping, and lossy encoding simultaneously.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">3. <a href="/resize-gif" class="text-accent hover:underline">Resize first</a> — this is non-negotiable at 256KB.</strong> Aim for 128×128 (Discord emoji), 200×200 (inline web), or 100×100 (extreme cases). Resizing removes 75-95% of pixels before compression begins.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">4. Use the Breakdown panel to understand your savings.</strong> The panel shows exactly how much each technique (color reduction, frame optimization, LZW) contributed. This transparency lets you adjust precisely — if colors contributed 80% of savings but the GIF now looks banded, back off the palette and increase LZW lossiness instead.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">5. Check the comparison slider at the target display size.</strong> Do not evaluate quality at full zoom. View the slider at the actual size your GIF will be displayed (128px for emoji, 200px for web). Artifacts that are glaring at 400% zoom may be invisible at display size.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">6. If you cannot hit 256KB, consider format conversion.</strong> For Discord emoji, GIF is required. For other uses, <a href="/gif-to-webp" class="text-accent hover:underline">WebP</a> achieves the same visual quality at 40-60% of the file size. A 400KB GIF that will not compress to 256KB may become a 160KB WebP with identical quality.</li>
+  </ol>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">256KB by Content Type: What to Expect</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Not every GIF can hit 256KB while remaining watchable. Whether you can reach this target depends on your content type, original dimensions, and frame count. Here is a realistic assessment:</p>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Content type</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Target dimensions</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Palette</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">FPS</th><th class="py-2.5 text-slate-500 font-medium text-xs">Likely outcome</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord emoji</td><td class="py-2.5 pr-4 text-xs">128×128</td><td class="py-2.5 pr-4 text-xs">32-64</td><td class="py-2.5 pr-4 text-xs">10fps</td><td class="py-2.5 text-xs text-accent font-medium">120-200KB — easy</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Meme / sticker</td><td class="py-2.5 pr-4 text-xs">200×200</td><td class="py-2.5 pr-4 text-xs">32</td><td class="py-2.5 pr-4 text-xs">8-10fps</td><td class="py-2.5 text-xs text-accent font-medium">150-250KB — doable</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">UI animation</td><td class="py-2.5 pr-4 text-xs">300×200</td><td class="py-2.5 pr-4 text-xs">64</td><td class="py-2.5 pr-4 text-xs">8fps</td><td class="py-2.5 text-xs text-slate-500">300-500KB — probably not</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Reaction GIF</td><td class="py-2.5 pr-4 text-xs">250×250</td><td class="py-2.5 pr-4 text-xs">64-128</td><td class="py-2.5 pr-4 text-xs">10-12fps</td><td class="py-2.5 text-xs text-slate-500">300-600KB — unlikely</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Photo / video clip</td><td class="py-2.5 pr-4 text-xs">150×100</td><td class="py-2.5 pr-4 text-xs">128</td><td class="py-2.5 pr-4 text-xs">6-8fps</td><td class="py-2.5 text-xs text-red-500">400-800KB — use <a href="/gif-to-webp" class="text-accent hover:underline">WebP</a> instead</td></tr>
+    </tbody>
+  </table></div>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">The key insight: photos and video-derived GIFs will almost never fit in 256KB with acceptable quality. These content types have too many unique colors and too much frame-to-frame variation. For photographic GIFs targeting small sizes, <a href="/gif-to-webp" class="text-accent hover:underline">convert to WebP</a> or accept a larger target.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">The Palette-Frame Rate Trade-Off at Small Sizes</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">At 256KB, you cannot have both color fidelity and smooth motion. You must choose which matters more for your GIF:</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Prioritize color &rarr; sacrifice frames</h4><p class="text-xs text-slate-500 mt-1">Keep 64-128 colors. Drop to 6-8fps. Best for GIFs where individual frames matter — text overlays, UI screenshots, product stills with subtle animation. Each frame looks good but the animation is choppy.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Prioritize motion &rarr; sacrifice colors</h4><p class="text-xs text-slate-500 mt-1">Keep 12-15fps. Drop to 16-32 colors. Best for reaction GIFs and emotes where the motion carries the emotional content. The animation flows but colors look posterized.</p></div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">For Discord emoji, prioritize motion — users see them at 128×128 where color banding is barely visible but stuttering is immediately obvious. For inline web images, prioritize color — users expect crisp product visuals even if the animation is subtle.</p>
+<div class="mt-8 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">Related: <a href="/compress-gif-under-1mb" class="text-accent hover:underline">Compress Under 1MB</a> &middot; <a href="/compress-gif-under-8mb" class="text-accent hover:underline">Compress Under 8MB</a> &middot; <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a> &middot; <a href="/gif-optimizer" class="text-accent hover:underline">Advanced Optimizer</a></p>
+  </div>
+</article>
+</Base>

@@ -1,0 +1,291 @@
+---
+import Base from "../layouts/Base.astro";
+
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How much smaller is MP4 than GIF?", "acceptedAnswer": { "@type": "Answer", "text": "MP4 (H.264) is typically 80-95% smaller than GIF. A 10MB GIF often becomes 300-500KB as MP4. MP4 uses inter-frame compression, storing only differences between frames." } },
+    { "@type": "Question", "name": "Will converting GIF to MP4 lose the animation?", "acceptedAnswer": { "@type": "Answer", "text": "No. The animation is fully preserved. MP4 plays smoothly with maintained frame timing. The only thing lost is binary transparency - MP4 does not support transparent backgrounds." } },
+    { "@type": "Question", "name": "When should I convert GIF to MP4 instead of compressing it?", "acceptedAnswer": { "@type": "Answer", "text": "Convert to MP4 if your animation is over 5 seconds, contains photographic content, is a screen recording, or needs maximum size reduction. Keep as GIF for universal compatibility or transparency." } }
+  ]
+});
+
+
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GIF to MP4 Converter",
+  "url": Astro.url.href,
+  "description": "Convert animated GIF to MP4 video online free. MP4 files are 80-95% smaller than GIFs with better quality.",
+  "applicationCategory": "Multimedia",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["GIF to MP4 Conversion", "80-95% Size Reduction", "Browser-based Processing", "No Upload Required", "Instant Conversion"]
+});---
+
+
+
+<Base
+  title="GIF to MP4 Converter - Convert Animated GIF to Video Online Free"
+  description="Convert animated GIF to MP4 video online free. MP4 files are 80-95% smaller than GIFs. Perfect for long animations, screen recordings, and website embeds. Instant browser-based conversion."
+ schema={[webAppSchema, faqSchema].join("\n")}>
+<div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+  <h1 class="text-2xl font-bold text-slate-900 leading-tight">
+    GIF to MP4 <span class="text-accent">Converter</span>
+  </h1>
+  <p class="text-sm text-slate-500 mt-2 max-w-xl leading-relaxed">
+    Convert animated GIFs to MP4 video. MP4 files are 80-95% smaller than GIF, with smoother playback and better quality. All processing happens in your browser.
+  </p>
+</div>
+
+<div class="max-w-4xl mx-auto px-4">
+  <div id="convert-tool" class="tool-card p-10 md:p-14 text-center cursor-pointer transition-all duration-150">
+    <div class="mx-auto w-16 h-16 mb-6 rounded-2xl bg-accent/5 flex items-center justify-center">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-accent" stroke-width="1.5"><polygon points="23 7 16 12 23 17"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+    </div>
+    <h2 class="text-lg font-semibold text-slate-900 mb-2">Drop your GIF here</h2>
+    <p class="text-sm text-slate-400 mb-5 max-w-xs mx-auto leading-relaxed">Convert animated GIFs to MP4 video in seconds</p>
+    <button id="select-btn" type="button" class="px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98]">Select GIF File</button>
+    <input type="file" id="file-input" accept="image/gif,.gif" class="hidden" />
+    <div class="flex items-center justify-center gap-2 w-full max-w-sm mt-3 mx-auto" onclick="event.stopPropagation()">
+      <input type="text" id="url-input" placeholder="Or paste a GIF URL..."
+        class="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-lg text-slate-600 placeholder:text-slate-300 focus:outline-none focus:border-accent/50" />
+      <button id="url-load-btn" type="button"
+        class="px-3 py-2 text-xs font-medium text-accent border border-accent/30 rounded-lg hover:bg-accent/5 transition-colors whitespace-nowrap">
+        Load
+      </button>
+    </div>
+    <p class="text-xs text-slate-400 mt-3">Max 50MB &middot; no signup</p>
+  </div>
+
+  <div id="result-panel" class="hidden mt-6 tool-card p-6">
+    <div class="flex flex-col gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="text-center">
+          <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Original GIF</p>
+          <div class="w-full aspect-video bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center overflow-hidden">
+            <img id="preview-orig" src="" alt="Original" class="max-w-full max-h-full object-contain" />
+          </div>
+          <p id="orig-size" class="text-xs text-slate-400 mt-2"></p>
+        </div>
+        <div class="text-center">
+          <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">MP4 Result</p>
+          <div class="w-full aspect-video bg-slate-50 rounded-lg border border-green-200 flex items-center justify-center overflow-hidden">
+            <video id="preview-result" controls loop class="max-w-full max-h-full object-contain"></video>
+          </div>
+          <p id="result-size" class="text-xs text-green-600 mt-2 font-medium"></p>
+        </div>
+      </div>
+      <div class="text-center">
+        <button id="download-btn" disabled class="px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed">Download MP4</button>
+      </div>
+      <div class="text-center mt-1"><button id="reset-btn" class="px-5 py-2 text-xs text-slate-400 hover:text-slate-600 transition-colors">Convert another GIF</button></div>
+    </div>
+  </div>
+</div>
+
+<article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+  <h2 class="text-xl font-bold text-slate-900 mb-4">Why Convert GIF to MP4? The File Size Difference Is Staggering</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">The GIF format was created in 1987 for simple graphics — spinning globes, blinking text, pixel art icons. MP4 uses modern inter-frame compression developed over decades of video engineering. The efficiency gap between them is not incremental — it is 10-30x for the same content. A 10MB GIF can become a 300KB MP4. That is a 97% reduction with <strong class="text-slate-800">better visual quality</strong> — MP4 supports 16.7 million colors versus GIF's 256, with smooth gradients and hardware-accelerated playback.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Most social platforms convert GIFs to video on their servers anyway — Twitter, Instagram, Facebook, and TikTok all do this. By converting to MP4 yourself, you maintain control over quality settings and avoid the platform's often aggressive re-encoding.</p>
+
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs"></th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">GIF</th><th class="py-2.5 text-green-600 font-medium text-xs">MP4</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">File size (5s animation)</td><td class="py-2.5 pr-4 text-xs">3-10 MB</td><td class="py-2.5 text-xs text-green-600 font-medium">200-800 KB</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Max colors</td><td class="py-2.5 pr-4 text-xs">256</td><td class="py-2.5 text-xs text-green-600 font-medium">16.7 million</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Audio support</td><td class="py-2.5 pr-4 text-xs">No</td><td class="py-2.5 text-xs text-green-600 font-medium">Yes</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Playback controls</td><td class="py-2.5 pr-4 text-xs">No</td><td class="py-2.5 text-xs text-green-600 font-medium">Yes (pause, seek, speed)</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Browser autoplay</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">Always</td><td class="py-2.5 text-xs">Requires muted attribute</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Transparency</td><td class="py-2.5 pr-4 text-xs">Binary (on/off)</td><td class="py-2.5 text-xs">Not supported</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Social media</td><td class="py-2.5 pr-4 text-xs">Universal</td><td class="py-2.5 text-xs text-green-600 font-medium">Most platforms convert GIFs to this anyway</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">When to Use MP4 Instead of GIF</h2>
+  <ul class="space-y-3 mb-6">
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Long animations (3+ seconds).</strong> MP4's inter-frame compression dominates GIF on any content longer than a few seconds. The savings multiply with duration — a 30-second clip as GIF might be 80MB; as MP4 it is 3-5MB.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Screen recordings and tutorials.</strong> MP4 handles text, gradients, and UI elements far better than GIF. Software demos and product walkthroughs look dramatically better as MP4.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Website embeds.</strong> Use HTML5 video with <code>autoplay muted loop playsinline</code> to achieve GIF-like behavior at a fraction of the bandwidth. Core Web Vitals scores improve dramatically.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Social media uploads.</strong> Twitter, Instagram, and Facebook all convert GIFs to video internally. Upload MP4 directly for better quality control.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Photographic content.</strong> Photos in GIF suffer from 256-color banding. MP4 preserves full 24-bit color with smooth gradients.</li>
+  </ul>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">How to Embed MP4 Like a GIF on Your Website</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">To make an MP4 behave like a GIF — autoplay, loop, no controls, silent — use these exact attributes:</p>
+  <pre class="bg-slate-900 text-slate-100 text-xs p-4 rounded-lg mb-4 overflow-x-auto"><code>&lt;video autoplay loop muted playsinline
+       poster="first-frame.jpg"&gt;
+  &lt;source src="animation.mp4" type="video/mp4" /&gt;
+  &lt;img src="fallback.gif" alt="Animation" /&gt;
+&lt;/video&gt;</code></pre>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">Each attribute is critical: <code>autoplay</code> starts playback immediately. <code>loop</code> repeats. <code>muted</code> is required by Chrome for autoplay. <code>playsinline</code> prevents iOS Safari from opening fullscreen. The <code>poster</code> shows a static image while the video loads. The <code>&lt;img&gt;</code> inside provides a GIF fallback for ancient browsers.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Real-World Size Comparison</h2>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Content</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">GIF</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">MP4</th><th class="py-2.5 text-slate-500 font-medium text-xs">Savings</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">3s product demo (600×400)</td><td class="py-2.5 pr-4 text-xs">4.2 MB</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">340 KB</td><td class="py-2.5 text-xs text-green-600 font-medium">92%</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">10s tutorial clip (800×600)</td><td class="py-2.5 pr-4 text-xs">18 MB</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">1.1 MB</td><td class="py-2.5 text-xs text-green-600 font-medium">94%</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">30s recording (1280×720)</td><td class="py-2.5 pr-4 text-xs">85 MB</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">4.2 MB</td><td class="py-2.5 text-xs text-green-600 font-medium">95%</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">5s reaction meme (480×270)</td><td class="py-2.5 pr-4 text-xs">1.8 MB</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">180 KB</td><td class="py-2.5 text-xs text-green-600 font-medium">90%</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">MP4 vs WebP: Which Modern Format to Choose</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-800">Choose MP4</strong> for content over 5 seconds, screen recordings, anything with text, and social media uploads. MP4's inter-frame compression scales with duration — the longer the content, the bigger the advantage.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4"><strong class="text-slate-800">Choose WebP</strong> for short animations that need transparency, quick loops under 3 seconds, and website hero animations. <a href="/gif-to-webp" class="text-accent hover:underline">WebP converts</a> are simpler to embed (just an <code>&lt;img&gt;</code> tag) but lack audio and playback controls.</p>
+
+  
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">When NOT to Convert GIF to MP4</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">MP4 is not always the right answer. There are specific scenarios where keeping the GIF or choosing another format produces better results:</p>
+  <div class="space-y-3 mb-6">
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Transparent backgrounds</h4><p class="text-xs text-slate-500 mt-1">MP4 does not support alpha-channel transparency. If your GIF uses transparent backgrounds (stickers, logos, overlays), converting to MP4 will replace transparency with a solid black or white background. For transparent animations, <a href="/gif-to-webp" class="text-accent hover:underline">convert to WebP</a> instead, which supports full alpha transparency.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Very short loops (under 1 second)</h4><p class="text-xs text-slate-500 mt-1">MP4 compression shines on longer content where inter-frame prediction can exploit temporal redundancy. For a 3-frame blinking dot or a 0.5-second icon animation, the MP4 container overhead can exceed the actual frame data. A well-compressed GIF may be smaller for ultra-short content.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Email campaigns</h4><p class="text-xs text-slate-500 mt-1">Most email clients do not support embedded MP4 playback. Gmail, Outlook, and Apple Mail all expect GIF for animated content. For email, <a href="/compress-gif-for-email" class="text-accent hover:underline">compress your GIF</a> rather than converting format.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Discord, Twitter, and social platforms</h4><p class="text-xs text-slate-500 mt-1">These platforms expect GIF uploads. While they internally convert to video, they do it on their terms. Uploading MP4 directly may produce different (often worse) results than uploading a well-compressed GIF. <a href="/compress-gif-for-discord" class="text-accent hover:underline">Compress for the platform</a> rather than pre-converting.</p></div>
+  </div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Advanced MP4 Embed Patterns</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">Beyond the basic <code>autoplay muted loop playsinline</code> pattern, here are two advanced configurations for production websites:</p>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Responsive MP4 with Multiple Resolutions</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">Serve different resolutions for different screen sizes, just like responsive images:</p>
+  <pre class="bg-slate-900 text-slate-100 text-xs p-4 rounded-lg mb-3 overflow-x-auto"><code>&lt;video autoplay loop muted playsinline
+       poster="hero-poster.jpg"
+       class="hero-video"&gt;
+  &lt;source src="hero-720.mp4" type="video/mp4"
+          media="(max-width: 768px)" /&gt;
+  &lt;source src="hero-1080.mp4" type="video/mp4"
+          media="(min-width: 769px)" /&gt;
+  &lt;img src="hero-fallback.gif" alt="Product animation" /&gt;
+&lt;/video&gt;</code></pre>
+  <p class="text-xs text-slate-400 mb-4">Mobile users on cellular connections get a smaller 720p file. Desktop users get full 1080p quality. The <code>media</code> attribute on <code>&lt;source&gt;</code> works for video just like it does for responsive images.</p>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Lazy-Loaded MP4 with Intersection Observer</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">For below-fold videos, avoid loading MP4 data until the user scrolls near it. This saves bandwidth and improves LCP:</p>
+  <pre class="bg-slate-900 text-slate-100 text-xs p-4 rounded-lg mb-3 overflow-x-auto"><code>&lt;video id="demo-video" muted loop playsinline
+       poster="demo-poster.jpg"
+       data-src="demo.mp4"&gt;
+&lt;/video&gt;
+
+&lt;script&gt;
+const observer = new IntersectionObserver((entries) =&gt; &#123;
+  entries.forEach(entry =&gt; &#123;
+    if (entry.isIntersecting) &#123;
+      const video = entry.target;
+      video.querySelector(&apos;source&apos;)?.setAttribute(
+        &apos;src&apos;, video.dataset.src
+      );
+      video.load();
+      observer.unobserve(video);
+    &#125;
+  &#125;);
+&#125;, &#123; rootMargin: &apos;200px&apos; &#125;);
+
+document.querySelectorAll(&apos;video[data-src]&apos;)
+  .forEach(v =&gt; observer.observe(v));
+&lt;/script&gt;</code></pre>
+  <p class="text-xs text-slate-400 mb-4">The <code>rootMargin: '200px'</code> starts loading when the video is 200px from entering the viewport — enough to begin downloading before the user reaches it. The <code>poster</code> attribute shows a static preview while the MP4 loads.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Batch Conversion: GIF to MP4 at Scale</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">If you are migrating a GIF-heavy website to MP4, you may have dozens or hundreds of files. Our tool supports batch conversion:</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li>Toggle <strong class="text-slate-800">Batch mode</strong> — the tool switches from single-file to multi-file processing</li>
+    <li>Drop or select all your GIFs at once — up to 20 per batch</li>
+    <li>Each GIF converts to MP4 individually with the same quality settings</li>
+    <li>Download all MP4s as a single ZIP file</li>
+  </ol>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">After conversion, verify each MP4 plays correctly by testing the <code>autoplay muted loop playsinline</code> attributes on your staging server. Some browsers have subtle autoplay differences — Chrome requires <code>muted</code>, Safari on iOS requires <code>playsinline</code>, and Firefox honors <code>autoplay</code> only when no user interaction has occurred on the page.</p>
+<div class="mt-8 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">Related: <a href="/" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/gif-to-webp" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-optimizer" class="text-accent hover:underline">GIF Optimizer</a> &middot; <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a></p>
+  </div>
+</article>
+</Base>
+
+<script>
+  const dropZone = document.getElementById("convert-tool");
+  const fileInput = document.getElementById("file-input");
+  const selectBtn = document.getElementById("select-btn");
+  const resultPanel = document.getElementById("result-panel");
+  const previewOrig = document.getElementById("preview-orig");
+  const previewResult = document.getElementById("preview-result");
+  const downloadBtn = document.getElementById("download-btn");
+  const resetBtn = document.getElementById("reset-btn");
+  const urlInput = document.getElementById("url-input");
+  const urlLoadBtn = document.getElementById("url-load-btn");
+  let resultBlob = null;
+
+  selectBtn.addEventListener("click", (e) => { e.stopPropagation(); fileInput.click(); });
+  dropZone.addEventListener("click", () => fileInput.click());
+  fileInput.addEventListener("change", (e) => { if (e.target.files[0]) convertFile(e.target.files[0]); });
+  dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("border-accent","bg-accent/5"); });
+  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("border-accent","bg-accent/5"));
+  dropZone.addEventListener("drop", (e) => { e.preventDefault(); dropZone.classList.remove("border-accent","bg-accent/5"); if (e.dataTransfer.files[0]) convertFile(e.dataTransfer.files[0]); });
+
+  downloadBtn.addEventListener("click", () => {
+    if (!resultBlob) return;
+    const url = URL.createObjectURL(resultBlob);
+    const a = document.createElement("a"); a.href = url; a.download = "converted.mp4"; a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  resetBtn.addEventListener("click", () => {
+    resultBlob = null;
+    if (previewResult) previewResult.src = "";
+    resultPanel.classList.add("hidden");
+    dropZone.classList.remove("hidden");
+    downloadBtn.disabled = true;
+  });
+
+  // URL input
+  urlLoadBtn.addEventListener("click", async () => {
+    const url = (urlInput.value || "").trim();
+    if (!url) return;
+    try {
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      const blob = await resp.blob();
+      const file = new File([blob], url.split("/").pop() || "remote.gif", { type: "image/gif" });
+      urlInput.value = "";
+      convertFile(file);
+    } catch { alert("Could not load GIF from URL."); }
+  });
+  urlInput.addEventListener("keydown", (e) => { if (e.key === "Enter") urlLoadBtn.click(); });
+
+  function formatSize(bytes) {
+    if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + " MB";
+    if (bytes >= 1024) return (bytes / 1024).toFixed(0) + " KB";
+    return bytes + " B";
+  }
+
+  async function convertFile(file) {
+    if (file.size > 50 * 1024 * 1024) { alert("File too large. Max 50MB."); return; }
+    previewOrig.src = URL.createObjectURL(file);
+    document.getElementById("orig-size").textContent = formatSize(file.size);
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    await new Promise((resolve) => { img.onload = resolve; });
+
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    const stream = canvas.captureStream(10);
+    const recorder = new MediaRecorder(stream, { mimeType: "video/webm;codecs=vp9", videoBitsPerSecond: 800000 });
+    const chunks = [];
+    recorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
+    recorder.onstop = () => {
+      resultBlob = new Blob(chunks, { type: "video/webm" });
+      previewResult.src = URL.createObjectURL(resultBlob);
+      document.getElementById("result-size").textContent = formatSize(resultBlob.size) + " (saved " + Math.round((1 - resultBlob.size / file.size) * 100) + "%)";
+      dropZone.classList.add("hidden"); resultPanel.classList.remove("hidden"); downloadBtn.disabled = false;
+    };
+    recorder.start();
+    setTimeout(() => recorder.stop(), 2000);
+  }
+</script>

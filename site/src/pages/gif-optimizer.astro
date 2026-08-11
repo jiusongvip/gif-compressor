@@ -1,0 +1,181 @@
+---
+import Base from "../layouts/Base.astro";
+import GifTool from "../components/GifTool.astro";
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is the difference between GIF compression and GIF optimization?", "acceptedAnswer": { "@type": "Answer", "text": "Compression reduces overall file size with a single slider. Optimization gives you per-parameter control: you tune color palettes, frame rates, and lossy compression independently. Developers use optimization for precise Core Web Vitals targets." } },
+    { "@type": "Question", "name": "When should I use the GIF optimizer instead of the basic compressor?", "acceptedAnswer": { "@type": "Answer", "text": "Use the optimizer when you need specific file size targets (under 200KB for Core Web Vitals), when you want to preserve certain quality aspects while sacrificing others, or when you are preparing production assets for a website." } },
+    { "@type": "Question", "name": "What color palette size should I choose?", "acceptedAnswer": { "@type": "Answer", "text": "256 colors for photos, 128 for general purpose, 64 for simple graphics, and 32 for icons and stickers. Fewer colors means smaller files but more visible banding." } },
+    { "@type": "Question", "name": "What frame rate is best for GIF optimization?", "acceptedAnswer": { "@type": "Answer", "text": "12-15fps is the sweet spot for most web animations. 24fps is cinematic but often unnecessary. Below 8fps starts looking choppy." } }
+  ]
+});
+
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GIF Optimizer",
+  "url": Astro.url.href,
+  "description": "Advanced GIF compression with per-parameter control. Fine-tune color palettes, frame rates, and lossy encoding.",
+  "applicationCategory": "Multimedia",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["Color Palette Quantization", "Frame Rate Control", "Lossy LZW Encoding", "Core Web Vitals Precision", "Batch Mode"]
+});
+---
+<Base
+  title="GIF Optimizer — Advanced Compression with Per-Parameter Control"
+  description="Advanced GIF optimizer with full control over color palettes, frame rates, and lossy compression. Fine-tune every parameter for Core Web Vitals, web performance, and maximum file size reduction."
+  schema={[webAppSchema, faqSchema].join("\n")}
+>
+<div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+  <h1 class="text-2xl font-bold text-slate-900 leading-tight">GIF Optimizer <span class="text-accent">Advanced</span></h1>
+  <p class="text-sm text-slate-500 mt-2 max-w-2xl leading-relaxed">
+    Not just compression — full control over every optimization parameter. Fine-tune colors, frames, and encoding for precise file size targets and maximum quality retention.
+  </p>
+</div>
+<section class="max-w-4xl mx-auto px-4"><GifTool /></section>
+
+<article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+  <h2 class="text-xl font-bold text-slate-900 mb-4">Optimizer vs. Compressor — What Is the Difference?</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">
+    Our <a href="/" class="text-accent hover:underline">basic compressor</a> gives you three modes (Quality, Balanced, Maximum) and a single slider. It picks the best combination of techniques automatically — perfect for quick results.
+  </p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">
+    The <strong class="text-slate-800">Advanced Optimizer</strong> exposes every parameter individually. You can reduce colors aggressively while keeping all frames, or drop frames while preserving full color fidelity. This is the tool for developers who need to hit a specific file size target or optimize for Core Web Vitals.
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 mt-6">
+    <div class="tool-card p-4">
+      <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-1">Basic Compressor</p>
+      <p class="text-xs text-slate-600 leading-relaxed">One slider. Three modes. The tool auto-selects the best strategy. Best for quick social media sharing.</p>
+    </div>
+    <div class="tool-card p-4 border-accent/30 bg-accent/[0.02]">
+      <p class="text-[10px] uppercase tracking-wider text-accent font-semibold mb-1">Advanced Optimizer</p>
+      <p class="text-xs text-slate-600 leading-relaxed">Full per-parameter control. Fine-tune colors, frames, and encoding independently. Best for developers and production assets.</p>
+    </div>
+  </div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Three Optimization Parameters — Explained</h2>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">1. Color Palette Quantization</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">
+    Each GIF frame stores pixel data as indices into a color table of up to 256 entries. Palette quantization reduces this table by merging visually similar colors. Our tool uses a <strong class="text-slate-800">median-cut algorithm</strong> — it recursively splits the color space at the median of the widest channel, producing perceptually optimal palettes.
+  </p>
+  <div class="overflow-x-auto mb-4"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b border-slate-200 text-left"><th class="py-2 pr-4 text-slate-500 font-medium text-xs">Palette size</th><th class="py-2 pr-4 text-slate-500 font-medium text-xs">Best for</th><th class="py-2 text-slate-500 font-medium text-xs">Savings</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2 pr-4">256 (original)</td><td class="py-2 pr-4 text-xs">Photos, complex gradients</td><td class="py-2 text-xs">0%</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2 pr-4">128</td><td class="py-2 pr-4 text-xs">General purpose</td><td class="py-2 text-xs">15-25%</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2 pr-4">64</td><td class="py-2 pr-4 text-xs">Simple graphics, memes</td><td class="py-2 text-xs">25-40%</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2 pr-4">32</td><td class="py-2 pr-4 text-xs">Icons, stickers, flat art</td><td class="py-2 text-xs">40-55%</td></tr>
+      <tr><td class="py-2 pr-4">16</td><td class="py-2 pr-4 text-xs">Pixel art, extreme reduction</td><td class="py-2 text-xs">50-65%</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-8 mb-2">2. Frame Rate Optimization</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">
+    Many source GIFs run at 20-30fps — far more than necessary for short web animations. The human eye perceives fluid motion at 12-15fps. Dropping every other frame halves the data with minimal visual impact. Our tool also detects and removes <strong class="text-slate-800">near-duplicate consecutive frames</strong> automatically.
+  </p>
+  <div class="overflow-x-auto mb-4"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b border-slate-200 text-left"><th class="py-2 pr-4 text-slate-500 font-medium text-xs">Frame rate</th><th class="py-2 pr-4 text-slate-500 font-medium text-xs">Visual quality</th><th class="py-2 text-slate-500 font-medium text-xs">Use case</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2 pr-4">24-30fps</td><td class="py-2 pr-4 text-xs">Cinematic smooth</td><td class="py-2 text-xs">High quality demos, product showcases</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2 pr-4">15-20fps</td><td class="py-2 pr-4 text-xs">Smooth enough</td><td class="py-2 text-xs">Web animations, social media</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2 pr-4">10-12fps</td><td class="py-2 pr-4 text-xs">Slightly choppy</td><td class="py-2 text-xs">Memes, reaction GIFs</td></tr>
+      <tr><td class="py-2 pr-4">5-8fps</td><td class="py-2 pr-4 text-xs">Noticeably choppy</td><td class="py-2 text-xs">Extreme compression, thumbnails</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-8 mb-2">3. Lossy LZW Encoding</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">
+    Standard GIF uses LZW compression which is mathematically lossless — every pixel is preserved exactly. <strong class="text-slate-800">Lossy LZW</strong> introduces controlled color variations between adjacent pixels, producing dramatically smaller output. At moderate levels (30-70), the visual difference is nearly invisible.
+  </p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">
+    This is the most powerful single optimization lever but also the riskiest — push too far and you will see visible artifacts. Always use the <strong class="text-slate-800">live preview</strong> to verify results.
+  </p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Developer Use Cases</h2>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Core Web Vitals Optimization</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">
+    Google measures page experience through Core Web Vitals. The Largest Contentful Paint (LCP) metric is directly affected by image sizes. A 3MB GIF as a hero element adds 2-4 seconds to LCP — pushing you into "poor" territory. Target these file sizes for good CWV scores:
+  </p>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Hero GIF</p><p class="text-lg font-bold text-accent">under 500KB</p><p class="text-xs text-slate-400 mt-1">For LCP score</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Inline GIF</p><p class="text-lg font-bold text-accent">under 200KB</p><p class="text-xs text-slate-400 mt-1">For content images</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Thumbnail GIF</p><p class="text-lg font-bold text-accent">under 50KB</p><p class="text-xs text-slate-400 mt-1">For cards and lists</p></div>
+  </div>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Email Campaign Assets</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">
+    Email clients render GIFs inline but most have practical limits. Gmail clips messages over 102KB — meaning your entire email HTML + images must stay under that. For animated email elements, target <strong class="text-slate-800">under 500KB total</strong> for all images combined. Use aggressive palette reduction (32-64 colors) and keep animations under 3 seconds.
+  </p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Optimization Strategy by GIF Type</h2>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">GIF type</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Palette</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Frame rate</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Lossy LZW</th><th class="py-2.5 text-slate-500 font-medium text-xs">Expected savings</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Photo / video clip</td><td class="py-2.5 pr-4 text-xs">128-192</td><td class="py-2.5 pr-4 text-xs">15-20fps</td><td class="py-2.5 pr-4 text-xs">Level 50-70</td><td class="py-2.5 text-xs text-accent font-medium">40-60%</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Meme / simple graphic</td><td class="py-2.5 pr-4 text-xs">32-64</td><td class="py-2.5 pr-4 text-xs">10-12fps</td><td class="py-2.5 pr-4 text-xs">Level 70-85</td><td class="py-2.5 text-xs text-accent font-medium">50-70%</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Long animation (30+ frames)</td><td class="py-2.5 pr-4 text-xs">64-128</td><td class="py-2.5 pr-4 text-xs">8-12fps</td><td class="py-2.5 pr-4 text-xs">Level 60-80</td><td class="py-2.5 text-xs text-accent font-medium">60-80%</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Screen recording</td><td class="py-2.5 pr-4 text-xs">N/A</td><td class="py-2.5 pr-4 text-xs">N/A</td><td class="py-2.5 pr-4 text-xs">N/A</td><td class="py-2.5 text-xs">Convert to <a href="/gif-to-mp4" class="text-accent hover:underline">MP4</a></td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Sticker / small icon</td><td class="py-2.5 pr-4 text-xs">8-16</td><td class="py-2.5 pr-4 text-xs">Keep all</td><td class="py-2.5 pr-4 text-xs">Level 40-60</td><td class="py-2.5 text-xs text-accent font-medium">20-40%</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Common Optimization Mistakes</h2>
+  <ul class="space-y-2 mb-6">
+    <li class="text-sm text-slate-600 flex gap-2"><span class="text-red-500 font-bold">&times;</span> <strong class="text-slate-800">Optimizing a GIF that should not be a GIF.</strong> Over 5 seconds or photographic? Convert to <a href="/gif-to-mp4" class="text-accent hover:underline">MP4</a> or <a href="/gif-to-webp" class="text-accent hover:underline">WebP</a> first.</li>
+    <li class="text-sm text-slate-600 flex gap-2"><span class="text-red-500 font-bold">&times;</span> <strong class="text-slate-800">Reducing palette before resizing.</strong> Always <a href="/resize-gif" class="text-accent hover:underline">resize</a> first — a 2000px GIF reduced to 800px saves 85% before any optimization.</li>
+    <li class="text-sm text-slate-600 flex gap-2"><span class="text-red-500 font-bold">&times;</span> <strong class="text-slate-800">Over-optimizing.</strong> Pushing every parameter to maximum produces unusable GIFs. Use the live preview to verify each change.</li>
+    <li class="text-sm text-slate-600 flex gap-2"><span class="text-red-500 font-bold">&times;</span> <strong class="text-slate-800">Uploading to tools that process server-side.</strong> Your files are exposed. All our tools run in your browser.</li>
+  </ul>
+
+  
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Real-World Optimization Scenarios</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Here are three common scenarios and exactly how to optimize for them using the Advanced Optimizer:</p>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Scenario 1: Product Page Hero — Target Under 500KB</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">You have a product demo GIF (1920×1080px, 45 frames, 8.2MB) that needs to be the hero element on a landing page. Core Web Vitals requires the LCP element under 500KB.</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li><a href="/resize-gif" class="text-accent hover:underline">Resize to 1200px width</a> — immediately cuts to ~3MB</li>
+    <li>Set palette to 128 colors — product photos need color fidelity</li>
+    <li>Drop frame rate to 15fps — product demos look smooth at this rate</li>
+    <li>Set lossy LZW to level 40 — enough to get under the wire without visible artifacts</li>
+    <li>Result: ~480KB file that loads in under 1 second and passes Core Web Vitals</li>
+  </ol>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Scenario 2: Email Campaign Animated CTA — Target Under 50KB</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">A 3-second sparkle animation around a "Shop Now" button (400×200px, 60 frames, 2.1MB). Must fit in an email where Gmail's 102KB clipping is the primary constraint.</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li>Trim to 1.5 seconds — animation repeats, so shorter is better for email</li>
+    <li>Reduce palette to 32 colors — the sparkle effect only needs white, gold, and the button color</li>
+    <li>Drop frame rate to 10fps — sparkles read clearly at lower frame rates</li>
+    <li>Set lossy LZW to level 70 — aggressive but at this display size, artifacts are invisible</li>
+    <li>Result: ~42KB file. Fits cleanly inside the email body without contributing to Gmail clipping.</li>
+  </ol>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Scenario 3: GitHub README Demo — Quality Preservation</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">A terminal recording converted to GIF (800×500px, 120 frames, 15MB). GitHub renders it at full quality and other developers will inspect it closely. File size matters, but visual clarity of text is paramount.</p>
+  <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
+    <li>Keep palette at 256 colors — terminal text needs crisp pixel-perfect rendering</li>
+    <li>Drop frame rate to 8fps — terminal recordings do not need smooth motion</li>
+    <li>Set lossy LZW to level 20 — preserve every character edge</li>
+    <li>Result: ~2.8MB file. An 81% reduction while maintaining text readability. If still too large, consider <a href="/gif-to-mp4" class="text-accent hover:underline">converting to MP4</a> — GitHub supports video embeds.</li>
+  </ol>
+<h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Frequently Asked Questions</h2>
+  <div class="space-y-3 mb-8">
+    <details class="group tool-card p-4"><summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">What is the difference between compression and optimization? <span class="text-slate-400 group-open:rotate-180 transition-transform"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span></summary><p class="text-xs text-slate-500 mt-2 leading-relaxed">Compression uses a single slider to reduce file size automatically. Optimization gives you independent control over each parameter — colors, frames, and encoding — for precise results.</p></details>
+    <details class="group tool-card p-4"><summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">When should I use the optimizer vs. the basic compressor? <span class="text-slate-400 group-open:rotate-180 transition-transform"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span></summary><p class="text-xs text-slate-500 mt-2 leading-relaxed">Use the <a href="/" class="text-accent hover:underline">basic compressor</a> for quick social media sharing. Use the optimizer when you need specific file size targets (under 200KB for web), when preparing production assets, or when you want to preserve certain quality aspects while sacrificing others.</p></details>
+    <details class="group tool-card p-4"><summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">What palette size should I choose? <span class="text-slate-400 group-open:rotate-180 transition-transform"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span></summary><p class="text-xs text-slate-500 mt-2 leading-relaxed">256 for photos, 128 for general use, 64 for simple graphics, 32 for icons, 16 for extreme reduction. See the table above for per-type recommendations.</p></details>
+    <details class="group tool-card p-4"><summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">What is the best frame rate for web animations? <span class="text-slate-400 group-open:rotate-180 transition-transform"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span></summary><p class="text-xs text-slate-500 mt-2 leading-relaxed">12-15fps is the sweet spot for most web animations. Smooth enough to look good, low enough to keep files small.</p></details>
+  </div>
+
+  <div class="mt-8 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">Related: <a href="/" class="text-accent hover:underline">Basic Compressor</a> &middot; <a href="/gif-to-webp" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-to-mp4" class="text-accent hover:underline">GIF to MP4</a> &middot; <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a></p>
+  </div>
+</article>
+</Base>

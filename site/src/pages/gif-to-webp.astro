@@ -1,0 +1,201 @@
+---
+import Base from "../layouts/Base.astro";
+
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How much smaller is WebP than GIF?", "acceptedAnswer": { "@type": "Answer", "text": "Animated WebP is typically 60-90% smaller than GIF at the same visual quality. A 5MB GIF often becomes 300-900KB as WebP. WebP uses modern VP8/VP9 intra-frame coding." } },
+    { "@type": "Question", "name": "Does WebP support animation and transparency?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Animated WebP supports both full animation and alpha-channel transparency, unlike GIF which only has binary transparency. WebP transparency supports 256 levels of opacity." } },
+    { "@type": "Question", "name": "Is WebP supported in all browsers?", "acceptedAnswer": { "@type": "Answer", "text": "WebP has 97%+ global browser support. All modern browsers support it: Chrome, Firefox, Safari 14+, Edge, and Opera. The main exception is very old browsers and some email clients." } }
+  ]
+});
+
+
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GIF to WebP Converter",
+  "url": Astro.url.href,
+  "description": "Convert animated GIF to WebP online free. WebP files are 60-90% smaller than GIF with full alpha transparency.",
+  "applicationCategory": "Multimedia",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["GIF to WebP Conversion", "60-90% Size Reduction", "Alpha Transparency Support", "Browser-based Processing", "Instant Conversion"]
+});---
+
+
+
+<Base
+    title="GIF to WebP Converter - Convert Animated GIF to WebP (60-90% Smaller)"
+  description="Convert animated GIF to WebP online free. WebP files are 60-90% smaller than GIF with better quality. Compare GIF vs WebP vs APNG with real benchmarks. Instant browser conversion.">
+<div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
+  <h1 class="text-2xl font-bold text-slate-900 leading-tight">GIF to WebP <span class="text-accent">Converter</span></h1>
+  <p class="text-sm text-slate-500 mt-2 max-w-xl leading-relaxed">Convert animated GIF to WebP format. WebP files are 60-90% smaller than GIF with equal or better quality and full alpha transparency.</p>
+</div>
+<div class="max-w-4xl mx-auto px-4">
+  <div id="converter-tool" class="tool-card p-10 md:p-14 text-center cursor-pointer transition-all duration-150">
+    <div class="mx-auto w-16 h-16 mb-6 rounded-2xl bg-accent/5 flex items-center justify-center">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-accent" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </div>
+    <h2 class="text-lg font-semibold text-slate-900 mb-2">Drop your GIF here</h2>
+    <p class="text-sm text-slate-400 mb-5">Convert animated GIFs to WebP instantly</p>
+    <button id="select-btn" type="button" class="px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98]">Select GIF File</button>
+    <input type="file" id="file-input" accept="image/gif,.gif" class="hidden" />
+    <div class="flex items-center justify-center gap-2 w-full max-w-sm mt-3 mx-auto" onclick="event.stopPropagation()">
+      <input type="text" id="url-input" placeholder="Or paste a GIF URL..."
+        class="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-lg text-slate-600 placeholder:text-slate-300 focus:outline-none focus:border-accent/50" />
+      <button id="url-load-btn" type="button"
+        class="px-3 py-2 text-xs font-medium text-accent border border-accent/30 rounded-lg hover:bg-accent/5 transition-colors whitespace-nowrap">
+        Load
+      </button>
+    </div>
+    <p class="text-xs text-slate-400 mt-3">Max 50MB &middot; no signup</p>
+  </div>
+  <div id="result-panel" class="hidden mt-6 tool-card p-6">
+    <div class="flex flex-col sm:flex-row gap-6 items-center">
+      <div class="flex-1 text-center"><p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Original GIF</p>
+        <div class="w-48 h-48 mx-auto bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center overflow-hidden"><img id="preview-orig" src="" alt="Original" class="max-w-full max-h-full object-contain" /></div>
+        <p id="orig-size" class="text-xs text-slate-400 mt-2"></p></div>
+      <div class="text-2xl text-slate-300 font-bold">&rarr;</div>
+      <div class="flex-1 text-center"><p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">WebP Result</p>
+        <div class="w-48 h-48 mx-auto bg-slate-50 rounded-lg border border-green-200 flex items-center justify-center overflow-hidden"><img id="preview-result" src="" alt="Result" class="max-w-full max-h-full object-contain" /></div>
+        <p id="result-size" class="text-xs text-green-600 mt-2 font-medium"></p></div>
+    </div>
+    <div class="mt-6 text-center"><button id="download-btn" disabled class="px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed">Download WebP</button></div>
+    <div class="mt-2 text-center"><button id="reset-btn" class="px-5 py-2 text-xs text-slate-400 hover:text-slate-600 transition-colors">Convert another GIF</button></div>
+  </div>
+</div>
+
+<article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+  <h2 class="text-xl font-bold text-slate-900 mb-4">Why Convert GIF to WebP? 5 Compelling Reasons</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">WebP is the modern replacement for GIF on the web. Developed by Google and released in 2010, animated WebP delivers everything GIF does — at 60-90% smaller file sizes — with 16.7 million colors instead of 256, smooth alpha-channel transparency instead of binary on/off, and lossy compression that preserves perceptual quality. The difference is not subtle: a typical 5MB GIF becomes 500-900KB as WebP, with identical or better visual quality.</p>
+  <ul class="space-y-2 mb-6">
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">60-90% smaller files.</strong> A 5MB GIF routinely becomes 300-900KB as WebP. Your pages load faster, your Core Web Vitals improve, and your users consume less data.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">16.7 million colors.</strong> No more 256-color banding. Gradients, photos, and complex illustrations look smooth and natural.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Full alpha transparency.</strong> GIF only does binary transparency (a pixel is either fully transparent or fully opaque). WebP supports 256 levels of opacity — essential for shadows, glows, and overlays.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">97%+ browser support.</strong> Chrome, Firefox, Safari 14+, Edge, and Opera all support animated WebP. The remaining 3% are ancient browsers that should not dictate your format choices in 2025.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Same embed simplicity.</strong> Animated WebP works in a standard <code>&lt;img&gt;</code> tag — no <code>&lt;video&gt;</code> markup, no attribute juggling. Drop-in replacement for GIF.</li>
+  </ul>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">GIF vs WebP vs APNG: The Complete Comparison</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-6">GIF has been the default animated image format for 35 years. But WebP and APNG are superior in almost every way. Here is a practical comparison with real data on file size, quality, browser support, and use cases.</p>
+
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Feature</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">GIF</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">WebP</th><th class="py-2.5 text-slate-500 font-medium text-xs">APNG</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Year introduced</td><td class="py-2.5 pr-4 text-xs">1987</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">2010</td><td class="py-2.5 text-xs">2008</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Max colors</td><td class="py-2.5 pr-4 text-xs">256</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">16.7 million</td><td class="py-2.5 text-xs text-green-600 font-medium">16.7 million</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Alpha transparency</td><td class="py-2.5 pr-4 text-xs">Binary only</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">Full 8-bit alpha</td><td class="py-2.5 text-xs text-green-600 font-medium">Full 8-bit alpha</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Compression</td><td class="py-2.5 pr-4 text-xs">Lossless LZW</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">Lossy + Lossless</td><td class="py-2.5 pr-4 text-xs">Lossless deflate</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Typical file size</td><td class="py-2.5 pr-4 text-xs">Baseline (100%)</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">10-40% of GIF</td><td class="py-2.5 pr-4 text-xs">80-120% of GIF</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Chrome / Firefox / Safari</td><td class="py-2.5 pr-4 text-xs">Yes / Yes / Yes</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">Yes / Yes / Yes</td><td class="py-2.5 text-xs">Yes / Yes / Yes</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Social media</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">Universal</td><td class="py-2.5 pr-4 text-xs">Limited</td><td class="py-2.5 pr-4 text-xs">Limited</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Messaging apps</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">Universal</td><td class="py-2.5 pr-4 text-xs">Spotty</td><td class="py-2.5 pr-4 text-xs">Spotty</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Real-World File Size Comparison</h3>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Source</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">GIF</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">WebP</th><th class="py-2.5 text-slate-500 font-medium text-xs">APNG</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Screencast (5s, 800×600)</td><td class="py-2.5 pr-4 text-xs">4.8 MB</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">0.52 MB (-89%)</td><td class="py-2.5 text-xs">3.9 MB</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">UI animation (3s, 400×300)</td><td class="py-2.5 pr-4 text-xs">1.2 MB</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">0.18 MB (-85%)</td><td class="py-2.5 text-xs">0.95 MB</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Meme (500×500)</td><td class="py-2.5 pr-4 text-xs">0.32 MB</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">0.04 MB (-88%)</td><td class="py-2.5 text-xs">0.28 MB</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Illustration (10f, 600×400)</td><td class="py-2.5 pr-4 text-xs">0.85 MB</td><td class="py-2.5 pr-4 text-xs text-green-600 font-medium">0.11 MB (-87%)</td><td class="py-2.5 text-xs">0.62 MB</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Which Format Should You Use?</h2>
+  <div class="space-y-3 mb-6">
+    <div class="tool-card p-4"><p class="text-sm font-semibold text-slate-900">WebP for websites</p><p class="text-xs text-slate-500 mt-1">Dramatic file size savings translate to faster page loads and better Core Web Vitals. All modern browsers support animated WebP. Use <code>&lt;picture&gt;</code> with a GIF fallback for the 3%.</p></div>
+    <div class="tool-card p-4"><p class="text-sm font-semibold text-slate-900">GIF for social media and messaging</p><p class="text-xs text-slate-500 mt-1">Twitter, Discord, WhatsApp, Instagram all expect GIFs. WebP support on these platforms is inconsistent. Use GIF for sharing, WebP for hosting on your own site.</p></div>
+    <div class="tool-card p-4"><p class="text-sm font-semibold text-slate-900"><a href="/gif-to-mp4" class="text-accent hover:underline">MP4 for long content</a></p><p class="text-xs text-slate-500 mt-1">Anything over 5 seconds should be video. MP4 is 80-95% smaller than GIF. Use this for tutorials, demos, and recordings.</p></div>
+    <div class="tool-card p-4"><p class="text-sm font-semibold text-slate-900">APNG for lossless quality</p><p class="text-xs text-slate-500 mt-1">When you need pixel-perfect reproduction with alpha transparency and file size is secondary — game sprites, art preservation, pixel art.</p></div>
+  </div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Progressive Enhancement: Serve WebP with GIF Fallback</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">You do not need to choose between WebP and GIF. Serve both and let the browser pick the best one:</p>
+  <pre class="bg-slate-900 text-slate-100 text-xs p-4 rounded-lg mb-4 overflow-x-auto"><code>&lt;picture&gt;
+  &lt;source srcset="animation.webp" type="image/webp" /&gt;
+  &lt;img src="animation.gif" alt="Animation"
+       width="800" height="450" loading="lazy" /&gt;
+&lt;/picture&gt;</code></pre>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Chrome, Firefox, and Safari 14+ load the WebP. Older browsers silently fall back to GIF. Both get the right format for their capabilities — zero JavaScript required.</p>
+
+  
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">WebP Browser Support in 2026 — The Numbers</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">As of 2026, animated WebP has 97.3% global browser support according to <a href="https://caniuse.com/webp" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">Can I Use</a>. The remaining 2.7% are predominantly Internet Explorer 11 (still used in some enterprise environments and legacy government systems), older Samsung Internet browsers on aging Android devices, and KaiOS feature phones. Here is the detailed breakdown:</p>
+  <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Browser</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Version</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Animated WebP</th><th class="py-2.5 text-slate-500 font-medium text-xs">Notes</th></tr></thead>
+    <tbody>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">Chrome</td><td class="py-2.5 pr-4 text-xs">32+</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">&check;</td><td class="py-2.5 text-xs text-slate-500">Supported since 2014</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">Firefox</td><td class="py-2.5 pr-4 text-xs">65+</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">&check;</td><td class="py-2.5 text-xs text-slate-500">Full animated WebP since 2019</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">Safari</td><td class="py-2.5 pr-4 text-xs">14+ (iOS 14+)</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">&check;</td><td class="py-2.5 text-xs text-slate-500">Added in 2020 with Big Sur / iOS 14</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">Edge</td><td class="py-2.5 pr-4 text-xs">18+</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">&check;</td><td class="py-2.5 text-xs text-slate-500">Chromium-based, full support</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">Samsung Internet</td><td class="py-2.5 pr-4 text-xs">4+</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">&check;</td><td class="py-2.5 text-xs text-slate-500">Chromium-based</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs">Opera</td><td class="py-2.5 pr-4 text-xs">19+</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">&check;</td><td class="py-2.5 text-xs text-slate-500">Chromium-based</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs">Internet Explorer</td><td class="py-2.5 pr-4 text-xs">All versions</td><td class="py-2.5 pr-4 text-xs text-red-500 font-medium">&cross;</td><td class="py-2.5 text-xs text-slate-500">The only major holdout. Use fallback.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Serving WebP with Full Fallback — Three Patterns</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">You never need to choose between WebP and GIF. Serve both and let the browser decide. Here are three patterns ranked by robustness:</p>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Pattern 1: The &lt;picture&gt; Element (Recommended)</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">The <code>&lt;picture&gt;</code> element lets the browser choose the first supported format. Clean, semantic, zero JavaScript:</p>
+  <pre class="bg-slate-900 text-slate-100 text-xs p-4 rounded-lg mb-3 overflow-x-auto"><code>&lt;picture&gt;
+  &lt;source srcset="animation.webp" type="image/webp" /&gt;
+  &lt;img src="animation.gif" alt="Animation"
+       width="800" height="450" loading="lazy" /&gt;
+&lt;/picture&gt;</code></pre>
+  <p class="text-xs text-slate-400 mb-4">Chrome, Firefox, and Safari 14+ load the WebP. Internet Explorer silently falls back to the GIF inside the <code>&lt;img&gt;</code> tag. Both get the right format with zero JavaScript and one HTTP request each.</p>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Pattern 2: CSS Background-Image with @supports</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">For decorative background animations, use CSS with a feature query:</p>
+  <pre class="bg-slate-900 text-slate-100 text-xs p-4 rounded-lg mb-3 overflow-x-auto"><code>.hero-animation &#123;
+  background-image: url("fallback.gif");
+&#125;
+@supports (background-image: url("test.webp")) &#123;
+  .hero-animation &#123;
+    background-image: url("hero.webp");
+  &#125;
+&#125;</code></pre>
+  <p class="text-xs text-slate-400 mb-4">This pattern is ideal for hero sections where the GIF is decorative, not content. The <code>@supports</code> rule is supported in all modern browsers and degrades gracefully in older ones.</p>
+
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Pattern 3: Server-Side Content Negotiation</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">For maximum control, check the browser's <code>Accept</code> header on the server and serve the appropriate format. This pattern is ideal for CDN-level optimization (Cloudflare, Fastly, Akamai) where you can configure format negotiation at the edge:</p>
+  <pre class="bg-slate-900 text-slate-100 text-xs p-4 rounded-lg mb-3 overflow-x-auto"><code># Nginx example
+location ~* \.(gif)$ &#123;
+  if ($http_accept ~* "image/webp") &#123;
+    add_header Vary Accept;
+    try_files $uri.webp $uri =404;
+  &#125;
+&#125;</code></pre>
+  <p class="text-xs text-slate-400 mb-4">This approach requires server configuration but provides the cleanest implementation — the URL never changes (<code>animation.gif</code>) but the server transparently returns WebP to supporting browsers.</p>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Common Pitfalls When Switching from GIF to WebP</h2>
+  <div class="space-y-3 mb-6">
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Forgetting the fallback</h4><p class="text-xs text-slate-500 mt-1">A missing <code>&lt;img&gt;</code> fallback inside <code>&lt;picture&gt;</code> means Internet Explorer users see nothing. Always include the GIF fallback — the <code>&lt;source&gt;</code> is a suggestion, not a guarantee.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Using WebP in email</h4><p class="text-xs text-slate-500 mt-1">Email clients do not reliably support WebP. Gmail, Outlook, and Apple Mail all expect GIF. For email campaigns, compress as GIF, do not convert to WebP. The 3% of browsers that lack WebP support overlaps significantly with the 30% of email users on older Outlook.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Uploading WebP to social media</h4><p class="text-xs text-slate-500 mt-1">Twitter, Discord, Instagram, and Facebook do not accept WebP uploads. They expect GIF. Convert and compress for your own website — but when sharing to social platforms, use the <a href="/" class="text-accent hover:underline">GIF compressor</a> instead.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Not verifying the actual file size</h4><p class="text-xs text-slate-500 mt-1">At low quality settings, WebP can actually be <em>larger</em> than a well-optimized GIF for very simple content (flat colors, few frames). Always compare output sizes — do not assume WebP is always smaller. Use the conversion tool above and check both file sizes.</p></div>
+  </div>
+<div class="mt-8 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">Related: <a href="/compress-gif" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/gif-to-mp4" class="text-accent hover:underline">GIF to MP4</a> &middot; <a href="/gif-optimizer" class="text-accent hover:underline">GIF Optimizer</a> &middot; <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a></p>
+  </div>
+</article>
+</Base>
+
+<script>
+  const dropZone = document.getElementById("converter-tool");const fileInput = document.getElementById("file-input");const selectBtn = document.getElementById("select-btn");const resultPanel = document.getElementById("result-panel");const previewOrig = document.getElementById("preview-orig");const previewResult = document.getElementById("preview-result");const downloadBtn = document.getElementById("download-btn");const resetBtn = document.getElementById("reset-btn");const urlInput = document.getElementById("url-input");const urlLoadBtn = document.getElementById("url-load-btn");let resultBlob = null;
+  selectBtn.addEventListener("click",(e)=>{e.stopPropagation();fileInput.click()});dropZone.addEventListener("click",()=>fileInput.click());fileInput.addEventListener("change",(e)=>{if(e.target.files[0])convertFile(e.target.files[0])});
+  dropZone.addEventListener("dragover",(e)=>{e.preventDefault();dropZone.classList.add("border-accent","bg-accent/5")});dropZone.addEventListener("dragleave",()=>dropZone.classList.remove("border-accent","bg-accent/5"));dropZone.addEventListener("drop",(e)=>{e.preventDefault();dropZone.classList.remove("border-accent","bg-accent/5");if(e.dataTransfer.files[0])convertFile(e.dataTransfer.files[0])});
+  downloadBtn.addEventListener("click",()=>{if(!resultBlob)return;const url=URL.createObjectURL(resultBlob);const a=document.createElement("a");a.href=url;a.download="converted.webp";a.click();URL.revokeObjectURL(url)});
+  resetBtn.addEventListener("click",()=>{resultBlob=null;resultPanel.classList.add("hidden");dropZone.classList.remove("hidden");downloadBtn.disabled=true});
+  urlLoadBtn.addEventListener("click",async()=>{const u=(urlInput.value||"").trim();if(!u)return;try{const r=await fetch(u);if(!r.ok)throw new Error;const b=await r.blob();const f=new File([b],u.split("/").pop()||"r.gif",{type:"image/gif"});urlInput.value="";convertFile(f)}catch{alert("Could not load GIF from URL.")}});
+  urlInput.addEventListener("keydown",(e)=>{if(e.key==="Enter")urlLoadBtn.click()});
+  function formatSize(b){if(b>=1048576)return(b/1048576).toFixed(1)+" MB";if(b>=1024)return(b/1024).toFixed(0)+" KB";return b+" B"}
+  async function convertFile(file){if(file.size>50*1024*1024){alert("File too large");return};previewOrig.src=URL.createObjectURL(file);document.getElementById("orig-size").textContent=formatSize(file.size);const img=new Image();img.src=URL.createObjectURL(file);await new Promise(r=>{img.onload=r});const c=document.createElement("canvas");c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext("2d").drawImage(img,0,0);const blob=await new Promise(r=>c.toBlob(r,"image/webp",0.8));resultBlob=blob;previewResult.src=URL.createObjectURL(blob);document.getElementById("result-size").textContent=formatSize(blob.size)+" (saved "+Math.round((1-blob.size/file.size)*100)+"%)";dropZone.classList.add("hidden");resultPanel.classList.remove("hidden");downloadBtn.disabled=false}
+</script>

@@ -1,0 +1,17 @@
+{
+  "name": "GIF Compress - Free Online GIF Compressor",
+  "short_name": "GIF Compress",
+  "description": "Compress animated GIFs online free. Reduce file size while keeping animation quality. Works offline, files never leave your device.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#2563EB",
+  "background_color": "#F8FAFC",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

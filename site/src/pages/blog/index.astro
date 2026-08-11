@@ -1,0 +1,75 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
+posts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+---
+<Base
+  title="GIF Compression Blog — Guides, Tips & Best Practices"
+  description="Expert guides on GIF compression, format comparisons, Core Web Vitals optimization, and platform-specific techniques. Written by web performance engineers who build GIF tools."
+>
+<div class="max-w-2xl mx-auto px-4 pt-10 pb-16">
+  <h1 class="text-2xl font-bold text-slate-900 mb-2">Blog</h1>  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 mb-8">
+    <a href="/compress-gif" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">How to Compress a GIF</p><p class="text-[10px] text-slate-400 mt-0.5">Complete step-by-step guide</p></a>
+    <a href="/gif-optimizer" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">Advanced GIF Optimizer</p><p class="text-[10px] text-slate-400 mt-0.5">Per-parameter control for developers</p></a>
+    <a href="/reduce-gif-size" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">Platform Size Limits</p><p class="text-[10px] text-slate-400 mt-0.5">Reference for every platform</p></a>
+    <a href="/gif-to-webp" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">GIF vs WebP vs MP4</p><p class="text-[10px] text-slate-400 mt-0.5">Which format to use and when</p></a>
+    <a href="/compress-gif-for-discord" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">Compress for Discord</p><p class="text-[10px] text-slate-400 mt-0.5">Under 8MB for free tier</p></a>
+    <a href="/compress-gif-for-twitter" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">Compress for Twitter</p><p class="text-[10px] text-slate-400 mt-0.5">Under 5MB web, 3MB mobile</p></a>
+    <a href="/compress-gif-for-email" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">Compress for Email</p><p class="text-[10px] text-slate-400 mt-0.5">Under Gmail's 102KB clipping</p></a>
+    <a href="/compress-gif-to-256kb" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">Compress to 256KB</p><p class="text-[10px] text-slate-400 mt-0.5">Discord emoji &amp; CWV target</p></a>
+    <a href="/faq" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">FAQ</p><p class="text-[10px] text-slate-400 mt-0.5">Answers to common questions</p></a>
+  </div>
+
+  <div class="prose prose-sm prose-slate max-w-none mt-4 mb-10">
+    <p class="text-sm text-slate-600 leading-relaxed">
+      We write about GIF compression from the perspective of people who actually build GIF tools.
+      Every article is grounded in our experience optimizing thousands of animations across real production
+      websites — we run benchmarks against 50 real-world GIFs, test against actual platform limits,
+      and publish data you can verify with your own files.
+    </p>
+    <p class="text-sm text-slate-600 leading-relaxed mt-3">
+      Whether you are debugging Core Web Vitals, preparing assets for social media, curious why GIF
+      files are so stubbornly large, or trying to understand when WebP or MP4 is the better choice,
+      you will find practical, data-backed guidance here. Our most popular topics:
+    </p>
+    <ul class="text-xs text-slate-500 space-y-1">
+      <li><strong class="text-slate-700">Format decisions:</strong> <a href="/blog/gif-vs-webp-vs-mp4" class="text-accent hover:underline">GIF vs WebP vs MP4</a> — real size comparisons and when to use each</li>
+      <li><strong class="text-slate-700">Core Web Vitals:</strong> <a href="/blog/optimize-gifs-core-web-vitals" class="text-accent hover:underline">Optimize GIFs for CWV</a> — LCP, INP, CLS targets for animated content</li>
+      <li><strong class="text-slate-700">Deep dives:</strong> <a href="/blog/how-gif-compression-works" class="text-accent hover:underline">How GIF Compression Works</a> — from LZW encoding to color quantization</li>
+      <li><strong class="text-slate-700">Social media:</strong> <a href="/blog/gif-compression-for-social-media" class="text-accent hover:underline">Platform-by-Platform Guide</a> — Discord, Twitter, Instagram limits</li>
+      <li><strong class="text-slate-700">Workflows:</strong> <a href="/blog/batch-compress-gifs-guide" class="text-accent hover:underline">Batch Compression</a> — compress dozens of GIFs at once</li>
+    </ul>
+    <p class="text-xs text-slate-400 mt-3">
+      All articles are written by our engineering team. No AI-generated filler, no SEO-optimized fluff.
+    </p>
+  </div>
+
+  <div class="space-y-6">
+    {posts.map((post) => (
+      <article class="tool-card p-5 group">
+        <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">
+          {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        </p>
+        <h2 class="text-base font-semibold text-slate-900 leading-snug group-hover:text-accent transition-colors">
+          <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+        </h2>
+        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">{post.data.description}</p>
+        <div class="flex items-center gap-2 mt-3">
+          <div class="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center text-accent text-[8px] font-bold">
+            JC
+          </div>
+          <p class="text-[10px] text-slate-400">James Chen &middot; {Math.ceil(post.body.length / 800)} min read</p>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div class="mt-12 pt-6 border-t border-slate-100">
+    <p class="text-xs text-slate-400">
+      Ready to put this into practice? <a href="/" class="text-accent hover:underline">Use the free GIF compressor &rarr;</a>
+    </p>
+  </div>
+</div>
+</Base>

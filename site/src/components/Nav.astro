@@ -1,0 +1,34 @@
+---
+import Icon from "./Icon.astro";
+const tools = [
+  { href: "/", label: "Compress" },
+  { href: "/resize-gif", label: "Resize" },
+  { href: "/crop-gif", label: "Crop" },
+  { href: "/gif-to-webp", label: "GIF to WebP" },
+  { href: "/gif-to-mp4", label: "GIF to MP4" },
+  { href: "/gif-optimizer", label: "Optimizer" },
+];
+---
+<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 h-14 flex items-center">
+  <div class="w-full max-w-7xl mx-auto px-4 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 text-sm font-semibold text-slate-900 shrink-0">
+      <span class="text-accent font-bold text-base">GIF</span>
+      <span class="text-slate-500">Compress</span>
+    </a>
+    <div class="hidden md:flex items-center gap-1 overflow-x-auto no-scrollbar">
+      {tools.map((t) => (
+        <a
+          href={t.href}
+          class="text-xs text-slate-500 hover:text-slate-900 px-3 py-1.5 rounded-md hover:bg-slate-100 transition-colors whitespace-nowrap"
+        >
+          {t.label}
+        </a>
+      ))}
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/blog" class="text-xs text-slate-500 hover:text-slate-900 hidden sm:inline transition-colors">Blog</a>
+      <a href="/faq" class="text-xs text-slate-500 hover:text-slate-900 hidden sm:inline transition-colors">FAQ</a>
+      <a href="/about" class="text-xs text-slate-500 hover:text-slate-900 hidden sm:inline transition-colors">About</a>
+    </div>
+  </div>
+</nav>
