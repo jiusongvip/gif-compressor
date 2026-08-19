@@ -1,6 +1,6 @@
 ---
-title: "GIF Compression for Social Media — Complete Guide for Discord, Twitter &amp; Instagram"
-description: "Platform-by-platform guide to compressing GIFs for social media. Discord 8MB limit, Twitter 5MB cap, Instagram requirements, and how to hit every target with one tool."
+title: "GIF Compression for Social Media — Discord, Twitter & More"
+description: "Platform-by-platform guide to GIF compression for social media: Discord 8MB, Twitter 5MB, Instagram rules, and how to hit every limit with one tool."
 publishDate: 2025-08-05
 ---
 

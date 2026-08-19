@@ -29,8 +29,8 @@ const webAppSchema = JSON.stringify({
 
 <Base
   title="GIF to MP4 Converter - Convert Animated GIF to Video Online Free"
-  description="Convert animated GIF to MP4 video online free. MP4 files are 80-95% smaller than GIFs. Perfect for long animations, screen recordings, and website embeds. Instant browser-based conversion."
- schema={[webAppSchema, faqSchema].join("\n")}>
+  description="Convert animated GIF to MP4 online free. MP4 is 80-95% smaller than GIF — ideal for long animations, screen recordings, and web embeds. Instant conversion."
+ schemas={[webAppSchema, faqSchema]}>
 <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
   <h1 class="text-2xl font-bold text-slate-900 leading-tight">
     GIF to MP4 <span class="text-accent">Converter</span>
@@ -135,16 +135,16 @@ const webAppSchema = JSON.stringify({
 
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">MP4 vs WebP: Which Modern Format to Choose</h2>
   <p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-800">Choose MP4</strong> for content over 5 seconds, screen recordings, anything with text, and social media uploads. MP4's inter-frame compression scales with duration — the longer the content, the bigger the advantage.</p>
-  <p class="text-sm text-slate-600 leading-relaxed mb-4"><strong class="text-slate-800">Choose WebP</strong> for short animations that need transparency, quick loops under 3 seconds, and website hero animations. <a href="/gif-to-webp" class="text-accent hover:underline">WebP converts</a> are simpler to embed (just an <code>&lt;img&gt;</code> tag) but lack audio and playback controls.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4"><strong class="text-slate-800">Choose WebP</strong> for short animations that need transparency, quick loops under 3 seconds, and website hero animations. <a href="/gif-to-webp/" class="text-accent hover:underline">WebP converts</a> are simpler to embed (just an <code>&lt;img&gt;</code> tag) but lack audio and playback controls.</p>
 
   
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">When NOT to Convert GIF to MP4</h2>
   <p class="text-sm text-slate-600 leading-relaxed mb-4">MP4 is not always the right answer. There are specific scenarios where keeping the GIF or choosing another format produces better results:</p>
   <div class="space-y-3 mb-6">
-    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Transparent backgrounds</h4><p class="text-xs text-slate-500 mt-1">MP4 does not support alpha-channel transparency. If your GIF uses transparent backgrounds (stickers, logos, overlays), converting to MP4 will replace transparency with a solid black or white background. For transparent animations, <a href="/gif-to-webp" class="text-accent hover:underline">convert to WebP</a> instead, which supports full alpha transparency.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Transparent backgrounds</h4><p class="text-xs text-slate-500 mt-1">MP4 does not support alpha-channel transparency. If your GIF uses transparent backgrounds (stickers, logos, overlays), converting to MP4 will replace transparency with a solid black or white background. For transparent animations, <a href="/gif-to-webp/" class="text-accent hover:underline">convert to WebP</a> instead, which supports full alpha transparency.</p></div>
     <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Very short loops (under 1 second)</h4><p class="text-xs text-slate-500 mt-1">MP4 compression shines on longer content where inter-frame prediction can exploit temporal redundancy. For a 3-frame blinking dot or a 0.5-second icon animation, the MP4 container overhead can exceed the actual frame data. A well-compressed GIF may be smaller for ultra-short content.</p></div>
-    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Email campaigns</h4><p class="text-xs text-slate-500 mt-1">Most email clients do not support embedded MP4 playback. Gmail, Outlook, and Apple Mail all expect GIF for animated content. For email, <a href="/compress-gif-for-email" class="text-accent hover:underline">compress your GIF</a> rather than converting format.</p></div>
-    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Discord, Twitter, and social platforms</h4><p class="text-xs text-slate-500 mt-1">These platforms expect GIF uploads. While they internally convert to video, they do it on their terms. Uploading MP4 directly may produce different (often worse) results than uploading a well-compressed GIF. <a href="/compress-gif-for-discord" class="text-accent hover:underline">Compress for the platform</a> rather than pre-converting.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Email campaigns</h4><p class="text-xs text-slate-500 mt-1">Most email clients do not support embedded MP4 playback. Gmail, Outlook, and Apple Mail all expect GIF for animated content. For email, <a href="/compress-gif-for-email/" class="text-accent hover:underline">compress your GIF</a> rather than converting format.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Discord, Twitter, and social platforms</h4><p class="text-xs text-slate-500 mt-1">These platforms expect GIF uploads. While they internally convert to video, they do it on their terms. Uploading MP4 directly may produce different (often worse) results than uploading a well-compressed GIF. <a href="/compress-gif-for-discord/" class="text-accent hover:underline">Compress for the platform</a> rather than pre-converting.</p></div>
   </div>
 
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Advanced MP4 Embed Patterns</h2>
@@ -199,7 +199,7 @@ document.querySelectorAll(&apos;video[data-src]&apos;)
   </ol>
   <p class="text-sm text-slate-600 leading-relaxed mb-4">After conversion, verify each MP4 plays correctly by testing the <code>autoplay muted loop playsinline</code> attributes on your staging server. Some browsers have subtle autoplay differences — Chrome requires <code>muted</code>, Safari on iOS requires <code>playsinline</code>, and Firefox honors <code>autoplay</code> only when no user interaction has occurred on the page.</p>
 <div class="mt-8 pt-6 border-t border-slate-100">
-    <p class="text-xs text-slate-400">Related: <a href="/" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/gif-to-webp" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-optimizer" class="text-accent hover:underline">GIF Optimizer</a> &middot; <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a></p>
+    <p class="text-xs text-slate-400">Related: <a href="/" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/gif-to-webp/" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-optimizer/" class="text-accent hover:underline">GIF Optimizer</a> &middot; <a href="/resize-gif/" class="text-accent hover:underline">Resize GIF</a></p>
   </div>
 </article>
 </Base>

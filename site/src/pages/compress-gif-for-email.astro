@@ -25,9 +25,9 @@ const faqSchema = JSON.stringify({
 });
 ---
 <Base
-  title="Compress GIF for Email — Under 1MB for Campaigns &amp; 102KB for Gmail"
-  description="Compress animated GIFs for email. Shrink under Gmail's 102KB clipping threshold and under 1MB for email campaigns. Works in all major email clients. Instant browser-based compression."
-  schema={[webAppSchema, faqSchema].join("\n")}
+  title="Compress GIF for Email — Under 1MB, Beats Gmail 102KB Clipping"
+  description="Compress GIFs for email: beat Gmail's 102KB clipping threshold and 1MB campaign limits. Works across major email clients — instant, private, in-browser."
+  schemas={[webAppSchema, faqSchema]}
 >
 <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
   <h1 class="text-2xl font-bold text-slate-900 leading-tight">Compress GIF for <span class="text-accent">Email</span></h1>
@@ -61,7 +61,7 @@ const faqSchema = JSON.stringify({
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Step-by-Step: Compress a GIF for Email</h2>
   <ol class="space-y-4 mb-6">
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">1. Trim the animation to 3 seconds or less.</strong> Long animations balloon file size. Shorten your GIF before anything else — this is the most effective email optimization.</li>
-    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Resize to 200-400px width.</strong> Email columns are narrow. A 400px-wide GIF fits most layouts. <a href="/resize-gif" class="text-accent hover:underline">Resize first</a> — this removes pixel data the compressor does not need to process.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Resize to 200-400px width.</strong> Email columns are narrow. A 400px-wide GIF fits most layouts. <a href="/resize-gif/" class="text-accent hover:underline">Resize first</a> — this removes pixel data the compressor does not need to process.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">3. Click the &lt; 1MB email preset.</strong> This targets safe territory for all clients except Gmail. For Gmail specifically, you need to compress further.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">4. For Gmail-safe GIFs, use Maximum mode at 70-90.</strong> Reduce the color palette to 32-64. At this level, you will see visible quality loss — but the alternative is no animation at all.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">5. Design the first frame as a fallback.</strong> It must communicate the full message without animation, because Outlook desktop users will only see this frame.</li>
@@ -77,7 +77,7 @@ const faqSchema = JSON.stringify({
   </div>
 
   <div class="mt-8 pt-6 border-t border-slate-100">
-    <p class="text-xs text-slate-400">Related: <a href="/compress-gif-for-discord" class="text-accent hover:underline">Compress for Discord</a> &middot; <a href="/compress-gif-for-twitter" class="text-accent hover:underline">Compress for Twitter</a> &middot; <a href="/reduce-gif-size" class="text-accent hover:underline">Platform Size Guide</a> &middot; <a href="/gif-optimizer" class="text-accent hover:underline">Advanced Optimizer</a></p>
+    <p class="text-xs text-slate-400">Related: <a href="/compress-gif-for-discord/" class="text-accent hover:underline">Compress for Discord</a> &middot; <a href="/compress-gif-for-twitter/" class="text-accent hover:underline">Compress for Twitter</a> &middot; <a href="/reduce-gif-size/" class="text-accent hover:underline">Platform Size Guide</a> &middot; <a href="/gif-optimizer/" class="text-accent hover:underline">Advanced Optimizer</a></p>
   </div>
 </article>
 </Base>

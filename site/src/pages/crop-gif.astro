@@ -29,8 +29,8 @@ const webAppSchema = JSON.stringify({
 
 <Base
   title="Crop GIF Online Free - Trim Animated GIFs in Your Browser"
-  description="We built this cropper because we found ourselves switching between three different tools just to trim a GIF for social media. Now you can remove edges, set aspect ratios, and download — all in your browser, with no uploads and instant preview."
- schema={[webAppSchema, faqSchema].join("\n")}>
+  description="Crop animated GIFs online free. Remove edges, set custom aspect ratios, and trim frames — all in your browser. No uploads or watermarks, instant preview."
+ schemas={[webAppSchema, faqSchema]}>
 <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
   <h1 class="text-2xl font-bold text-slate-900 leading-tight">
     Crop GIF <span class="text-accent">Online</span>
@@ -130,7 +130,7 @@ const webAppSchema = JSON.stringify({
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Cropping vs Resizing: What Is the Difference?</h2>
   <p class="text-sm text-slate-600 leading-relaxed mb-3"><strong class="text-slate-800">Cropping</strong> cuts away parts of the image — you are selecting a region and discarding everything outside it. The result has new dimensions based on your selection. Content is permanently removed.</p>
   <p class="text-sm text-slate-600 leading-relaxed mb-4"><strong class="text-slate-800">Resizing</strong> scales the entire image — you are changing the pixel dimensions while keeping all content. Nothing is discarded; everything is scaled proportionally (or stretched, if aspect ratio is unlocked).</p>
-  <p class="text-sm text-slate-600 leading-relaxed mb-4">Use cropping to change composition. Use <a href="/resize-gif" class="text-accent hover:underline">resizing</a> to change dimensions. Use both together for complete control: crop to the right composition and aspect ratio, then resize to the exact pixel dimensions you need.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Use cropping to change composition. Use <a href="/resize-gif/" class="text-accent hover:underline">resizing</a> to change dimensions. Use both together for complete control: crop to the right composition and aspect ratio, then resize to the exact pixel dimensions you need.</p>
 
   
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Crop GIFs for Specific Platforms — Exact Recipes</h2>
@@ -141,7 +141,7 @@ const webAppSchema = JSON.stringify({
     <li>Select the <strong class="text-slate-800">1:1 ratio</strong> preset</li>
     <li>Position the crop box centered on the face or main subject</li>
     <li>Click Apply Crop</li>
-    <li>Use the <a href="/resize-gif" class="text-accent hover:underline">Resize tool</a> to set the cropped GIF to exactly 512×512</li>
+    <li>Use the <a href="/resize-gif/" class="text-accent hover:underline">Resize tool</a> to set the cropped GIF to exactly 512×512</li>
     <li>Compress to under 8MB (far below Discord's free tier limit for profile pictures)</li>
   </ol>
 
@@ -150,8 +150,8 @@ const webAppSchema = JSON.stringify({
   <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
     <li>Select the <strong class="text-slate-800">9:16 ratio</strong> preset</li>
     <li>Position the crop box on the most important vertical slice of your content</li>
-    <li>After cropping, <a href="/resize-gif" class="text-accent hover:underline">resize to 1080×1920</a></li>
-    <li>Consider converting to <a href="/gif-to-mp4" class="text-accent hover:underline">MP4</a> — Instagram automatically converts GIF uploads to video and MP4 gives you better quality control</li>
+    <li>After cropping, <a href="/resize-gif/" class="text-accent hover:underline">resize to 1080×1920</a></li>
+    <li>Consider converting to <a href="/gif-to-mp4/" class="text-accent hover:underline">MP4</a> — Instagram automatically converts GIF uploads to video and MP4 gives you better quality control</li>
   </ol>
 
   <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Twitter Header (3:1 Ultra-Wide)</h3>
@@ -179,7 +179,7 @@ const webAppSchema = JSON.stringify({
     <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Step</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Operation</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Starting size</th><th class="py-2.5 text-slate-500 font-medium text-xs">Result</th></tr></thead>
     <tbody>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-accent">1</td><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Crop</td><td class="py-2.5 pr-4 text-xs">8.2 MB</td><td class="py-2.5 text-xs">5.1 MB (removed 38% of area)</td></tr>
-      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-accent">2</td><td class="py-2.5 pr-4 text-xs font-medium text-slate-700"><a href="/resize-gif" class="text-accent hover:underline">Resize</a> to 600px</td><td class="py-2.5 pr-4 text-xs">5.1 MB</td><td class="py-2.5 text-xs">1.4 MB (reduced pixel count by 73%)</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-accent">2</td><td class="py-2.5 pr-4 text-xs font-medium text-slate-700"><a href="/resize-gif/" class="text-accent hover:underline">Resize</a> to 600px</td><td class="py-2.5 pr-4 text-xs">5.1 MB</td><td class="py-2.5 text-xs">1.4 MB (reduced pixel count by 73%)</td></tr>
       <tr class="border-b border-slate-100 bg-accent/[0.02]"><td class="py-2.5 pr-4 text-xs font-medium text-accent">3</td><td class="py-2.5 pr-4 text-xs font-medium text-slate-700"><a href="/" class="text-accent hover:underline">Compress</a> at Balanced 60</td><td class="py-2.5 pr-4 text-xs">1.4 MB</td><td class="py-2.5 text-xs text-accent font-medium">420 KB (95% total reduction)</td></tr>
     </tbody>
   </table></div>
@@ -189,11 +189,11 @@ const webAppSchema = JSON.stringify({
   <p class="text-sm text-slate-600 leading-relaxed mb-4">Cropping permanently removes content. If you later need the full image, there is no undo. Before cropping, ask yourself:</p>
   <ul class="space-y-2 mb-6">
     <li class="text-sm text-slate-600"><strong class="text-slate-800">Is the unwanted area truly unnecessary?</strong> A watermark, blank border, or taskbar in a screen recording is fair game. But cropping out context that someone might need later is irreversible — keep the original file.</li>
-    <li class="text-sm text-slate-600"><strong class="text-slate-800">Would resizing achieve the same goal?</strong> If you just want a smaller file, <a href="/resize-gif" class="text-accent hover:underline">resizing</a> scales everything proportionally without removing content. Cropping should be reserved for when you specifically want to remove part of the image.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Would resizing achieve the same goal?</strong> If you just want a smaller file, <a href="/resize-gif/" class="text-accent hover:underline">resizing</a> scales everything proportionally without removing content. Cropping should be reserved for when you specifically want to remove part of the image.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800">Is the crop ratio platform-compatible?</strong> Cropping to an unusual aspect ratio may look fine on your screen but will be letterboxed or further cropped by the target platform. Always check the platform's expected ratios before cropping.</li>
   </ul>
 <div class="mt-8 pt-6 border-t border-slate-100">
-    <p class="text-xs text-slate-400">Related: <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a> &middot; <a href="/" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/gif-to-webp" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-optimizer" class="text-accent hover:underline">GIF Optimizer</a></p>
+    <p class="text-xs text-slate-400">Related: <a href="/resize-gif/" class="text-accent hover:underline">Resize GIF</a> &middot; <a href="/" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/gif-to-webp/" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-optimizer/" class="text-accent hover:underline">GIF Optimizer</a></p>
   </div>
 </article>
 </Base>

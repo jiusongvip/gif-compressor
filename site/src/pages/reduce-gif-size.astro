@@ -25,9 +25,9 @@ const webAppSchema = JSON.stringify({
 });
 ---
 <Base
-  title="Reduce GIF Size Online — Shrink GIF File Size for Discord, Twitter, Email &amp; More"
-  description="Reduce GIF file size instantly with platform-specific targets. Make GIFs smaller for Discord (under 8MB), Twitter (under 5MB), WhatsApp (under 16MB), email (under 1MB), and websites. Real-time preview, 100% private."
-  schema={[webAppSchema, faqSchema].join("\n")}
+  title="Reduce GIF Size Online — For Discord, Twitter &amp; Email"
+  description="Reduce GIF file size instantly with platform-specific targets for Discord (8MB), Twitter (5MB), email (1MB), and web. Real-time preview, 100% private."
+  schemas={[webAppSchema, faqSchema]}
 >
 <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
   <h1 class="text-2xl font-bold text-slate-900 leading-tight">Reduce GIF Size <span class="text-accent">Instantly</span></h1>
@@ -63,10 +63,10 @@ const webAppSchema = JSON.stringify({
     <li class="text-sm text-slate-600"><strong class="text-slate-800">Reduce colors.</strong> Cut from 256 to 128 or 64 colors. For memes and simple graphics, 32-64 is often enough. Expect 30-50% savings.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800">Drop frames.</strong> Halve the frame rate from 30fps to 15fps. Most animations look nearly identical at half the file size.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800">Apply lossy LZW.</strong> Enable lossy compression at level 60-80 to merge similar colors. Saves 30-40% with minimal quality loss.</li>
-    <li class="text-sm text-slate-600"><strong class="text-slate-800"><a href="/resize-gif" class="text-accent hover:underline">Resize dimensions.</a></strong> A 1200px GIF scaled to 600px is 75% smaller — before any compression is applied.</li>
-    <li class="text-sm text-slate-600"><strong class="text-slate-800"><a href="/crop-gif" class="text-accent hover:underline">Crop unnecessary areas.</a></strong> Remove borders, watermarks, and empty space. Every cropped pixel reduces file size.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800"><a href="/resize-gif/" class="text-accent hover:underline">Resize dimensions.</a></strong> A 1200px GIF scaled to 600px is 75% smaller — before any compression is applied.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800"><a href="/crop-gif/" class="text-accent hover:underline">Crop unnecessary areas.</a></strong> Remove borders, watermarks, and empty space. Every cropped pixel reduces file size.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800">Remove duplicate frames.</strong> Many GIFs have identical consecutive frames. The tool detects and removes these automatically.</li>
-    <li class="text-sm text-slate-600"><strong class="text-slate-800">Convert format.</strong> <a href="/gif-to-webp" class="text-accent hover:underline">WebP</a> saves 60-90%. <a href="/gif-to-mp4" class="text-accent hover:underline">MP4</a> saves 80-95%. The nuclear option when a GIF is simply the wrong format.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800">Convert format.</strong> <a href="/gif-to-webp/" class="text-accent hover:underline">WebP</a> saves 60-90%. <a href="/gif-to-mp4/" class="text-accent hover:underline">MP4</a> saves 80-95%. The nuclear option when a GIF is simply the wrong format.</li>
   </ol>
 
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Step-by-Step: Reduce GIF Size for Each Platform</h2>
@@ -86,7 +86,7 @@ const webAppSchema = JSON.stringify({
   <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
     <li>Click the <strong class="text-slate-800">&lt; 5MB</strong> platform preset</li>
     <li>If still over, switch to Maximum mode and push the slider higher</li>
-    <li>For very large GIFs, <a href="/resize-gif" class="text-accent hover:underline">resize to 600px width</a> first — this alone often brings 15MB GIFs under Twitter limits</li>
+    <li>For very large GIFs, <a href="/resize-gif/" class="text-accent hover:underline">resize to 600px width</a> first — this alone often brings 15MB GIFs under Twitter limits</li>
     <li>Preview and download</li>
   </ol>
 
@@ -96,7 +96,7 @@ const webAppSchema = JSON.stringify({
     <li>Click the <strong class="text-slate-800">&lt; 1MB</strong> platform preset</li>
     <li>Keep animations under 3 seconds — trim longer GIFs first</li>
     <li>Use Quality mode (level 40-60) to preserve readability of any overlaid text</li>
-    <li>Consider <a href="/gif-to-webp" class="text-accent hover:underline">WebP</a> if your email platform supports it</li>
+    <li>Consider <a href="/gif-to-webp/" class="text-accent hover:underline">WebP</a> if your email platform supports it</li>
     <li>Test in multiple email clients before sending</li>
   </ol>
 
@@ -117,7 +117,7 @@ const webAppSchema = JSON.stringify({
   </div>
 
   <div class="mt-8 pt-6 border-t border-slate-100">
-    <p class="text-xs text-slate-400">Related: <a href="/compress-gif" class="text-accent hover:underline">Compress GIF Guide</a> &middot; <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a> &middot; <a href="/gif-optimizer" class="text-accent hover:underline">Advanced Optimizer</a> &middot; <a href="/gif-to-mp4" class="text-accent hover:underline">GIF to MP4</a></p>
+    <p class="text-xs text-slate-400">Related: <a href="/compress-gif/" class="text-accent hover:underline">Compress GIF Guide</a> &middot; <a href="/resize-gif/" class="text-accent hover:underline">Resize GIF</a> &middot; <a href="/gif-optimizer/" class="text-accent hover:underline">Advanced Optimizer</a> &middot; <a href="/gif-to-mp4/" class="text-accent hover:underline">GIF to MP4</a></p>
   </div>
 </article>
 </Base>

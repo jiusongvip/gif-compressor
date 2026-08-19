@@ -8,12 +8,21 @@ export interface Props {
   description?: string;
   ogImage?: string;
   schema?: string;
+  schemas?: string[];
 }
 
-const { title, description = "Free online GIF compression tool. Reduce animated GIF file size instantly. Processed in your browser - files never uploaded.", ogImage = "/og-default.png", schema } = Astro.props;
+const { title, description = "Free online GIF compression tool. Reduce animated GIF file size instantly. Processed in your browser - files never uploaded.", ogImage = "/og-default.png", schema, schemas = [] } = Astro.props;
+
+// 多个 JSON-LD 必须拆分为独立 <script> 标签，拼接在单个标签内是非法 JSON
+const allSchemas = [...(schema ? [schema] : []), ...schemas];
 
 const path = Astro.url.pathname;
 const segments = path.replace(/\/$/, '').split('/').filter(Boolean);
+const siteUrl = (import.meta.env.SITE || '').replace(/\/$/, '');
+// 首页根域例外：canonical/og:url 首页不带尾斜杠，内页带尾斜杠
+const canonicalUrl = path === '/' ? siteUrl : siteUrl + path;
+// og:image 必须为绝对 URL
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl + '/').href;
 const breadcrumbItems = [{ name: 'Home', url: '/' }];
 let accum = '';
 for (const seg of segments) {
@@ -27,7 +36,8 @@ const breadcrumbSchema = breadcrumbItems.length > 1 ? JSON.stringify({
     "@type": "ListItem",
     "position": i + 1,
     "name": item.name,
-    "item": new URL(item.url, Astro.url).href
+    // 内页 URL 带尾斜杠（首页根域例外）
+    "item": new URL(item.url === '/' ? '/' : item.url + '/', siteUrl + '/').href
   }))
 }) : null;
 ---
@@ -41,12 +51,12 @@ const breadcrumbSchema = breadcrumbItems.length > 1 ? JSON.stringify({
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <link rel="canonical" href={Astro.url.href} />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -55,7 +65,7 @@ const breadcrumbSchema = breadcrumbItems.length > 1 ? JSON.stringify({
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#2563EB" />
-    {schema && <script type="application/ld+json" set:html={schema} />}
+    {allSchemas.map((s) => <script type="application/ld+json" set:html={s} />)}
     {breadcrumbSchema && <script type="application/ld+json" set:html={breadcrumbSchema} />}
   </head>
   <body class="min-h-[100dvh] flex flex-col">

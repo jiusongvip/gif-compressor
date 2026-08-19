@@ -4,8 +4,8 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://gif-compressor.com',
-  trailingSlash: 'never',
+  site: 'https://www.gif-compressor.com',
+  trailingSlash: 'always',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()]

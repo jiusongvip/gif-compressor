@@ -1,6 +1,6 @@
 ---
-title: "Optimize GIFs for Core Web Vitals — The Web Developer's Guide to Fast GIF Delivery"
-description: "Learn how to optimize animated GIFs for Google Core Web Vitals. Target file sizes for LCP, reduce layout shifts with explicit dimensions, and choose the right format (GIF vs WebP vs MP4 vs AVIF)."
+title: "Optimize GIFs for Core Web Vitals — A Developer's Guide"
+description: "Optimize animated GIFs for Google Core Web Vitals: LCP file size targets, explicit dimensions to reduce layout shift, and picking GIF vs WebP vs MP4 vs AVIF."
 publishDate: 2025-08-11
 ---
 

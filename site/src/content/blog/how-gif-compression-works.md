@@ -1,6 +1,6 @@
 ---
 title: "How GIF Compression Works — The Complete Technical Guide"
-description: "Understand how GIF compression actually works: color reduction, frame optimization, LZW encoding, and lossy compression. Learn to shrink GIFs by 50-80% without noticeable quality loss."
+description: "How GIF compression works: color reduction, frame optimization, LZW encoding, and lossy compression. Shrink GIFs by 50-80% without visible quality loss."
 publishDate: 2025-08-01
 ---
 

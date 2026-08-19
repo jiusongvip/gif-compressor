@@ -30,7 +30,7 @@ const webAppSchema = JSON.stringify({
 <Base
   title="Resize GIF - Change GIF Dimensions Online Free"
   description="Resize animated GIFs online free. Change GIF width and height, scale by percentage, or set exact dimensions. Instant processing in your browser."
- schema={[webAppSchema, faqSchema].join("\n")}>
+ schemas={[webAppSchema, faqSchema]}>
   <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
     <h1 class="text-2xl font-bold text-slate-900 leading-tight">
       Resize GIF <span class="text-accent">Online</span>
@@ -164,7 +164,7 @@ const webAppSchema = JSON.stringify({
       <strong class="text-slate-800">Keep aspect ratio</strong> (the default) preserves proportions. Your GIF will not look stretched or squashed. The tool automatically calculates the matching dimension when you change one side. This is the right choice 95% of the time.
     </p>
     <p class="text-sm text-slate-600 leading-relaxed mb-4">
-      <strong class="text-slate-800">Unlock aspect ratio</strong> when you need specific pixel dimensions that do not match the original — usually for platform requirements. A 1920×1080 GIF resized to 600×600 (square) will look stretched unless you also crop. In that case, <a href="/crop-gif" class="text-accent hover:underline">crop first</a>, then resize.
+      <strong class="text-slate-800">Unlock aspect ratio</strong> when you need specific pixel dimensions that do not match the original — usually for platform requirements. A 1920×1080 GIF resized to 600×600 (square) will look stretched unless you also crop. In that case, <a href="/crop-gif/" class="text-accent hover:underline">crop first</a>, then resize.
     </p>
 
     <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Resize + Compress: The Complete Workflow</h2>
@@ -185,7 +185,7 @@ const webAppSchema = JSON.stringify({
     </p>
 
     <div class="mt-8 pt-6 border-t border-slate-100">
-      <p class="text-xs text-slate-400">Related: <a href="/" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/crop-gif" class="text-accent hover:underline">Crop GIF</a> &middot; <a href="/gif-to-webp" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-to-mp4" class="text-accent hover:underline">GIF to MP4</a></p>
+      <p class="text-xs text-slate-400">Related: <a href="/" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/crop-gif/" class="text-accent hover:underline">Crop GIF</a> &middot; <a href="/gif-to-webp/" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-to-mp4/" class="text-accent hover:underline">GIF to MP4</a></p>
     </div>
   </article>
 
@@ -193,9 +193,9 @@ const webAppSchema = JSON.stringify({
     <h2 class="text-base font-semibold text-slate-900 mb-4">More tools</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
       <a href="/" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">Compress GIF</p><p class="text-xs text-slate-400 mt-1">Reduce file size</p></a>
-      <a href="/crop-gif" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">Crop GIF</p><p class="text-xs text-slate-400 mt-1">Trim edges</p></a>
-      <a href="/gif-to-webp" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">GIF to WebP</p><p class="text-xs text-slate-400 mt-1">Modern format</p></a>
-      <a href="/gif-to-mp4" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">GIF to MP4</p><p class="text-xs text-slate-400 mt-1">Video conversion</p></a>
+      <a href="/crop-gif/" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">Crop GIF</p><p class="text-xs text-slate-400 mt-1">Trim edges</p></a>
+      <a href="/gif-to-webp/" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">GIF to WebP</p><p class="text-xs text-slate-400 mt-1">Modern format</p></a>
+      <a href="/gif-to-mp4/" class="tool-card p-4 group"><p class="text-sm font-medium text-slate-900">GIF to MP4</p><p class="text-xs text-slate-400 mt-1">Video conversion</p></a>
     </div>
   </div>
 </Base>

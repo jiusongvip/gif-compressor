@@ -1,5 +1,5 @@
 ---
-title: "Why Are GIF Files So Large? Understanding the 1987 Format That Refuses to Die"
+title: "Why Are GIF Files So Large? A 1987 Format That Refuses to Die"
 description: "GIF was designed in 1987 for 320x240 screens. Today we use it for 4K memes. Here is why GIF files balloon to 10MB+ and what you can do about it."
 publishDate: 2025-08-08
 ---

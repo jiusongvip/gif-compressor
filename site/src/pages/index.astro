@@ -51,16 +51,49 @@ const howToSchema = JSON.stringify({
 <Base
   title="Free Online GIF Compressor — Reduce Size by Up to 70%"
   description="Compress GIF files online for free. Reduce GIF size by up to 70% while keeping animation quality. Works in your browser - no upload needed, 100% private."
-  schema={[schema, orgSchema, faqSchema, howToSchema].join("\n")}
+  schemas={[schema, orgSchema, faqSchema, howToSchema]}
 >
   <section class="max-w-4xl mx-auto px-4 pt-8 pb-6">
     <h1 class="text-2xl font-bold text-slate-900 leading-tight">
       Compress GIF Files <span class="text-accent">&mdash; Free, Instant, Private</span>
     </h1>
-    <p class="text-[10px] text-slate-400 mb-1">Built by web performance engineers &middot; <a href="/about" class="text-accent hover:underline">About us</a> &middot; Last updated: August 2026</p>
+    <p class="text-[10px] text-slate-400 mb-1">Built by web performance engineers &middot; <a href="/about/" class="text-accent hover:underline">About us</a> &middot; Last updated: August 2026</p>
     <p class="text-sm text-slate-500 mt-2 max-w-xl leading-relaxed">
       Shrink animations by up to <strong class="text-slate-900">70%</strong> in seconds. Compare the before and after, then download. Nothing ever leaves your browser.
     </p>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4 mt-6" id="demo-card">
+    <div class="tool-card overflow-hidden flex flex-col sm:flex-row items-stretch">
+      <!-- 示例 GIF（已压缩版本，循环播放） -->
+      <div class="sm:w-[220px] shrink-0 bg-slate-50 relative border-b sm:border-b-0 sm:border-r border-slate-100">
+        <img
+          src="/demo/demo-compressed.gif"
+          alt="Animated example GIF of a blinking cartoon cat, compressed with GIF Compress"
+          width="480" height="360"
+          loading="lazy"
+          class="w-full h-full object-cover"
+        />
+        <span class="absolute top-2 left-2 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">-94%</span>
+      </div>
+      <!-- 效果数字 + CTA -->
+      <div class="flex-1 p-5 flex flex-col justify-center">
+        <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">See it in action</p>
+        <div class="flex items-baseline gap-2.5 mt-2 flex-wrap">
+          <span class="text-xs text-slate-400 line-through">1.17 MB</span>
+          <span class="text-lg font-bold text-accent leading-none">70 KB</span>
+          <span class="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">save 94%</span>
+        </div>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed max-w-md">
+          A real GIF compressed with the same engine right on this page &mdash; same animation, 94% smaller.
+          Click to load it into the tool and try it yourself.
+        </p>
+        <button id="try-demo-btn" type="button"
+          class="mt-3 self-start px-4 py-2 bg-accent text-white text-xs font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98]">
+          Try this GIF &rarr;
+        </button>
+      </div>
+    </div>
   </section>
 
   <section class="max-w-4xl mx-auto px-4">
@@ -115,9 +148,9 @@ const howToSchema = JSON.stringify({
 
   <section class="max-w-4xl mx-auto px-4 mt-16">
     <h2 class="text-base font-semibold text-slate-900 mb-6">Built for wherever you share GIFs</h2>
-    <p class="text-xs text-slate-400 mb-1">All compression powered by <a href="https://github.com/kohler/gifsicle" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">gifsicle</a>. Optimizing for <a href="https://web.dev/vitals/" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">Core Web Vitals</a>? See our <a href="/gif-optimizer" class="text-accent hover:underline">advanced optimizer</a>.</p>
+    <p class="text-xs text-slate-400 mb-1">All compression powered by <a href="https://github.com/kohler/gifsicle" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">gifsicle</a>. Optimizing for <a href="https://web.dev/vitals/" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">Core Web Vitals</a>? See our <a href="/gif-optimizer/" class="text-accent hover:underline">advanced optimizer</a>.</p>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <a href="/compress-gif-for-discord" class="tool-card p-5 group">
+      <a href="/compress-gif-for-discord/" class="tool-card p-5 group">
         <div class="flex items-center gap-3 mb-2">
           <div class="w-8 h-8 rounded-lg bg-[#5865F2]/10 flex items-center justify-center shrink-0">
             <span class="text-[#5865F2] text-sm font-bold">D</span>
@@ -127,7 +160,7 @@ const howToSchema = JSON.stringify({
         <p class="text-xs text-slate-500 leading-relaxed">Under 8MB for free tier. Reactions, memes, and stickers that load instantly in chat.</p>
         <p class="text-[10px] text-accent mt-2 group-hover:underline">Compress for Discord &rarr;</p>
       </a>
-      <a href="/compress-gif-for-twitter" class="tool-card p-5 group">
+      <a href="/compress-gif-for-twitter/" class="tool-card p-5 group">
         <div class="flex items-center gap-3 mb-2">
           <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
             <span class="text-slate-700 text-sm font-bold">𝕏</span>
@@ -137,7 +170,7 @@ const howToSchema = JSON.stringify({
         <p class="text-xs text-slate-500 leading-relaxed">Under 3MB for mobile, 5MB for web. GIFs that survive Twitter's MP4 auto-conversion.</p>
         <p class="text-[10px] text-accent mt-2 group-hover:underline">Compress for Twitter &rarr;</p>
       </a>
-      <a href="/compress-gif-for-email" class="tool-card p-5 group">
+      <a href="/compress-gif-for-email/" class="tool-card p-5 group">
         <div class="flex items-center gap-3 mb-2">
           <div class="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
             <span class="text-accent text-sm font-bold">@</span>
@@ -155,19 +188,19 @@ const howToSchema = JSON.stringify({
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div class="tool-card p-5">
         <h3 class="text-sm font-semibold text-slate-900">Content Creators &amp; Meme Makers</h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Share reaction GIFs on <a href="/compress-gif-for-discord" class="text-accent hover:underline">Discord</a> and <a href="/compress-gif-for-twitter" class="text-accent hover:underline">Twitter</a> without hitting file size limits. One-click platform presets make it effortless.</p>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Share reaction GIFs on <a href="/compress-gif-for-discord/" class="text-accent hover:underline">Discord</a> and <a href="/compress-gif-for-twitter/" class="text-accent hover:underline">Twitter</a> without hitting file size limits. One-click platform presets make it effortless.</p>
       </div>
       <div class="tool-card p-5">
         <h3 class="text-sm font-semibold text-slate-900">Web Developers &amp; Designers</h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Optimize GIFs for Core Web Vitals. Use the <a href="/gif-optimizer" class="text-accent hover:underline">advanced optimizer</a> to hit exact file size targets for LCP scores. Batch process entire asset libraries.</p>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Optimize GIFs for Core Web Vitals. Use the <a href="/gif-optimizer/" class="text-accent hover:underline">advanced optimizer</a> to hit exact file size targets for LCP scores. Batch process entire asset libraries.</p>
       </div>
       <div class="tool-card p-5">
         <h3 class="text-sm font-semibold text-slate-900">Email Marketers</h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Add animated GIFs to campaigns without triggering Gmail's 102KB clipping. Our <a href="/compress-gif-for-email" class="text-accent hover:underline">email compression guide</a> covers every client.</p>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Add animated GIFs to campaigns without triggering Gmail's 102KB clipping. Our <a href="/compress-gif-for-email/" class="text-accent hover:underline">email compression guide</a> covers every client.</p>
       </div>
       <div class="tool-card p-5">
         <h3 class="text-sm font-semibold text-slate-900">E-Commerce Teams</h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Product demo GIFs under 200KB for fast product pages. Consistent quality across your entire catalog with batch mode and <a href="/resize-gif" class="text-accent hover:underline">resize</a> options.</p>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Product demo GIFs under 200KB for fast product pages. Consistent quality across your entire catalog with batch mode and <a href="/resize-gif/" class="text-accent hover:underline">resize</a> options.</p>
       </div>
     </div>
   </section>
@@ -261,7 +294,7 @@ const howToSchema = JSON.stringify({
           How do I compress a GIF for Discord?
           <span class="text-slate-400 group-open:rotate-180 transition-transform"><Icon name="caret-down" size={14} /></span>
         </summary>
-        <p class="text-xs text-slate-500 mt-3 leading-relaxed">Discord free accounts limit GIF uploads to 8MB. Use the <strong class="text-slate-700">&lt; 8MB Discord preset</strong> in the tool, or set Balanced mode at level 60-80. For best results, <a href="/resize-gif" class="text-accent hover:underline">resize to 600px width</a> before compressing. See our <a href="/compress-gif-for-discord" class="text-accent hover:underline">full Discord GIF compression guide</a>.</p>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">Discord free accounts limit GIF uploads to 8MB. Use the <strong class="text-slate-700">&lt; 8MB Discord preset</strong> in the tool, or set Balanced mode at level 60-80. For best results, <a href="/resize-gif/" class="text-accent hover:underline">resize to 600px width</a> before compressing. See our <a href="/compress-gif-for-discord/" class="text-accent hover:underline">full Discord GIF compression guide</a>.</p>
       </details>
       <details class="group tool-card p-4">
         <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
@@ -276,49 +309,62 @@ const howToSchema = JSON.stringify({
   <section class="max-w-4xl mx-auto px-4 mt-16">
     <h2 class="text-base font-semibold text-slate-900 mb-6">More GIF tools</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <a href="/resize-gif" class="tool-card p-4 group">
+      <a href="/resize-gif/" class="tool-card p-4 group">
         <Icon name="arrows-out" size={20} class="text-slate-400 group-hover:text-accent transition-colors mb-2" />
         <p class="text-sm font-medium text-slate-900">Resize GIF</p>
         <p class="text-xs text-slate-400 mt-1">Change dimensions</p>
       </a>
-      <a href="/crop-gif" class="tool-card p-4 group">
+      <a href="/crop-gif/" class="tool-card p-4 group">
         <Icon name="scissors" size={20} class="text-slate-400 group-hover:text-accent transition-colors mb-2" />
         <p class="text-sm font-medium text-slate-900">Crop GIF</p>
         <p class="text-xs text-slate-400 mt-1">Trim edges</p>
       </a>
-      <a href="/gif-to-webp" class="tool-card p-4 group">
+      <a href="/gif-to-webp/" class="tool-card p-4 group">
         <Icon name="image" size={20} class="text-slate-400 group-hover:text-accent transition-colors mb-2" />
         <p class="text-sm font-medium text-slate-900">GIF to WebP</p>
         <p class="text-xs text-slate-400 mt-1">Save 80%+ space</p>
       </a>
-      <a href="/gif-to-mp4" class="tool-card p-4 group">
+      <a href="/gif-to-mp4/" class="tool-card p-4 group">
         <Icon name="file-gif" size={20} class="text-slate-400 group-hover:text-accent transition-colors mb-2" />
         <p class="text-sm font-medium text-slate-900">GIF to MP4</p>
         <p class="text-xs text-slate-400 mt-1">Video conversion</p>
       </a>
-      <a href="/gif-optimizer" class="tool-card p-4 group">
+      <a href="/gif-optimizer/" class="tool-card p-4 group">
         <Icon name="sliders-horizontal" size={20} class="text-slate-400 group-hover:text-accent transition-colors mb-2" />
         <p class="text-sm font-medium text-slate-900">GIF Optimizer</p>
         <p class="text-xs text-slate-400 mt-1">Advanced control</p>
       </a>
-      <a href="/compress-gif-for-discord" class="tool-card p-4 group">
+      <a href="/compress-gif-for-discord/" class="tool-card p-4 group">
         <span class="text-[#5865F2] text-sm font-bold">D</span>
         <p class="text-sm font-medium text-slate-900 mt-1">For Discord</p>
         <p class="text-xs text-slate-400 mt-1">Under 8MB</p>
       </a>
-      <a href="/compress-gif-for-twitter" class="tool-card p-4 group">
+      <a href="/compress-gif-for-twitter/" class="tool-card p-4 group">
         <span class="text-slate-700 text-sm font-bold">𝕏</span>
         <p class="text-sm font-medium text-slate-900 mt-1">For Twitter</p>
         <p class="text-xs text-slate-400 mt-1">Under 3MB</p>
       </a>
-      <a href="/compress-gif-for-email" class="tool-card p-4 group">
+      <a href="/compress-gif-for-email/" class="tool-card p-4 group">
         <span class="text-accent text-sm font-bold">@</span>
         <p class="text-sm font-medium text-slate-900 mt-1">For Email</p>
         <p class="text-xs text-slate-400 mt-1">Under 1MB</p>
       </a>
     </div>
     <p class="text-xs text-slate-400 text-center mt-6">
-      Want to learn more? Check our <a href="/faq" class="text-accent hover:underline">full FAQ</a> or browse the <a href="/compress-gif" class="text-accent hover:underline">compression guide</a>.
+      Want to learn more? Check our <a href="/faq/" class="text-accent hover:underline">full FAQ</a> or browse the <a href="/compress-gif/" class="text-accent hover:underline">compression guide</a>.
     </p>
   </section>
+  <script>
+    // 演示卡：载入示例 GIF 到工具
+    const tryDemoBtn = document.getElementById('try-demo-btn');
+    tryDemoBtn?.addEventListener('click', () => {
+      const input = document.getElementById('url-input');
+      const loadBtn = document.getElementById('url-load-btn');
+      if (input && loadBtn) {
+        input.value = '/demo/demo-original.gif';
+        loadBtn.click();
+      }
+      document.getElementById('gif-tool')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
 </Base>

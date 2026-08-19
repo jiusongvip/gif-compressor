@@ -27,8 +27,8 @@ const webAppSchema = JSON.stringify({
 ---
 <Base
   title="GIF Optimizer — Advanced Compression with Per-Parameter Control"
-  description="Advanced GIF optimizer with full control over color palettes, frame rates, and lossy compression. Fine-tune every parameter for Core Web Vitals, web performance, and maximum file size reduction."
-  schema={[webAppSchema, faqSchema].join("\n")}
+  description="GIF optimizer with full control over colors, frame rates, and lossy compression. Tune every parameter for Core Web Vitals and smaller files."
+  schemas={[webAppSchema, faqSchema]}
 >
 <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
   <h1 class="text-2xl font-bold text-slate-900 leading-tight">GIF Optimizer <span class="text-accent">Advanced</span></h1>
@@ -121,15 +121,15 @@ const webAppSchema = JSON.stringify({
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Photo / video clip</td><td class="py-2.5 pr-4 text-xs">128-192</td><td class="py-2.5 pr-4 text-xs">15-20fps</td><td class="py-2.5 pr-4 text-xs">Level 50-70</td><td class="py-2.5 text-xs text-accent font-medium">40-60%</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Meme / simple graphic</td><td class="py-2.5 pr-4 text-xs">32-64</td><td class="py-2.5 pr-4 text-xs">10-12fps</td><td class="py-2.5 pr-4 text-xs">Level 70-85</td><td class="py-2.5 text-xs text-accent font-medium">50-70%</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Long animation (30+ frames)</td><td class="py-2.5 pr-4 text-xs">64-128</td><td class="py-2.5 pr-4 text-xs">8-12fps</td><td class="py-2.5 pr-4 text-xs">Level 60-80</td><td class="py-2.5 text-xs text-accent font-medium">60-80%</td></tr>
-      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Screen recording</td><td class="py-2.5 pr-4 text-xs">N/A</td><td class="py-2.5 pr-4 text-xs">N/A</td><td class="py-2.5 pr-4 text-xs">N/A</td><td class="py-2.5 text-xs">Convert to <a href="/gif-to-mp4" class="text-accent hover:underline">MP4</a></td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Screen recording</td><td class="py-2.5 pr-4 text-xs">N/A</td><td class="py-2.5 pr-4 text-xs">N/A</td><td class="py-2.5 pr-4 text-xs">N/A</td><td class="py-2.5 text-xs">Convert to <a href="/gif-to-mp4/" class="text-accent hover:underline">MP4</a></td></tr>
       <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Sticker / small icon</td><td class="py-2.5 pr-4 text-xs">8-16</td><td class="py-2.5 pr-4 text-xs">Keep all</td><td class="py-2.5 pr-4 text-xs">Level 40-60</td><td class="py-2.5 text-xs text-accent font-medium">20-40%</td></tr>
     </tbody>
   </table></div>
 
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Common Optimization Mistakes</h2>
   <ul class="space-y-2 mb-6">
-    <li class="text-sm text-slate-600 flex gap-2"><span class="text-red-500 font-bold">&times;</span> <strong class="text-slate-800">Optimizing a GIF that should not be a GIF.</strong> Over 5 seconds or photographic? Convert to <a href="/gif-to-mp4" class="text-accent hover:underline">MP4</a> or <a href="/gif-to-webp" class="text-accent hover:underline">WebP</a> first.</li>
-    <li class="text-sm text-slate-600 flex gap-2"><span class="text-red-500 font-bold">&times;</span> <strong class="text-slate-800">Reducing palette before resizing.</strong> Always <a href="/resize-gif" class="text-accent hover:underline">resize</a> first — a 2000px GIF reduced to 800px saves 85% before any optimization.</li>
+    <li class="text-sm text-slate-600 flex gap-2"><span class="text-red-500 font-bold">&times;</span> <strong class="text-slate-800">Optimizing a GIF that should not be a GIF.</strong> Over 5 seconds or photographic? Convert to <a href="/gif-to-mp4/" class="text-accent hover:underline">MP4</a> or <a href="/gif-to-webp/" class="text-accent hover:underline">WebP</a> first.</li>
+    <li class="text-sm text-slate-600 flex gap-2"><span class="text-red-500 font-bold">&times;</span> <strong class="text-slate-800">Reducing palette before resizing.</strong> Always <a href="/resize-gif/" class="text-accent hover:underline">resize</a> first — a 2000px GIF reduced to 800px saves 85% before any optimization.</li>
     <li class="text-sm text-slate-600 flex gap-2"><span class="text-red-500 font-bold">&times;</span> <strong class="text-slate-800">Over-optimizing.</strong> Pushing every parameter to maximum produces unusable GIFs. Use the live preview to verify each change.</li>
     <li class="text-sm text-slate-600 flex gap-2"><span class="text-red-500 font-bold">&times;</span> <strong class="text-slate-800">Uploading to tools that process server-side.</strong> Your files are exposed. All our tools run in your browser.</li>
   </ul>
@@ -141,7 +141,7 @@ const webAppSchema = JSON.stringify({
   <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Scenario 1: Product Page Hero — Target Under 500KB</h3>
   <p class="text-sm text-slate-600 leading-relaxed mb-2">You have a product demo GIF (1920×1080px, 45 frames, 8.2MB) that needs to be the hero element on a landing page. Core Web Vitals requires the LCP element under 500KB.</p>
   <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
-    <li><a href="/resize-gif" class="text-accent hover:underline">Resize to 1200px width</a> — immediately cuts to ~3MB</li>
+    <li><a href="/resize-gif/" class="text-accent hover:underline">Resize to 1200px width</a> — immediately cuts to ~3MB</li>
     <li>Set palette to 128 colors — product photos need color fidelity</li>
     <li>Drop frame rate to 15fps — product demos look smooth at this rate</li>
     <li>Set lossy LZW to level 40 — enough to get under the wire without visible artifacts</li>
@@ -164,7 +164,7 @@ const webAppSchema = JSON.stringify({
     <li>Keep palette at 256 colors — terminal text needs crisp pixel-perfect rendering</li>
     <li>Drop frame rate to 8fps — terminal recordings do not need smooth motion</li>
     <li>Set lossy LZW to level 20 — preserve every character edge</li>
-    <li>Result: ~2.8MB file. An 81% reduction while maintaining text readability. If still too large, consider <a href="/gif-to-mp4" class="text-accent hover:underline">converting to MP4</a> — GitHub supports video embeds.</li>
+    <li>Result: ~2.8MB file. An 81% reduction while maintaining text readability. If still too large, consider <a href="/gif-to-mp4/" class="text-accent hover:underline">converting to MP4</a> — GitHub supports video embeds.</li>
   </ol>
 <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Frequently Asked Questions</h2>
   <div class="space-y-3 mb-8">
@@ -175,7 +175,7 @@ const webAppSchema = JSON.stringify({
   </div>
 
   <div class="mt-8 pt-6 border-t border-slate-100">
-    <p class="text-xs text-slate-400">Related: <a href="/" class="text-accent hover:underline">Basic Compressor</a> &middot; <a href="/gif-to-webp" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-to-mp4" class="text-accent hover:underline">GIF to MP4</a> &middot; <a href="/resize-gif" class="text-accent hover:underline">Resize GIF</a></p>
+    <p class="text-xs text-slate-400">Related: <a href="/" class="text-accent hover:underline">Basic Compressor</a> &middot; <a href="/gif-to-webp/" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-to-mp4/" class="text-accent hover:underline">GIF to MP4</a> &middot; <a href="/resize-gif/" class="text-accent hover:underline">Resize GIF</a></p>
   </div>
 </article>
 </Base>

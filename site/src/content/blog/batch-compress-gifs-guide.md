@@ -1,6 +1,6 @@
 ---
-title: "How to Batch Compress Multiple GIFs at Once — Save Hours of Manual Work"
-description: "Learn how to compress dozens of GIFs simultaneously. Step-by-step guide to batch GIF compression for content creators, social media managers, and developers who handle large GIF libraries."
+title: "How to Batch Compress Multiple GIFs at Once"
+description: "Learn to batch compress dozens of GIFs at once. Step-by-step guide for content creators, social media managers, and developers with large GIF libraries."
 publishDate: 2025-08-11
 ---
 
