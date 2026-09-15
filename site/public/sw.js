@@ -1,5 +1,5 @@
 // GIF Compress Service Worker
-const CACHE = 'gif-compress-v1';
+const CACHE = 'gif-compress-v2';
 const ASSETS = [
   '/',
   '/compress-gif/',
