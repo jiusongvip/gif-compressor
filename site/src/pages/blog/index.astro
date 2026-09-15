@@ -10,7 +10,9 @@ posts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
   description="Expert guides on GIF compression, format comparisons, Core Web Vitals optimization, and platform techniques. Written by engineers who build GIF tools."
 >
 <div class="max-w-2xl mx-auto px-4 pt-10 pb-16">
-  <h1 class="text-2xl font-bold text-slate-900 mb-2">Blog</h1>  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 mb-8">
+  <h1 class="text-2xl font-bold text-slate-900 mb-2">Blog</h1>
+  <h2 class="text-lg font-semibold text-slate-900 mt-6 mb-3">Quick tools &amp; guides</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
     <a href="/compress-gif/" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">How to Compress a GIF</p><p class="text-[10px] text-slate-400 mt-0.5">Complete step-by-step guide</p></a>
     <a href="/gif-optimizer/" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">Advanced GIF Optimizer</p><p class="text-[10px] text-slate-400 mt-0.5">Per-parameter control for developers</p></a>
     <a href="/reduce-gif-size/" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">Platform Size Limits</p><p class="text-[10px] text-slate-400 mt-0.5">Reference for every platform</p></a>
@@ -22,7 +24,8 @@ posts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
     <a href="/faq/" class="tool-card p-3 group"><p class="text-xs font-medium text-slate-700 group-hover:text-accent transition-colors">FAQ</p><p class="text-[10px] text-slate-400 mt-0.5">Answers to common questions</p></a>
   </div>
 
-  <div class="prose prose-sm prose-slate max-w-none mt-4 mb-10">
+  <h2 class="text-lg font-semibold text-slate-900 mt-8 mb-3">What we write about</h2>
+  <div class="prose prose-sm prose-slate max-w-none mb-10">
     <p class="text-sm text-slate-600 leading-relaxed">
       We write about GIF compression from the perspective of people who actually build GIF tools.
       Every article is grounded in our experience optimizing thousands of animations across real production
@@ -46,15 +49,16 @@ posts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
     </p>
   </div>
 
+  <h2 class="text-lg font-semibold text-slate-900 mt-8 mb-4">Latest articles</h2>
   <div class="space-y-6">
     {posts.map((post) => (
       <article class="tool-card p-5 group">
         <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">
           {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
         </p>
-        <h2 class="text-base font-semibold text-slate-900 leading-snug group-hover:text-accent transition-colors">
+        <h3 class="text-base font-semibold text-slate-900 leading-snug group-hover:text-accent transition-colors">
           <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
-        </h2>
+        </h3>
         <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">{post.data.description}</p>
         <div class="flex items-center gap-2 mt-3">
           <div class="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center text-accent text-[8px] font-bold">
