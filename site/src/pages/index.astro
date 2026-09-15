@@ -277,7 +277,15 @@ const howToSchema = JSON.stringify({
 
 <section class="max-w-4xl mx-auto px-4 mt-16" id="sources">
     <h2 class="text-base font-semibold text-slate-900 mb-2">Sources &amp; references</h2>
-    <p class="text-xs text-slate-500 mb-4">The technical and historical claims on this page are attributed to the following authoritative references.</p>
+    <p class="text-xs text-slate-500 mb-4">The technical and historical claims on this page are based on, and quoted from, the following authoritative sources.</p>
+    <blockquote class="my-4 border-l-4 border-accent bg-accent/5 px-4 py-3 rounded-r-md">
+      <p class="text-sm text-slate-700 leading-relaxed">&ldquo;GIF images are compressed using the Lempel&ndash;Ziv&ndash;Welch (LZW) lossless data compression technique to reduce the file size without degrading the visual quality.&rdquo;</p>
+      <footer class="text-xs text-slate-600 mt-2">&mdash; Wikipedia contributors, &ldquo;<a href="https://en.wikipedia.org/wiki/GIF" rel="noopener noreferrer nofollow" target="_blank" class="text-accent">Graphics Interchange Format</a>,&rdquo; Wikipedia, The Free Encyclopedia (CC&nbsp;BY-SA&nbsp;4.0).</footer>
+    </blockquote>
+    <blockquote class="my-4 border-l-4 border-accent bg-accent/5 px-4 py-3 rounded-r-md">
+      <p class="text-sm text-slate-700 leading-relaxed">&ldquo;Gifsicle is a command-line tool for creating, editing, and getting information about GIF images and animations&hellip; Optimize your animations! This stores only the changed portion of each frame, and can radically shrink your GIFs&hellip; Gifsicle&rsquo;s optimizer is pretty powerful, and usually reduces animations to within a couple bytes of the best commercial optimizers.&rdquo;</p>
+      <footer class="text-xs text-slate-600 mt-2">&mdash; Eddie Kohler, <a href="https://www.lcdf.org/gifsicle/" rel="noopener noreferrer" target="_blank" class="text-accent">the gifsicle project</a>. Our compression engine is built on this exact tool.</footer>
+    </blockquote>
     <ul class="space-y-2 text-xs text-slate-600 leading-relaxed">
       <li><strong class="text-slate-800">GIF format &amp; history.</strong> The Graphics Interchange Format was created by a team led by Steve Wilhite and introduced by CompuServe in 1987, using 8-bit color and LZW compression. Source: <a href="https://en.wikipedia.org/wiki/GIF" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">Wikipedia — Graphics Interchange Format</a>.</li>
       <li><strong class="text-slate-800">Compression engine.</strong> This tool optimizes GIFs with <a href="https://github.com/kohler/gifsicle" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">gifsicle</a> by Eddie Kohler, an open-source GIF optimizer compiled to WebAssembly.</li>

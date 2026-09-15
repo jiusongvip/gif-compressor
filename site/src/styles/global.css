@@ -27,8 +27,8 @@
     color: white;
   }
 
-  /* 无障碍 (link-in-text-block)：正文/列表内的行内链接加下划线，不依赖颜色区分 */
-  main :is(p, li, dd, td) a.text-accent {
+  /* 无障碍 (link-in-text-block)：正文/列表/引用内的行内链接加下划线，不依赖颜色区分 */
+  main :is(p, li, dd, td, blockquote, footer) a.text-accent {
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;
