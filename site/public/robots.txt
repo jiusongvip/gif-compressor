@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://www.gifcompressors.com/sitemap.xml
 Sitemap: https://www.gifcompressors.com/sitemap-index.xml
