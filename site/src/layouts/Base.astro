@@ -78,9 +78,9 @@ const breadcrumbSchema = breadcrumbItems.length > 1 ? JSON.stringify({
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
-    <!-- 自托管 Geist 变量字体（latin 子集，本地文件）：不再请求 Google Fonts；
-         以 low 优先级预加载，保证 LCP 图（High）优先获得带宽，字体到位后 swap 替换 -->
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/geist-latin-var.woff2" crossorigin fetchpriority="low" />
+    <!-- 自托管 Geist 变量字体（latin 子集，本地文件）：不再请求 Google Fonts。
+         不 preload：让首屏关键请求只剩 文档 + LCP 图；字体通过 @font-face 自然延后到达，
+         font-display:swap 保证文本先以 fallback 渲染，不参与关键带宽竞争。 -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
