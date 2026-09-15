@@ -1,0 +1,19 @@
+# Cloudflare Pages 缓存策略
+
+# 内容哈希资源：一年强缓存（文件名带 hash，可安全 immutable）
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 静态示例 GIF：30 天
+/demo/*
+  Cache-Control: public, max-age=2592000
+
+# 未哈希的应用脚本：1 天，兼顾缓存与更新时效
+/js/*
+  Cache-Control: public, max-age=86400
+
+# Service Worker 不可长缓存，否则新版本无法下发
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+/manifest.json
+  Cache-Control: public, max-age=3600

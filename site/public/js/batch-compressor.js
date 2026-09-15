@@ -1,5 +1,4 @@
-import gifsicle from 'https://esm.sh/gifsicle-wasm-browser';
-import JSZip from 'https://esm.sh/jszip@3.10.1';
+// gifsicle 与 JSZip 仅在批量压缩/打包时才动态加载，避免页面加载期争抢带宽
 
 function formatSize(bytes) {
   if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
@@ -100,7 +99,9 @@ if (batchCompressBtn) {
 
     batchCompressBtn.disabled = true;
     batchProgressBar.classList.remove('hidden');
+    batchProgressText.textContent = 'Loading engine...';
 
+    const { default: gifsicle } = await import('https://esm.sh/gifsicle-wasm-browser');
     const toCompress = batchFiles.filter(f => f.status !== 'error');
     for (let i = 0; i < toCompress.length; i++) {
       const item = toCompress[i];
@@ -143,6 +144,7 @@ if (batchDownloadBtn) {
   batchDownloadBtn.addEventListener('click', async () => {
     const done = batchFiles.filter(f => f.compressed);
     if (!done.length) return;
+    const { default: JSZip } = await import('https://esm.sh/jszip@3.10.1');
     const zip = new JSZip();
     for (const item of done) {
       const base = item.file.name.replace(/\.gif$/i, '');

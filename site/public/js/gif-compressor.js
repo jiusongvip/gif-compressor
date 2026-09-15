@@ -1,5 +1,20 @@
-import { parseGIF, decompressFrames } from 'https://esm.sh/gifuct-js@2.1.2';
-import gifsicle from 'https://esm.sh/gifsicle-wasm-browser';
+// ── Lazy GIF engine ───────────────────────────────────────
+// gifsicle(WASM) 与 gifuct 仅在用户真正加载/压缩 GIF 时才动态拉取，
+// 避免页面加载期就下载 ~200KB 引擎脚本与 LCP 图片争抢带宽。
+let _enginePromise = null;
+function loadEngine() {
+  if (!_enginePromise) {
+    _enginePromise = Promise.all([
+      import('https://esm.sh/gifsicle-wasm-browser'),
+      import('https://esm.sh/gifuct-js@2.1.2'),
+    ]).then(([gs, gu]) => ({
+      gifsicle: gs.default,
+      parseGIF: gu.parseGIF,
+      decompressFrames: gu.decompressFrames,
+    }));
+  }
+  return _enginePromise;
+}
 
 // ── DOM refs ──────────────────────────────────────────────
 const $ = (id) => document.getElementById(id);
@@ -99,6 +114,7 @@ async function applyCompression() {
   const startTime = performance.now();
 
   try {
+    const { gifsicle } = await loadEngine();
     let cmd = getCompressFlags(mode, level);
     // Scale down large GIFs, always apply some resize for files > 600px
     if (gifWidth > 800) cmd += ` --resize-fit ${clamp(gifWidth, 400, 800)}x_`;
@@ -337,6 +353,7 @@ async function loadFile(file) {
   // Parse for analysis display
   setProgress(30, 'Analyzing...');
   try {
+    const { parseGIF, decompressFrames } = await loadEngine();
     const gifData = parseGIF(originalBytes);
     const frames = decompressFrames(gifData, true);
     gifWidth = gifData.lsd?.width || frames[0]?.dims?.width || 400;
