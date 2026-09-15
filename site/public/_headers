@@ -12,6 +12,10 @@
 /js/*
   Cache-Control: public, max-age=86400
 
+# 自托管字体：文件名固定、极少变动，30 天
+/fonts/*
+  Cache-Control: public, max-age=2592000
+
 # Service Worker 不可长缓存，否则新版本无法下发
 /sw.js
   Cache-Control: public, max-age=0, must-revalidate
