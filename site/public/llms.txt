@@ -1,32 +1,33 @@
 # GIF Compress
-> Free online GIF compression tools â€?processed in your browser, nothing uploaded. Reduce animated GIF file size by up to 70% without quality loss.
+
+> Free online GIF compression tools, processed in your browser, nothing uploaded. Reduce animated GIF file size by up to 70% without quality loss.
 
 ## Tools
-- GIF Compressor: https://www.gifcompressors.com/compress-gif/ â€?Reduce animated GIF size by up to 70% with no quality loss. Three modes: Quality, Balanced, Maximum.
-- GIF Optimizer: https://www.gifcompressors.com/gif-optimizer/ â€?Advanced compression engine with per-parameter control over colors, frames, and encoding.
-- Reduce GIF Size: https://www.gifcompressors.com/reduce-gif-size/ â€?Platform-specific compression targets for Discord, Twitter, email, and websites.
-- GIF to MP4: https://www.gifcompressors.com/gif-to-mp4/ â€?Convert animated GIF to MP4 video. 80-95% file size reduction.
-- GIF to WebP: https://www.gifcompressors.com/gif-to-webp/ â€?Convert GIF to WebP format. 60-90% smaller with full alpha transparency.
-- Resize GIF: https://www.gifcompressors.com/resize-gif/ â€?Change GIF dimensions online, scale by percentage, or set exact width/height.
-- Crop GIF: https://www.gifcompressors.com/crop-gif/ â€?Trim animated GIF edges, set custom aspect ratios.
+- [GIF Compressor](https://www.gifcompressors.com/compress-gif/): Reduce animated GIF size by up to 70% with no quality loss. Three modes: Quality, Balanced, Maximum.
+- [GIF Optimizer](https://www.gifcompressors.com/gif-optimizer/): Advanced compression engine with per-parameter control over colors, frames, and encoding.
+- [Reduce GIF Size](https://www.gifcompressors.com/reduce-gif-size/): Platform-specific compression targets for Discord, Twitter, email, and websites.
+- [GIF to MP4](https://www.gifcompressors.com/gif-to-mp4/): Convert animated GIF to MP4 video. 80-95% file size reduction.
+- [GIF to WebP](https://www.gifcompressors.com/gif-to-webp/): Convert GIF to WebP format. 60-90% smaller with full alpha transparency.
+- [Resize GIF](https://www.gifcompressors.com/resize-gif/): Change GIF dimensions online, scale by percentage, or set exact width and height.
+- [Crop GIF](https://www.gifcompressors.com/crop-gif/): Trim animated GIF edges, set custom aspect ratios.
 
 ## Guides
-- How GIF Compression Works: https://www.gifcompressors.com/blog/how-gif-compression-works/ â€?Technical deep-dive into color reduction, frame optimization, and LZW encoding.
-- Batch Compress GIFs: https://www.gifcompressors.com/blog/batch-compress-gifs-guide/ â€?Save hours with our batch compression workflow.
-- GIF vs WebP vs MP4: https://www.gifcompressors.com/blog/gif-vs-webp-vs-mp4/ â€?Complete format comparison with benchmarks.
-- Why GIF Files Are So Large: https://www.gifcompressors.com/blog/why-gif-files-are-so-large/ â€?Understanding the 1987 format that refuses to die.
-- GIF Compression for Social Media: https://www.gifcompressors.com/blog/gif-compression-for-social-media/ â€?Complete guide for Discord, Twitter, and more.
+- [How GIF Compression Works](https://www.gifcompressors.com/blog/how-gif-compression-works/): Technical deep-dive into color reduction, frame optimization, and LZW encoding.
+- [Batch Compress GIFs](https://www.gifcompressors.com/blog/batch-compress-gifs-guide/): Save hours with our batch compression workflow.
+- [GIF vs WebP vs MP4](https://www.gifcompressors.com/blog/gif-vs-webp-vs-mp4/): Complete format comparison with benchmarks.
+- [Why GIF Files Are So Large](https://www.gifcompressors.com/blog/why-gif-files-are-so-large/): Understanding the 1987 format that refuses to die.
+- [GIF Compression for Social Media](https://www.gifcompressors.com/blog/gif-compression-for-social-media/): Complete guide for Discord, Twitter, and more.
 
 ## Key Features
-- 100% client-side processing â€?files never uploaded to any server
+- 100% client-side processing, files never uploaded to any server
 - Real-time preview with before/after comparison slider
 - Platform presets for Discord (8MB), Twitter (5MB), email (1MB)
 - Batch processing with ZIP download
 - Powered by gifsicle 1.92 via WebAssembly
 
-## FAQ
-https://www.gifcompressors.com/faq/
-## Privacy
-https://www.gifcompressors.com/privacy/
-## Terms
-https://www.gifcompressors.com/terms/
+## Help
+- [FAQ](https://www.gifcompressors.com/faq/): Frequently asked questions about GIF compression.
+- [Privacy Policy](https://www.gifcompressors.com/privacy/): How we protect your files and data.
+- [Terms of Service](https://www.gifcompressors.com/terms/): Terms of use for the service.
+- [About](https://www.gifcompressors.com/about/): Who we are and how this tool is built.
+- [Blog](https://www.gifcompressors.com/blog/): Guides, tips, and best practices for GIF optimization.

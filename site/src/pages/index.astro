@@ -11,6 +11,12 @@ const schema = JSON.stringify({
   "description": "Free online GIF compressor. Reduce animated GIF file size instantly in your browser. No upload needed, 100% private.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "author": { "@type": "Organization", "name": "GIF Compress", "url": "https://www.gifcompressors.com" },
+  "creator": { "@type": "Organization", "name": "GIF Compress", "url": "https://www.gifcompressors.com" },
+  "provider": { "@type": "Organization", "name": "GIF Compress", "url": "https://www.gifcompressors.com" },
+  "datePublished": "2025-01-01",
+  "dateModified": "2026-08-01",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "featureList": ["100% Private", "No Upload", "Instant Preview", "Batch Processing", "Real-time Comparison"]
 });
@@ -19,8 +25,17 @@ const orgSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "GIF Compress",
-  "url": Astro.url.href,
-  "description": "Free online GIF compressor — reduce animated GIF file size instantly in your browser."
+  "url": "https://www.gifcompressors.com",
+  "logo": "https://www.gifcompressors.com/og-default.png",
+  "description": "Free online GIF compressor — reduce animated GIF file size instantly in your browser.",
+  "email": "hello@gifcompress.io",
+  "sameAs": ["https://github.com/jiusongvip/gif-compressor"],
+  "contactPoint": [{
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "email": "hello@gifcompress.io",
+    "url": "https://www.gifcompressors.com/about/#contact"
+  }]
 });
 
 const faqSchema = JSON.stringify({
@@ -53,6 +68,7 @@ const howToSchema = JSON.stringify({
   description="Compress GIF files online for free. Reduce GIF size by up to 70% while keeping animation quality. Works in your browser - no upload needed, 100% private."
   schemas={[schema, orgSchema, faqSchema, howToSchema]}
 >
+  <link slot="head" rel="preload" as="image" href="/demo/demo-compressed.gif" fetchpriority="high" />
   <section class="max-w-4xl mx-auto px-4 pt-8 pb-6">
     <h1 class="text-2xl font-bold text-slate-900 leading-tight">
       Compress GIF Files <span class="text-accent">&mdash; Free, Instant, Private</span>
@@ -71,10 +87,11 @@ const howToSchema = JSON.stringify({
           src="/demo/demo-compressed.gif"
           alt="Animated example GIF of a blinking cartoon cat, compressed with GIF Compress"
           width="480" height="360"
-          loading="lazy"
+          fetchpriority="high"
+          decoding="async"
           class="w-full h-full object-cover"
         />
-        <span class="absolute top-2 left-2 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">-94%</span>
+        <span class="absolute top-2 left-2 bg-emerald-700 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">-94%</span>
       </div>
       <!-- 效果数字 + CTA -->
       <div class="flex-1 p-5 flex flex-col justify-center">
@@ -82,7 +99,7 @@ const howToSchema = JSON.stringify({
         <div class="flex items-baseline gap-2.5 mt-2 flex-wrap">
           <span class="text-xs text-slate-400 line-through">1.17 MB</span>
           <span class="text-lg font-bold text-accent leading-none">70 KB</span>
-          <span class="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">save 94%</span>
+          <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">save 94%</span>
         </div>
         <p class="text-xs text-slate-500 mt-2 leading-relaxed max-w-md">
           A real GIF compressed with the same engine right on this page &mdash; same animation, 94% smaller.
@@ -258,7 +275,19 @@ const howToSchema = JSON.stringify({
     </div>
   </section>
 
-<section class="max-w-4xl mx-auto px-4 mt-16">
+<section class="max-w-4xl mx-auto px-4 mt-16" id="sources">
+    <h2 class="text-base font-semibold text-slate-900 mb-2">Sources &amp; references</h2>
+    <p class="text-xs text-slate-500 mb-4">The technical and historical claims on this page are attributed to the following authoritative references.</p>
+    <ul class="space-y-2 text-xs text-slate-600 leading-relaxed">
+      <li><strong class="text-slate-800">GIF format &amp; history.</strong> The Graphics Interchange Format was created by a team led by Steve Wilhite and introduced by CompuServe in 1987, using 8-bit color and LZW compression. Source: <a href="https://en.wikipedia.org/wiki/GIF" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">Wikipedia — Graphics Interchange Format</a>.</li>
+      <li><strong class="text-slate-800">Compression engine.</strong> This tool optimizes GIFs with <a href="https://github.com/kohler/gifsicle" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">gifsicle</a> by Eddie Kohler, an open-source GIF optimizer compiled to WebAssembly.</li>
+      <li><strong class="text-slate-800">Lossy GIF &amp; color quantization.</strong> Per-frame color reduction and the <code class="text-[11px] bg-slate-100 px-1 rounded">--lossy</code> LZW technique documented in the <a href="https://www.lcdf.org/gifsicle/man.html" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">gifsicle manual</a>.</li>
+      <li><strong class="text-slate-800">Page-experience metrics.</strong> LCP, INP and CLS thresholds referenced on this site follow Google's <a href="https://web.dev/vitals/" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">Core Web Vitals</a> definitions.</li>
+      <li><strong class="text-slate-800">Platform size limits.</strong> Discord (8&nbsp;MB free tier), X/Twitter and Gmail (<a href="https://support.google.com/mail/answer/6508" rel="noopener noreferrer" target="_blank" class="text-accent hover:underline">~102&nbsp;MB attachment / 102&nbsp;KB display clipping</a>) limits are drawn from each platform's official help pages.</li>
+    </ul>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4 mt-16">
     <h2 class="text-base font-semibold text-slate-900 mb-6">Frequently asked questions</h2>
     <div class="space-y-4">
       <details class="group tool-card p-4">

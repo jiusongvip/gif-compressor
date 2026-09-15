@@ -9,6 +9,8 @@
   --color-text-primary: #0F172A;
   --color-text-secondary: #475569;
   --color-text-muted: #94A3B8;
+  /* 无障碍：默认 slate-400 (#94A3B8) 在 #FFFFFF / #F8FAFC 上对比度 <4.5，加深至 AA 达标值 */
+  --color-slate-400: #526075;
 }
 
 @layer base {
@@ -23,6 +25,13 @@
   ::selection {
     background: var(--color-accent);
     color: white;
+  }
+
+  /* 无障碍 (link-in-text-block)：正文/列表内的行内链接加下划线，不依赖颜色区分 */
+  main :is(p, li, dd, td) a.text-accent {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
   }
 }
 
