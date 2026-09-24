@@ -8,9 +8,15 @@
 /demo/*
   Cache-Control: public, max-age=2592000
 
-# 未哈希的应用脚本：1 天，兼顾缓存与更新时效
+# 应用脚本：不设长缓存。
+# ⚠️ 2026-09-24 事故：这里曾是 max-age=86400。部署后边缘缓存按 Accept-Encoding 分变体，
+# 继续向真实浏览器吐旧的 gif-compressor.js（cf-cache-status: HIT），而旧脚本绑定了新 HTML
+# 里已不存在的 selectBtn → null.addEventListener → 模块中断 → 上传功能全站失效。
+# 因为 HTML 是新的，这个故障极难怀疑到缓存头上。
+# 现在脚本 URL 带内容哈希（见 GifTool.astro 的 assetV），长缓存本可安全；这里仍取最保守值：
+# 将来若有人漏掉哈希，退化成「每次 304 校验」而不是「24 小时线上故障」。
 /js/*
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=0, must-revalidate
 
 # 自托管字体：文件名固定、极少变动，30 天
 /fonts/*

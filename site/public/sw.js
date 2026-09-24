@@ -5,8 +5,10 @@
 // so without a bump a shipped fix to the tool does not reach anyone who has been here
 // before. This is the only lever: `_headers` gives /js/* a 24h max-age, and the Cache
 // API ignores Cache-Control when storing anyway.
-// v3: URL loading (hotlink 403 fix), custom target size, quick size chips.
-const CACHE = 'gif-compress-v3';
+// v4: tool script URLs are now content-hashed (see GifTool.astro), and the cached
+// HTML pages still name the old unhashed URLs — so the page cache must be dropped or a
+// returning visitor gets markup pointing at a script the edge may serve stale.
+const CACHE = 'gif-compress-v4';
 const ASSETS = [
   '/',
   '/compress-gif/',

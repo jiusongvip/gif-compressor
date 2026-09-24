@@ -1,5 +1,28 @@
 ---
 import Icon from "./Icon.astro";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+
+// Content-hash the tool scripts into their URLs.
+//
+// These live in public/, so Astro copies them verbatim with no build hash, while
+// _headers gave /js/* a 24h max-age. That combination caused a real outage on
+// 2026-09-24: after a deploy the edge kept serving the previous gif-compressor.js
+// for the brotli cache variant (cf-cache-status: HIT, decodedBodySize 15667), and
+// that old copy binds a `selectBtn` element the new markup no longer has. It threw
+// on the null and the module aborted before reaching the fileInput change listener
+// — so upload silently did nothing for every visitor, on a page whose HTML was new.
+//
+// Hashing the content into the query means the URL changes exactly when the file
+// does, so no cache layer (Cloudflare edge, browser HTTP cache, or the service
+// worker's Cache API) can serve a stale script. Nothing to remember to bump.
+//
+// Read via process.cwd() rather than import.meta.url: the frontmatter is bundled for
+// the SSR build, so import.meta.url points at a generated chunk, not this source file.
+// Astro runs the build with the project root as cwd.
+const assetV = (p) => createHash("md5")
+  .update(readFileSync(process.cwd() + "/public" + p))
+  .digest("hex").slice(0, 8);
 ---
 
 <div id="gif-tool" class="w-full">
@@ -293,5 +316,5 @@ import Icon from "./Icon.astro";
   </div>
 </div>
 
-<script type="module" src="/js/gif-compressor.js"></script>
-<script type="module" src="/js/batch-compressor.js"></script>
+<script type="module" src={`/js/gif-compressor.js?v=${assetV("/js/gif-compressor.js")}`}></script>
+<script type="module" src={`/js/batch-compressor.js?v=${assetV("/js/batch-compressor.js")}`}></script>
