@@ -81,7 +81,7 @@ When you drop a GIF into the tool and adjust the slider, the following happens i
 4. **Remap:** Each pixel in each frame is mapped to the closest color in the new, smaller palette.
 5. **Drop frames:** If frame optimization is active, frames are sampled at the calculated interval.
 6. **Encode:** The processed frames are written back into a valid GIF using omggif's GifWriter.
-7. **Report:** The Breakdown panel calculates the contribution of each technique to the total savings.
+7. **Report:** The Analysis panel shows what actually changed — file size, dimensions, frame count, and palette size — along with the settings that were applied.
 
 All of this runs in your browser. No upload, no server, no wait.
 

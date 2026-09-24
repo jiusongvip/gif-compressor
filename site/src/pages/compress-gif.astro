@@ -8,7 +8,7 @@ const faqSchema = JSON.stringify({
   "@type": "FAQPage",
   "mainEntity": [
     { "@type": "Question", "name": "What are the three GIF compression modes?", "acceptedAnswer": { "@type": "Answer", "text": "Quality mode (20-35% savings) preserves visual fidelity for photos and complex scenes. Balanced mode (35-55% savings) delivers the best size-to-quality ratio for most GIFs. Maximum mode (50-70% savings) applies aggressive compression for memes and simple graphics." } },
-    { "@type": "Question", "name": "How does the compression breakdown work?", "acceptedAnswer": { "@type": "Answer", "text": "The breakdown panel shows exactly where your file size savings come from: color reduction (fewer palette entries), frame optimization (dropped or merged frames), and LZW encoding efficiency. This transparency helps you understand which techniques are most effective for your specific GIF." } },
+    { "@type": "Question", "name": "What does the analysis panel show?", "acceptedAnswer": { "@type": "Answer", "text": "The analysis panel shows the before and after for file size, dimensions, frame count, and palette size, the exact compression settings that were applied, and which platform size limits the result fits. It also tells you when part of the saving came from scaling the image down rather than re-encoding it." } },
     { "@type": "Question", "name": "Will compressing affect the GIF animation?", "acceptedAnswer": { "@type": "Answer", "text": "At moderate compression levels, the animation remains smooth. At aggressive levels, you may notice color banding or fewer frames. Use the live comparison slider to verify results before downloading." } }
   ]
 });
