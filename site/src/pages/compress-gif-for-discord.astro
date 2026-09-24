@@ -7,45 +7,45 @@ const webAppSchema = JSON.stringify({
   "@type": "WebApplication",
   "name": "GIF Compressor for Discord",
   "url": Astro.url.href,
-  "description": "Compress GIFs for Discord. Shrink animated GIFs under 8MB for free tier and 25MB for Nitro. Instant browser-based compression.",
+  "description": "Compress GIFs for Discord. Shrink animated GIFs to fit the 20MB free-tier limit (raised from 10MB in August 2026) or any smaller target. Instant browser-based compression.",
   "applicationCategory": "Multimedia",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "featureList": ["Discord 8MB Target", "Discord Nitro 25MB Target", "Discord Emoji Preset", "Sticker Preset", "Real-time Preview"]
+  "featureList": ["Discord 20MB Free-Tier Target", "Any Custom Target Size", "Discord Emoji Target", "Sticker Target", "Real-time Preview"]
 });
 
 const faqSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "What is Discord's GIF file size limit?", "acceptedAnswer": { "@type": "Answer", "text": "Discord free accounts limit GIF uploads to 8MB. Discord Nitro users get 25MB. For emoji and stickers, limits are smaller: standard emoji must be under 256KB and animated stickers under 512KB." } },
-    { "@type": "Question", "name": "How do I compress a GIF for Discord under 8MB?", "acceptedAnswer": { "@type": "Answer", "text": "Use the Discord preset button in the tool which automatically targets under 8MB. For best results resize to 600px width first, use Balanced mode at level 40-60, then check the live preview. Most GIFs compress 50-70% without visible quality loss." } },
-    { "@type": "Question", "name": "What is the best size for Discord GIFs to load fast?", "acceptedAnswer": { "@type": "Answer", "text": "While Discord accepts up to 8MB, 2-5MB loads instantly in chat as an inline preview. GIFs larger than 5MB may appear as download links instead of playing inline. For fast loading, aim for 480-600px width." } },
+    { "@type": "Question", "name": "What is Discord's GIF file size limit?", "acceptedAnswer": { "@type": "Answer", "text": "Discord's free tier accepts GIF uploads up to 20MB per attachment. That cap was raised from 10MB in August 2026, and most guides still quote the older 8MB figure. Nitro raises it to 500MB. Emoji and stickers have much smaller limits: standard emoji must be under 256KB and animated stickers under 512KB." } },
+    { "@type": "Question", "name": "How do I compress a GIF for Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Type the size you want into the Any size box in the tool and press Go — 5 MB is a good default for fast inline playback, or 20 MB to use the whole free-tier allowance. For best results resize to 600px width first, then check the live preview. Most GIFs compress 50-70% without visible quality loss." } },
+    { "@type": "Question", "name": "What is the best size for Discord GIFs to load fast?", "acceptedAnswer": { "@type": "Answer", "text": "Discord accepts up to 20MB, but 2-5MB loads instantly in chat as an inline preview. GIFs larger than roughly 5MB may appear as download links instead of playing inline. For fast loading, aim for 480-600px width." } },
     { "@type": "Question", "name": "What GIF size for Discord emoji?", "acceptedAnswer": { "@type": "Answer", "text": "Standard Discord emoji must be under 256KB. Animated emoji are limited to 256KB as well. Resize to 128x128 pixels and compress aggressively using Maximum mode." } },
-    { "@type": "Question", "name": "Does Discord convert GIFs to another format?", "acceptedAnswer": { "@type": "Answer", "text": "Discord preserves GIFs as GIFs for small uploads. However, large GIFs (near 8MB) are often re-encoded by Discord's servers to reduce storage, which can degrade quality. Compressing to 2-5MB prevents Discord from re-encoding your content." } }
+    { "@type": "Question", "name": "Does Discord convert GIFs to another format?", "acceptedAnswer": { "@type": "Answer", "text": "Discord preserves GIFs as GIFs for small uploads. However, large GIFs are often re-encoded by Discord's servers to reduce storage, which can degrade quality. Compressing to 2-5MB prevents Discord from re-encoding your content." } }
   ]
 });
 ---
 <Base
-  title="Compress GIF for Discord — Under 8MB Free, 25MB Nitro"
-  description="Compress GIFs for Discord: under 8MB for free tier, 25MB for Nitro. One-click Discord preset, resize tips, and 100% private in-browser processing."
+  title="Compress GIF for Discord — Free Tier Is 20MB, Not 8MB"
+  description="Compress GIFs for Discord: the free tier is 20MB, not the 8MB most guides still quote. Target any smaller size you need. Private in-browser processing."
   schemas={[webAppSchema, faqSchema]}
 >
 <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
   <h1 class="text-2xl font-bold text-slate-900 leading-tight">Compress GIF for <span class="text-[#5865F2]">Discord</span></h1>
   <p class="text-sm text-slate-500 mt-2 max-w-2xl leading-relaxed">
-    Shrink animated GIFs for Discord. Hit the 8MB free tier limit with one click, or target 25MB for Nitro. Emoji, stickers, memes, and reaction GIFs — all compressed in your browser.
+    Shrink animated GIFs for Discord. The free tier accepts 20MB — not the 8MB most guides still quote — and you can target anything below that with one box. Emoji, stickers, memes, and reaction GIFs, all compressed in your browser.
   </p>
 </div>
 <section class="max-w-4xl mx-auto px-4"><GifTool /></section>
 
 <article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
   <h2 class="text-xl font-bold text-slate-900 mb-4">Discord GIF Size Limits — The Complete Reference</h2>
-  <p class="text-sm text-slate-600 leading-relaxed mb-4">Discord is the internet's living room — millions of GIFs are shared every minute across servers. But Discord enforces strict file size limits that vary by account type and content type. Here is everything you need to know:</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Discord is the internet's living room — millions of GIFs are shared every minute across servers. But Discord enforces file size limits that vary by account type and content type, and the headline number changed recently: the free-tier upload cap went from 10MB to <strong class="text-slate-800">20MB</strong> in August 2026, which is why so many guides still quote 8MB. Here is the current picture:</p>
   <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
     <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Content type</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Free tier limit</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Nitro limit</th><th class="py-2.5 text-slate-500 font-medium text-xs">Recommended target</th></tr></thead>
     <tbody>
-      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">GIF uploads</td><td class="py-2.5 pr-4 text-xs">8MB</td><td class="py-2.5 pr-4 text-xs">25MB</td><td class="py-2.5 text-xs text-accent font-medium">2-5MB for fast inline play</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">GIF uploads</td><td class="py-2.5 pr-4 text-xs">20MB <span class="text-slate-400">(was 8MB)</span></td><td class="py-2.5 pr-4 text-xs">500MB</td><td class="py-2.5 text-xs text-accent font-medium">2-5MB for fast inline play</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Animated emoji</td><td class="py-2.5 pr-4 text-xs" colspan="2">256KB</td><td class="py-2.5 text-xs text-accent font-medium">128x128px, Maximum mode</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Animated stickers</td><td class="py-2.5 pr-4 text-xs" colspan="2">512KB</td><td class="py-2.5 text-xs text-accent font-medium">320x320px, Balanced mode</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Server banners</td><td class="py-2.5 pr-4 text-xs">10MB</td><td class="py-2.5 pr-4 text-xs">50MB</td><td class="py-2.5 text-xs text-accent font-medium">960x540px, 16:9 ratio</td></tr>
@@ -56,15 +56,15 @@ const faqSchema = JSON.stringify({
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Step-by-Step: Compress a GIF for Discord</h2>
   <ol class="space-y-4 mb-6">
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">1. Drop your GIF into the tool above.</strong> You can drag and drop, paste from clipboard, or click to select. Works with GIFs up to 100MB.</li>
-    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Click the &lt; 8MB Discord preset.</strong> This automatically targets the free tier limit. If you have Nitro, click the preset again and adjust to the 25MB target.</li>
-    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">3. Fine-tune if needed.</strong> For GIFs that were originally 10-15MB, Balanced mode at level 40-60 keeps quality high while hitting the 8MB limit. For very large files (30MB+), switch to Maximum mode.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Set your target size.</strong> Type <strong class="text-slate-800">5</strong> into the Any size box and press Go for a GIF that plays instantly in chat, or <strong class="text-slate-800">20</strong> to use the whole free-tier allowance. The Discord preset does the same thing at the 20MB cap.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">3. Fine-tune if needed.</strong> For GIFs that were originally 10-15MB, Balanced mode at level 40-60 keeps quality high while hitting a 5MB target. For very large files (30MB+), switch to Maximum mode.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">4. Check the comparison slider.</strong> Discard dark theme can make compression artifacts (color banding, dithering) more visible. Switch to the A/B view and inspect carefully.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">5. Download and share.</strong> The compressed GIF is ready to drag directly into any Discord channel or DM.</li>
   </ol>
 
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Why Discord GIFs Need Compression</h2>
   <div class="space-y-3 mb-6">
-    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Discord auto-compresses near-limit files</h4><p class="text-xs text-slate-500 mt-1">When you upload a GIF that is close to the 8MB limit, Discord often re-encodes it on their servers to save storage space. This re-encoding can produce visible quality loss and frame dropping. Uploading a pre-compressed GIF at 2-5MB gives you control over the quality trade-off instead of leaving it to Discord's algorithm.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Discord auto-compresses near-limit files</h4><p class="text-xs text-slate-500 mt-1">When you upload a GIF that is close to the limit, Discord often re-encodes it on their servers to save storage space. This re-encoding can produce visible quality loss and frame dropping. Uploading a pre-compressed GIF at 2-5MB gives you control over the quality trade-off instead of leaving it to Discord's algorithm.</p></div>
     <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Inline playback priority</h4><p class="text-xs text-slate-500 mt-1">GIFs under roughly 5MB play automatically inline in chat. Larger GIFs may appear as a download link that users must click to view. If you want your GIF to loop automatically in the chat stream, keep it under 5MB.</p></div>
     <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Mobile data consideration</h4><p class="text-xs text-slate-500 mt-1">A significant portion of Discord users are on mobile with limited data plans. A 2MB GIF loads in under a second on 4G. An 8MB GIF takes 3-4 seconds — enough for someone to scroll past it. Smaller GIFs get more engagement.</p></div>
   </div>
@@ -79,8 +79,8 @@ const faqSchema = JSON.stringify({
   <p class="text-sm text-slate-600 leading-relaxed mb-4">Remember: <a href="/resize-gif/" class="text-accent hover:underline">resize first, then compress</a>. A 1920px GIF resized to 480px is already 94% smaller before any compression is applied.</p>
 
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Discord Nitro: Worth It for GIF Sharing?</h2>
-  <p class="text-sm text-slate-600 leading-relaxed mb-3">Nitro bumps the upload limit from 8MB to 25MB, but the same principle applies: a 20MB GIF still loads slowly in chat. The real advantage of Nitro for GIF sharing is not the larger upload limit — it is that Nitro does not re-encode your GIFs, preserving the exact quality you uploaded.</p>
-  <p class="text-sm text-slate-600 leading-relaxed mb-4">Even with Nitro, we recommend compressing to 5-10MB for the best balance of quality and loading speed. The Discord preset's 25MB target is useful mainly for archiving or sharing original-quality animations where file size is secondary.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-3">Nitro raises the upload limit from 20MB to 500MB, but the same principle applies: a 20MB GIF still loads slowly in chat. The real advantage of Nitro for GIF sharing is not the larger upload limit — it is that Nitro does not re-encode your GIFs, preserving the exact quality you uploaded.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Even with Nitro, we recommend compressing to 5-10MB for the best balance of quality and loading speed. The full 20MB allowance is useful mainly for archiving or sharing original-quality animations where file size is secondary.</p>
 
   <div class="mt-8 pt-6 border-t border-slate-100">
     <p class="text-xs text-slate-400">Related: <a href="/compress-gif-for-twitter/" class="text-accent hover:underline">Compress for Twitter</a> &middot; <a href="/compress-gif-for-email/" class="text-accent hover:underline">Compress for Email</a> &middot; <a href="/reduce-gif-size/" class="text-accent hover:underline">Platform Size Guide</a> &middot; <a href="/resize-gif/" class="text-accent hover:underline">Resize GIF</a></p>

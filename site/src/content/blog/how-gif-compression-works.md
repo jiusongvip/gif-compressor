@@ -76,12 +76,12 @@ This is why applying all three techniques at moderate levels (level 50-60) produ
 When you drop a GIF into the tool and adjust the slider, the following happens in your browser:
 
 1. **Parse:** The GIF binary is decoded into individual frames using gifuct-js. Each frame's pixel data, color palette, delay timing, and disposal method are extracted.
-2. **Analyze:** The tool counts total frames, average colors per frame, and content type. This analysis determines the recommended strategy shown in the Analysis panel.
+2. **Analyze:** The tool counts total frames, average colors per frame, and content type. This analysis determines the recommended strategy it applies.
 3. **Quantize:** Based on your mode and level, a new palette size is calculated. Our median-cut algorithm recursively splits the color space to create perceptually optimal palettes.
 4. **Remap:** Each pixel in each frame is mapped to the closest color in the new, smaller palette.
 5. **Drop frames:** If frame optimization is active, frames are sampled at the calculated interval.
 6. **Encode:** The processed frames are written back into a valid GIF using omggif's GifWriter.
-7. **Report:** The Analysis panel shows what actually changed — file size, dimensions, frame count, and palette size — along with the settings that were applied.
+7. **Report:** The pills under each preview show what actually changed — file size, dimensions, frame count, and palette size — and the settings that were applied are listed under the controls.
 
 All of this runs in your browser. No upload, no server, no wait.
 

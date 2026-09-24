@@ -8,7 +8,7 @@ const faqSchema = JSON.stringify({
   "@type": "FAQPage",
   "mainEntity": [
     { "@type": "Question", "name": "What are the three GIF compression modes?", "acceptedAnswer": { "@type": "Answer", "text": "Quality mode (20-35% savings) preserves visual fidelity for photos and complex scenes. Balanced mode (35-55% savings) delivers the best size-to-quality ratio for most GIFs. Maximum mode (50-70% savings) applies aggressive compression for memes and simple graphics." } },
-    { "@type": "Question", "name": "What does the analysis panel show?", "acceptedAnswer": { "@type": "Answer", "text": "The analysis panel shows the before and after for file size, dimensions, frame count, and palette size, the exact compression settings that were applied, and which platform size limits the result fits. It also tells you when part of the saving came from scaling the image down rather than re-encoding it." } },
+    { "@type": "Question", "name": "What do the numbers under the previews show?", "acceptedAnswer": { "@type": "Answer", "text": "The pills under each preview list what went in and what came out: file size, dimensions, frame count, and palette size. The compression settings that were actually applied are shown under the controls, and a green tick on a platform preset means the result fits that limit. The note above the download button tells you when part of the saving came from scaling the image down rather than re-encoding it." } },
     { "@type": "Question", "name": "Will compressing affect the GIF animation?", "acceptedAnswer": { "@type": "Answer", "text": "At moderate compression levels, the animation remains smooth. At aggressive levels, you may notice color banding or fewer frames. Use the live comparison slider to verify results before downloading." } }
   ]
 });
@@ -73,7 +73,7 @@ const howToSchema = JSON.stringify({
 
 <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Why Compress a GIF?</h2>
   <ul class="space-y-2 mb-4">
-    <li class="text-sm text-slate-600 flex gap-2"><span class="text-accent font-bold">&bull;</span><strong class="text-slate-800">Social media limits:</strong> Discord caps at 8MB. Twitter at 5MB. Most messaging apps have similar restrictions.</li>
+    <li class="text-sm text-slate-600 flex gap-2"><span class="text-accent font-bold">&bull;</span><strong class="text-slate-800">Social media limits:</strong> Discord accepts up to 20MB and X up to 15MB for GIFs. Most messaging apps have similar or looser restrictions.</li>
     <li class="text-sm text-slate-600 flex gap-2"><span class="text-accent font-bold">&bull;</span><strong class="text-slate-800">Website performance:</strong> A 10MB GIF embedded in a page adds seconds to load time. Google Core Web Vitals penalize large images.</li>
     <li class="text-sm text-slate-600 flex gap-2"><span class="text-accent font-bold">&bull;</span><strong class="text-slate-800">Email campaigns:</strong> Most email clients recommend attachments under 1MB. Animated GIFs in email need aggressive compression.</li>
   </ul>
@@ -118,23 +118,22 @@ const howToSchema = JSON.stringify({
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">How to Compress GIFs for Specific Platforms</h2>
 
   <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Discord</h3>
-  <p class="text-sm text-slate-600 leading-relaxed mb-2">Discord is the most common destination for compressed GIFs. Free accounts accept files up to 8MB, Nitro users get 25MB. The key is not just to stay under the limit — you want the GIF to load instantly in chat as an inline preview, not as a download link. For that, aim for 2-5MB.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">Discord is the most common destination for compressed GIFs. Free accounts accept files up to 20MB — raised from 10MB in August 2026, which is why most guides still say 8MB — and Nitro raises it to 500MB. Staying under the cap is not the whole job: you want the GIF to load instantly in chat as an inline preview rather than as a download link. For that, aim for 2-5MB.</p>
   <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
-    <li>Drop your GIF and click the <strong class="text-slate-800">&lt; 8MB Discord preset</strong></li>
-    <li>If the GIF started under 8MB, use Balanced mode at level 40-60 for a compact result</li>
+    <li>Drop your GIF, then type <strong class="text-slate-800">5</strong> into the <strong class="text-slate-800">Any size</strong> box next to the presets and press <strong class="text-slate-800">Go</strong> — the Discord preset only takes you to the 20MB cap</li>
+    <li>If the GIF started under 5MB, use Balanced mode at level 40-60 for a compact result</li>
     <li>For especially large files, <a href="/resize-gif/" class="text-accent hover:underline">resize to 600px width</a> before compressing</li>
     <li>Check the comparison slider — Discord dark theme can make compression artifacts more visible</li>
     <li>Download and test in a DM channel before sharing publicly</li>
   </ol>
 
-  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Twitter / X</h3>
-  <p class="text-sm text-slate-600 leading-relaxed mb-2">Twitter limits GIFs to 5MB on the web and 3MB on mobile. Mobile enforcement is stricter — if it works on your phone, it works everywhere. Twitter also automatically converts GIFs to MP4 on their servers, which can degrade quality. Compress yourself to maintain control.</p>
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">X / Twitter</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">X accepts GIFs up to 15MB. The 5MB and 3MB figures you see quoted are its <em>still image</em> limits, not its GIF limit. X also converts GIFs to MP4 on its servers, which can degrade quality — compressing it yourself keeps control of the result.</p>
   <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
-    <li>Click the <strong class="text-slate-800">&lt; 5MB Twitter preset</strong></li>
-    <li>Target under 3MB for guaranteed mobile compatibility</li>
+    <li>Click the <strong class="text-slate-800">Twitter preset</strong>, or type a tighter target such as <strong class="text-slate-800">5</strong> MB into the <strong class="text-slate-800">Any size</strong> box</li>
     <li>Use Maximum mode at level 80-90 for stubborn files</li>
-    <li>For very large GIFs, <a href="/resize-gif/" class="text-accent hover:underline">resize to 600px width</a> first — this alone often brings 15MB GIFs within limits</li>
-    <li>Note: Twitter may still re-encode your GIF. The smaller your upload, the less aggressive their re-encoding</li>
+    <li>For very large GIFs, <a href="/resize-gif/" class="text-accent hover:underline">resize to 600px width</a> first — this alone often brings a 15MB GIF under 5MB</li>
+    <li>Note: X may still re-encode your GIF. The smaller your upload, the less aggressive their re-encoding</li>
   </ol>
 
   <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Email</h3>

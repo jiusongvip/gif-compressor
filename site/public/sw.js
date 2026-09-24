@@ -1,5 +1,12 @@
 // GIF Compress Service Worker
-const CACHE = 'gif-compress-v2';
+// Bump CACHE whenever an unhashed same-origin asset changes. The fetch handler below
+// is stale-while-revalidate, so a returning visitor is served the cached copy once and
+// only gets the new one on the following visit — and /js/gif-compressor.js is unhashed,
+// so without a bump a shipped fix to the tool does not reach anyone who has been here
+// before. This is the only lever: `_headers` gives /js/* a 24h max-age, and the Cache
+// API ignores Cache-Control when storing anyway.
+// v3: URL loading (hotlink 403 fix), custom target size, quick size chips.
+const CACHE = 'gif-compress-v3';
 const ASSETS = [
   '/',
   '/compress-gif/',

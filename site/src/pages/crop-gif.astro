@@ -112,7 +112,7 @@ const webAppSchema = JSON.stringify({
   <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
     <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Platform</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Best ratio</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Ideal dimensions</th><th class="py-2.5 text-slate-500 font-medium text-xs">Why</th></tr></thead>
     <tbody>
-      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord chat</td><td class="py-2.5 pr-4 text-xs">Any (up to 8MB)</td><td class="py-2.5 pr-4 text-xs">480-600px wide</td><td class="py-2.5 text-xs text-slate-500">No forced ratio. Crop for focus.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord chat</td><td class="py-2.5 pr-4 text-xs">Any (up to 20MB)</td><td class="py-2.5 pr-4 text-xs">480-600px wide</td><td class="py-2.5 text-xs text-slate-500">No forced ratio. Crop for focus.</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter / X feed</td><td class="py-2.5 pr-4 text-xs">16:9 or 1:1</td><td class="py-2.5 pr-4 text-xs">1200×675 or 800×800</td><td class="py-2.5 text-xs text-slate-500">Feed crops to these ratios on some views</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Instagram Stories</td><td class="py-2.5 pr-4 text-xs">9:16</td><td class="py-2.5 pr-4 text-xs">1080×1920</td><td class="py-2.5 text-xs text-slate-500">Full-screen vertical. Convert to MP4.</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Instagram Post</td><td class="py-2.5 pr-4 text-xs">1:1 or 4:5</td><td class="py-2.5 pr-4 text-xs">1080×1080 or 1080×1350</td><td class="py-2.5 text-xs text-slate-500">Square or vertical. Feed standard.</td></tr>
@@ -142,7 +142,7 @@ const webAppSchema = JSON.stringify({
     <li>Position the crop box centered on the face or main subject</li>
     <li>Click Apply Crop</li>
     <li>Use the <a href="/resize-gif/" class="text-accent hover:underline">Resize tool</a> to set the cropped GIF to exactly 512×512</li>
-    <li>Compress to under 8MB (far below Discord's free tier limit for profile pictures)</li>
+    <li>Compress to well under 20MB (Discord's free-tier cap for profile pictures)</li>
   </ol>
 
   <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">Instagram Story (9:16 Vertical)</h3>

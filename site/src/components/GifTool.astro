@@ -14,11 +14,6 @@ import Icon from "./Icon.astro";
       Click anywhere in this box to pick a file, or press <kbd class="px-1 py-0.5 rounded border border-slate-200 bg-slate-50 text-[11px] text-slate-500 font-sans">Ctrl</kbd><span class="text-slate-300">+</span><kbd class="px-1 py-0.5 rounded border border-slate-200 bg-slate-50 text-[11px] text-slate-500 font-sans">V</kbd> to paste one.
     </p>
     <div class="flex flex-col items-center gap-2.5">
-      <button id="select-btn" type="button"
-        class="px-6 py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98]">
-        Select GIF
-      </button>
-      <p class="text-xs text-slate-400">Free &middot; Max 100MB &middot; Never uploaded</p>
       <button id="url-toggle" type="button"
         class="text-xs text-slate-400 hover:text-accent underline underline-offset-2 transition-colors">
         or paste a GIF URL
@@ -46,155 +41,200 @@ import Icon from "./Icon.astro";
   <!-- Tool Panel -->
   <div id="tool-panel" class="hidden mt-5 space-y-4">
 
-    <!-- 1. RESULT — what the user came for, above everything else -->
-    <div id="result-card" class="tool-card p-5">
-      <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-3">Your result</p>
-      <div class="flex items-baseline gap-3 flex-wrap">
-        <span id="result-orig" class="text-base text-slate-400 line-through tabular-nums">-</span>
-        <span class="text-slate-300 text-lg">&rarr;</span>
-        <span id="result-comp" class="text-3xl font-bold text-accent leading-none tabular-nums">-</span>
+    <!-- 1. RESULT — the outcome, then its proof, then the action.
+         The Original/Compressed pair is now its own centred block rather than a
+         two-column grid inside the card. The reason is geometric: a grid column
+         here is ~410px wide but the frame is only ~171px tall, so object-contain
+         rendered a 4:3 GIF at 228x171 with ~90px of dead space on each side. Two
+         lonely thumbnails at opposite ends of a card is what read as "small".
+         Capping each frame at 320px and centring the pair keeps the GIF at the
+         same pixel size but turns the two into one deliberate comparison block.
+         The drag-to-compare slider lives in the lightbox, where a full-size drag
+         is actually readable. -->
+    <div id="result-card" class="tool-card p-4">
+      <div class="flex items-baseline justify-center gap-2.5 flex-wrap">
+        <span id="result-orig" class="text-sm text-slate-400 line-through tabular-nums">-</span>
+        <span class="text-slate-300">&rarr;</span>
+        <span id="result-comp" class="text-2xl font-bold text-accent leading-none tabular-nums">-</span>
         <span id="result-saved" class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md">-</span>
       </div>
-      <p id="result-note" class="text-xs text-slate-400 mt-2 mb-4 leading-relaxed"></p>
-      <button id="download-btn" aria-label="Download compressed GIF" disabled
-        class="w-full py-3 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors
-          active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 inline-flex items-center justify-center gap-2">
-        <Icon name="download" size={16} class="text-white" />
-        Download Compressed GIF
-      </button>
-      <div class="flex items-center justify-between mt-2.5">
-        <span id="speed-badge" class="hidden text-[10px] text-accent font-medium"></span>
-        <button id="reset-btn" aria-label="Compress another GIF"
-          class="text-xs text-slate-400 hover:text-slate-600 transition-colors ml-auto">
-          Compress another GIF
+
+      <p id="result-note" class="text-[11px] text-slate-400 mt-2 text-center leading-snug max-w-2xl mx-auto"></p>
+
+      <div class="flex flex-wrap items-center justify-center gap-2 mt-3">
+        <button id="download-btn" aria-label="Download compressed GIF" disabled
+          class="min-w-[210px] px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors
+            active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 inline-flex items-center justify-center gap-2">
+          <Icon name="download" size={16} class="text-white" />
+          Download Compressed GIF
         </button>
+        <!-- A real button, not a grey text link: "start over" is a primary recovery
+             action and was previously almost invisible next to the download. -->
+        <button id="reset-btn" type="button" aria-label="Choose another GIF"
+          class="px-4 py-2.5 text-xs font-medium rounded-lg border border-slate-300 text-slate-700
+            hover:border-slate-400 hover:bg-slate-50 transition-colors whitespace-nowrap
+            inline-flex items-center justify-center gap-1.5 active:scale-[0.98]">
+          <Icon name="refresh" size={14} class="text-slate-500" />
+          Choose another
+        </button>
+        <!-- Tertiary action, so it rides in the action row rather than on a line of
+             its own under the images: it is something you *do*, and a lone 14px
+             line cost the fold 31px for one link. -->
+        <button id="open-lightbox" type="button"
+          class="text-[11px] text-accent hover:underline whitespace-nowrap px-1">
+          Compare in detail
+        </button>
+        <span id="speed-badge" class="hidden text-[10px] text-accent font-medium whitespace-nowrap"></span>
       </div>
     </div>
 
-    <!-- 2. RESULT — the compressed GIF itself, playing. This slot used to hold the
-         drag-to-compare slider, which framed the moment as "hunt for damage"; what
-         the user needs to see first is that the file they are about to download
-         still works. The slider moved down to the small card. -->
-    <div class="tool-card overflow-hidden">
-      <div class="p-3 border-b border-slate-100 flex items-center justify-between gap-3">
-        <span class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Compressed</span>
-        <button id="open-lightbox" type="button" class="text-[10px] text-accent hover:underline whitespace-nowrap">
-          Compare before / after
-        </button>
+    <!-- The pair, pulled out of the card and centred.
+         Follows the pattern the user pointed at: label above, a bordered frame that
+         hugs the image (max-height on the <img> rather than a fixed-height box), and
+         the per-image numbers as rounded pills underneath.
+         The block is capped at 736px and centred rather than run edge to edge: at the
+         full 864px container each column is ~424px, and object-contain then leaves
+         ~62px of dead mat either side of a 4:3 GIF — the image itself is exactly the
+         same size at 360px, so the extra width was buying nothing but grey.
+         The pills reuse the ids the Analysis row used to own, so the numbers moved
+         here without a single JS change — and it stops the same size being printed
+         twice, once as the headline and once in a table. -->
+    <div id="preview-pair" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-[736px] mx-auto">
+      <div class="space-y-2 min-w-0">
+        <p class="text-xs font-medium tracking-wide text-slate-400 uppercase">Original</p>
+        <div class="overflow-hidden rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center">
+          <img id="side-orig" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+            alt="Your original GIF" width="480" height="360" class="w-full object-contain"
+            style="max-height: clamp(150px, 25vh, 300px);" />
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span id="orig-size" class="rounded-full border border-slate-200 px-2.5 py-0.5 text-xs text-slate-500 tabular-nums">-</span>
+          <span id="an-dims-in" class="rounded-full border border-slate-200 px-2.5 py-0.5 text-xs text-slate-500 tabular-nums">-</span>
+          <span id="an-frames-in" class="rounded-full border border-slate-200 px-2.5 py-0.5 text-xs text-slate-500 tabular-nums">-</span>
+          <span id="an-colors-in" class="rounded-full border border-slate-200 px-2.5 py-0.5 text-xs text-slate-500 tabular-nums">-</span>
+        </div>
       </div>
-      <div class="relative w-full bg-slate-50 flex items-center justify-center"
-        style="height: clamp(200px, 34vh, 360px);">
-        <img id="preview-comp" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Your compressed GIF" width="600" height="600" class="max-w-full max-h-full object-contain" />
+
+      <div class="space-y-2 min-w-0">
+        <p class="text-xs font-medium tracking-wide text-slate-400 uppercase">Compressed</p>
+        <div class="overflow-hidden rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center">
+          <img id="preview-comp" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+            alt="Your compressed GIF" width="480" height="360" class="w-full object-contain"
+            style="max-height: clamp(150px, 25vh, 300px);" />
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <!-- The result is the one number the user came for, so it is the one pill
+               allowed to carry colour. -->
+          <span id="comp-size" class="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 tabular-nums">-</span>
+          <span id="an-dims-out" class="rounded-full border border-slate-200 px-2.5 py-0.5 text-xs text-slate-500 tabular-nums">-</span>
+          <span id="an-frames-out" class="rounded-full border border-slate-200 px-2.5 py-0.5 text-xs text-slate-500 tabular-nums">-</span>
+          <span id="an-colors-out" class="rounded-full border border-slate-200 px-2.5 py-0.5 text-xs text-slate-500 tabular-nums">-</span>
+        </div>
       </div>
     </div>
 
-    <!-- 3. CONTROLS -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <!-- Left: before/after slider, deliberately small — the hero above is the result -->
-      <div class="tool-card p-4 lg:col-span-1">
-        <div class="flex items-center justify-between mb-3">
-          <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Before / after</p>
-          <span class="text-[10px] text-slate-400">drag</span>
+    <!-- 2. CONTROLS + ANALYSIS — the cause, then the measured effect.
+         Everything the user can change and everything the tool measured lives in one
+         card, so the tool fits a single screen without scrolling. -->
+    <div class="tool-card p-4 space-y-2.5">
+      <div class="flex flex-wrap items-end gap-x-4 gap-y-2.5">
+        <div>
+          <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">Mode</p>
+          <div class="grid grid-cols-3 gap-1 bg-slate-100 rounded-lg p-0.5">
+            <button data-mode="quality" class="mode-btn px-3 py-1.5 text-[11px] font-medium rounded-md transition-colors text-slate-500 hover:text-slate-900">Quality</button>
+            <button data-mode="balanced" class="mode-btn px-3 py-1.5 text-[11px] font-medium rounded-md transition-colors bg-accent text-white">Balanced</button>
+            <button data-mode="max" class="mode-btn px-3 py-1.5 text-[11px] font-medium rounded-md transition-colors text-slate-500 hover:text-slate-900">Max</button>
+          </div>
         </div>
-        <div id="comparison-wrap" class="comparison-wrap relative w-full aspect-square bg-slate-50 rounded-md border border-slate-100 overflow-hidden cursor-ew-resize">
-          <img id="comparison-orig" class="absolute inset-0 w-full h-full object-contain" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Original GIF" width="200" height="200" />
-          <img id="comparison-comp" class="absolute inset-0 w-full h-full object-contain" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Compressed GIF" width="200" height="200" style="clip-path: inset(0 0 0 50%);" />
-          <div id="compare-line" class="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg pointer-events-none z-10" style="left: 50%;"></div>
-          <input type="range" id="compare-handle" aria-label="Before and after comparison slider" min="0" max="100" value="50"
-            class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20" />
+
+        <div class="flex-1 min-w-[190px]">
+          <div class="flex justify-between mb-1.5">
+            <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Level</p>
+            <span id="level-val" class="text-[11px] text-slate-900 font-medium tabular-nums">75</span>
+          </div>
+          <input type="range" id="level-slider" aria-label="Compression level" min="0" max="100" value="75"
+            class="w-full h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer accent-accent
+              [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
+              [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-sm
+              [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110" />
         </div>
-        <div class="flex justify-between mt-2 gap-2">
-          <span class="text-[10px] text-slate-400 truncate">Original <span id="orig-size" class="tabular-nums"></span></span>
-          <span class="text-[10px] text-slate-400 truncate">Compressed <span id="comp-size" class="tabular-nums"></span></span>
+
+        <div>
+          <!-- The label rides on the preset row rather than owning a line above it.
+               This block already wraps to a line of its own (it is ~400px wide on an
+               830px row), and the label was spending a full 21px line saying what the
+               four buttons underneath say themselves ("Discord < 20MB" is a target).
+               The 21px is not cosmetic: the panel bottom sat at 894px against a 900px
+               fold, and #result-note wraps to a second line on the long "Cannot reach
+               ..." message, which would have pushed it to 909. -->
+          <div class="flex items-center gap-2 mb-1.5">
+            <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold whitespace-nowrap">Compress to fit</p>
+            <div id="preset-buttons" class="flex flex-wrap gap-1.5"></div>
+          </div>
+          <!-- Any size, not just the four platform caps.
+               The presets are all *platform* limits, but what people actually search for
+               is a *size* — 8MB, 10MB, 2MB, 512KB. Without this control those numbers had
+               nowhere to go, which is why pages like /compress-gif-under-8mb/ had to tell
+               users to click a preset that (a) no longer exists and (b) would have done
+               nothing anyway: a preset only compresses when the file is already over its
+               cap, and an 8-20MB file is not over 20MB.
+               It runs the same search as a preset, so the same file gets the same
+               explanation whichever control was used.
+               The chips are not decoration. The sizes this site writes whole pages about
+               (256KB, 512KB, 1MB, 2MB) are the ones people arrive already knowing they
+               want, so each is one click rather than a number and a unit to type. -->
+          <div class="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+            <div class="inline-flex items-center gap-1 h-[26px] rounded-md border border-slate-200 bg-white pl-2 pr-0.5
+                 focus-within:border-accent/60 transition-colors">
+              <span class="text-[10px] text-slate-400 whitespace-nowrap">Any size</span>
+              <input id="target-size" type="number" min="1" step="1" inputmode="numeric" placeholder="8"
+                aria-label="Custom target size, in the unit chosen next to it"
+                class="w-10 bg-transparent text-[10px] font-medium text-slate-700 tabular-nums outline-none
+                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+              <select id="target-unit" aria-label="Custom target size unit"
+                class="bg-transparent text-[10px] text-slate-500 outline-none cursor-pointer">
+                <option value="MB">MB</option>
+                <option value="KB">KB</option>
+              </select>
+              <button id="target-apply" type="button" aria-label="Compress to the size I typed"
+                class="px-1.5 h-[20px] rounded text-[10px] font-medium text-accent hover:bg-accent/10 transition-colors">Go</button>
+            </div>
+            <div id="size-chips" class="flex flex-wrap items-center gap-1">
+              <button type="button" class="size-chip px-1.5 py-[3px] rounded-md border border-slate-200 bg-white text-[10px] font-medium text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-colors whitespace-nowrap" data-size="256" data-unit="KB">256 KB</button>
+              <button type="button" class="size-chip px-1.5 py-[3px] rounded-md border border-slate-200 bg-white text-[10px] font-medium text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-colors whitespace-nowrap" data-size="512" data-unit="KB">512 KB</button>
+              <button type="button" class="size-chip px-1.5 py-[3px] rounded-md border border-slate-200 bg-white text-[10px] font-medium text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-colors whitespace-nowrap" data-size="1" data-unit="MB">1 MB</button>
+              <button type="button" class="size-chip px-1.5 py-[3px] rounded-md border border-slate-200 bg-white text-[10px] font-medium text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-colors whitespace-nowrap" data-size="2" data-unit="MB">2 MB</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Right: Controls -->
-      <div class="tool-card p-4 lg:col-span-2">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Left column: Analysis + Mode + Presets -->
-          <div class="space-y-4">
-            <div>
-              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Analysis</p>
-              <!-- Every row is a measured value: what went in, what came out. -->
-              <div id="analysis" class="text-xs">
-                {[
-                  { k: 'size', label: 'Size' },
-                  { k: 'dims', label: 'Dimensions' },
-                  { k: 'frames', label: 'Frames' },
-                  { k: 'colors', label: 'Colors' },
-                ].map((row, i, all) => (
-                  <div class={'flex items-center justify-between py-1' + (i < all.length - 1 ? ' border-b border-slate-50' : '')}>
-                    <span class="text-slate-500">{row.label}</span>
-                    <span class="tabular-nums whitespace-nowrap">
-                      <span id={'an-' + row.k + '-in'} class="text-slate-400">-</span>
-                      <span class="text-slate-300 mx-1">&rarr;</span>
-                      <span id={'an-' + row.k + '-out'} class="text-slate-900 font-medium">-</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+      <!-- What we actually handed to gifsicle — the only readout here that is not
+           per-image, so it stays in the card. No separate per-platform fit row: it is
+           the same four platforms as the buttons above, so the tick is shown on those
+           buttons instead.
+           The per-image numbers (size, dimensions, frames, colours) used to live here
+           as an in→out table. They are now pills under each preview, where they sit
+           next to the thing they describe instead of having to be decoded from a "→". -->
+      <div id="applied" class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] min-w-0 pt-2.5 border-t border-slate-100">
+        <span class="text-slate-400 shrink-0">Applied</span>
+        <span id="ap-setting" class="text-slate-900 font-medium whitespace-nowrap">-</span>
+        <span id="ap-flags" class="px-1.5 py-0.5 rounded bg-slate-50 text-slate-500 font-mono text-[10px] truncate max-w-[28ch]">-</span>
+      </div>
+    </div>
 
-            <div>
-              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Mode</p>
-              <div class="grid grid-cols-3 gap-1 bg-slate-100 rounded-lg p-1">
-                <button data-mode="quality" class="mode-btn py-1.5 text-[11px] font-medium rounded-md transition-colors text-slate-500 hover:text-slate-900">Quality</button>
-                <button data-mode="balanced" class="mode-btn py-1.5 text-[11px] font-medium rounded-md transition-colors bg-accent text-white">Balanced</button>
-                <button data-mode="max" class="mode-btn py-1.5 text-[11px] font-medium rounded-md transition-colors text-slate-500 hover:text-slate-900">Max</button>
-              </div>
-            </div>
-
-            <div>
-              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Target size</p>
-              <div id="preset-buttons" class="flex flex-wrap gap-1.5"></div>
-            </div>
-          </div>
-
-          <!-- Right column: Level + Applied + Fits + funnel -->
-          <div class="space-y-4 flex flex-col">
-            <div>
-              <div class="flex justify-between mb-2">
-                <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Level</p>
-                <span id="level-val" class="text-xs text-slate-900 font-medium tabular-nums">75</span>
-              </div>
-              <input type="range" id="level-slider" aria-label="Compression level" min="0" max="100" value="75"
-                class="w-full h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer accent-accent
-                  [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
-                  [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-sm
-                  [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110" />
-            </div>
-
-            <div>
-              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Applied</p>
-              <div id="applied" class="text-xs">
-                <div class="flex justify-between py-1"><span class="text-slate-500">Setting</span><span id="ap-setting" class="text-slate-900 font-medium">-</span></div>
-                <div id="ap-flags" class="mt-1 px-2 py-1.5 rounded-md bg-slate-50 text-slate-600 font-mono text-[10px] break-all">-</div>
-              </div>
-            </div>
-
-            <div>
-              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Fits where</p>
-              <div id="fit-chips" class="flex flex-wrap gap-1.5"></div>
-            </div>
-
-            <!-- Post-compression funnel -->
-            <div id="post-compress-funnel" class="hidden mt-auto pt-3 border-t border-slate-100">
-              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Save even more</p>
-              <div class="space-y-1.5">
-                <a href="/gif-to-webp/" class="flex items-center gap-1.5 text-[11px] text-accent hover:underline">
-                  <span>&rarr;</span> Convert to WebP (save ~80% more)
-                </a>
-                <a href="/gif-to-mp4/" class="flex items-center gap-1.5 text-[11px] text-accent hover:underline">
-                  <span>&rarr;</span> Convert to MP4 (save ~90% more)
-                </a>
-                <a href="/resize-gif/" class="flex items-center gap-1.5 text-[11px] text-accent hover:underline">
-                  <span>&rarr;</span> Resize GIF for smaller dimensions
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- Secondary CTA. One link bar rather than a stacked heading + links: it is a
+         row of links, not a section, and the 39px it spent on its own heading line is
+         worth more to the preview above it. The flex row is nested rather than put on
+         the card itself, because `hidden` and `flex` on one element fight over
+         `display` and the winner depends on Tailwind's output order, not on the order
+         of the class attribute. -->
+    <div id="post-compress-funnel" class="hidden tool-card px-4 py-2.5">
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold shrink-0">Save even more</span>
+        <a href="/gif-to-webp/" class="text-[11px] text-accent hover:underline">&rarr; Convert to WebP (save ~80% more)</a>
+        <a href="/gif-to-mp4/" class="text-[11px] text-accent hover:underline">&rarr; Convert to MP4 (save ~90% more)</a>
+        <a href="/resize-gif/" class="text-[11px] text-accent hover:underline">&rarr; Resize GIF for smaller dimensions</a>
       </div>
     </div>
 
@@ -231,15 +271,24 @@ import Icon from "./Icon.astro";
       class="absolute top-4 right-4 px-3 py-1.5 rounded-lg bg-white/10 text-white text-xs hover:bg-white/20 transition-colors">
       Close
     </button>
-    <div class="max-w-5xl mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div>
-        <p class="text-white/80 text-xs mb-2">Original <span id="lightbox-orig-size" class="text-white/50 tabular-nums"></span></p>
-        <img id="lightbox-orig" class="w-full rounded-lg bg-white/5" alt="Original GIF at full size" />
+    <!-- The drag-to-compare slider lives here rather than in the page: at full size a
+         drag is actually readable, and it keeps the tool itself to a single screen. -->
+    <div class="max-w-5xl mx-auto mt-10">
+      <div class="flex items-baseline justify-between mb-2">
+        <p class="text-white/80 text-xs">Original <span id="lightbox-orig-size" class="text-white/50 tabular-nums"></span></p>
+        <p class="text-white/80 text-xs">Compressed <span id="lightbox-comp-size" class="text-white/50 tabular-nums"></span></p>
       </div>
-      <div>
-        <p class="text-white/80 text-xs mb-2">Compressed <span id="lightbox-comp-size" class="text-white/50 tabular-nums"></span></p>
-        <img id="lightbox-comp" class="w-full rounded-lg bg-white/5" alt="Compressed GIF at full size" />
+      <div id="comparison-wrap" class="comparison-wrap relative w-full bg-white/5 rounded-lg overflow-hidden cursor-ew-resize"
+        style="height: min(70vh, 560px)">
+        <img id="comparison-orig" class="absolute inset-0 w-full h-full object-contain"
+          src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Original GIF" width="480" height="360" />
+        <img id="comparison-comp" class="absolute inset-0 w-full h-full object-contain"
+          src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Compressed GIF" width="480" height="360" style="clip-path: inset(0 0 0 50%);" />
+        <div id="compare-line" class="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg pointer-events-none z-10" style="left: 50%;"></div>
+        <input type="range" id="compare-handle" aria-label="Before and after comparison slider" min="0" max="100" value="50"
+          class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20" />
       </div>
+      <p class="text-center text-white/50 text-[11px] mt-2">Drag to compare</p>
     </div>
   </div>
 </div>

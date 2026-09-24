@@ -20,12 +20,14 @@ function loadEngine() {
 const $ = (id) => document.getElementById(id);
 const dropZone = $('drop-zone');
 const toolPanel = $('tool-panel');
+// No #select-btn: the whole drop zone is the picker (see the dropZone click handler
+// below), so a separate button was a second affordance for the same action.
 const fileInput = $('file-input');
-const selectBtn = $('select-btn');
 const urlInput = $('url-input');
 const urlLoadBtn = $('url-load-btn');
-// previewComp is the hero result image; comparisonOrig/Comp are the small
-// before/after slider's two layers.
+// The main view shows the pair side by side: sideOrig on the left, previewComp on
+// the right. comparisonOrig/Comp are the lightbox slider's two layers.
+const sideOrig = $('side-orig');
 const previewComp = $('preview-comp');
 const comparisonOrig = $('comparison-orig');
 const comparisonComp = $('comparison-comp');
@@ -54,17 +56,26 @@ const stickySavedEl = $('sticky-saved');
 const stickyDownloadBtn = $('sticky-download');
 // Lightbox — full-size quality comparison
 const lightbox = $('lightbox');
-const lightboxOrig = $('lightbox-orig');
-const lightboxComp = $('lightbox-comp');
 const lightboxOrigSize = $('lightbox-orig-size');
 const lightboxCompSize = $('lightbox-comp-size');
 
 // ── Platform presets ──────────────────────────────────────
+// Target-size presets. `desc` is the limit itself; `why` is the reason it exists, so
+// the number is not just a number.
+//
+// Values re-checked against the platforms' published limits on 2026-09-24. Two had
+// drifted: Discord raised its free per-attachment cap from 10MB to 20MB in Aug 2026,
+// and X's 15MB applies to GIFs (its 5MB cap is for still images). Email and Web are
+// deliberately NOT platform caps — they are budgets, and the tooltip says so.
 const PRESETS = [
-  { id: 'discord', label: 'Discord', maxSize: 8 * 1024 * 1024, desc: '< 8MB' },
-  { id: 'twitter', label: 'Twitter', maxSize: 5 * 1024 * 1024, desc: '< 5MB' },
-  { id: 'email', label: 'Email', maxSize: 1 * 1024 * 1024, desc: '< 1MB' },
-  { id: 'web', label: 'Web', maxSize: 500 * 1024, desc: '< 500KB' },
+  { id: 'discord', label: 'Discord', maxSize: 20 * 1024 * 1024, desc: '< 20MB',
+    why: 'Discord\u2019s free upload limit is 20MB per attachment.' },
+  { id: 'twitter', label: 'Twitter', maxSize: 15 * 1024 * 1024, desc: '< 15MB',
+    why: 'X (Twitter) accepts GIFs up to 15MB. Its 5MB cap is for still images.' },
+  { id: 'email', label: 'Email', maxSize: 1 * 1024 * 1024, desc: '< 1MB',
+    why: 'Not a hard cap \u2014 1MB keeps attachments quick to send and safe across providers.' },
+  { id: 'web', label: 'Web', maxSize: 500 * 1024, desc: '< 500KB',
+    why: 'Not a platform cap \u2014 a page-weight budget, because large GIFs hurt Core Web Vitals.' },
 ];
 
 // ── State ─────────────────────────────────────────────────
@@ -119,6 +130,16 @@ function setResult(origBytes, compBytes, note, savedPct) {
   }
   if (resultNoteEl) resultNoteEl.textContent = note || '';
 
+  // The result pill sits under the compressed preview. It is green only when the
+  // file actually got smaller: a green "1.2 MB" beside a 1.2 MB original would be a
+  // lie told in colour, so the no-change case gets the neutral pill.
+  if (compSizeEl) {
+    compSizeEl.textContent = formatSize(compBytes);
+    compSizeEl.className = pct > 0
+      ? 'rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 tabular-nums'
+      : 'rounded-full border border-slate-200 px-2.5 py-0.5 text-xs text-slate-500 tabular-nums';
+  }
+
   // Mirror into the sticky bar, so the same number stays readable from the
   // Mode / Level / Target size controls further down the page.
   if (stickyOrigEl) stickyOrigEl.textContent = formatSize(origBytes);
@@ -172,8 +193,8 @@ function initStickyResult() {
 // fire at the end of every drag.
 function openLightbox() {
   if (!lightbox || !originalFile) return;
-  lightboxOrig.src = comparisonOrig.src;
-  lightboxComp.src = comparisonComp.src;
+  // The slider inside the lightbox already holds both layers, so there is nothing to
+  // copy in — only the two size captions need to be current.
   if (lightboxOrigSize) lightboxOrigSize.textContent = origSizeEl ? origSizeEl.textContent : '';
   if (lightboxCompSize) lightboxCompSize.textContent = compSizeEl ? compSizeEl.textContent : '';
   lightbox.style.display = 'block';
@@ -238,23 +259,26 @@ function parseFlags(flags) {
   return { lossy: lossy ? lossy[1] : '', colors: colors ? colors[1] : '' };
 }
 
+// These render as pills under each preview, so every value has to be readable on its
+// own. A bare "48" in a pill says nothing — the same complaint the old
+// "Frames 48 → 48" table earned — so the unit travels with the number.
+// The size is NOT set here: it lives in the result pill, which setResult() owns
+// because it is also the only place that knows whether the number deserves to be green.
 function fillAnalysisIn() {
-  setText('an-size-in', originalFile ? formatSize(originalFile.size) : '-');
   setText('an-dims-in', gifWidth ? gifWidth + '\u00d7' + gifHeight : '-');
-  setText('an-frames-in', gifFrames || '-');
-  setText('an-colors-in', gifColors || 'N/A');
-  ['size', 'dims', 'frames', 'colors'].forEach((k) => setText('an-' + k + '-out', '-'));
-  renderFitChips(0);
+  setText('an-frames-in', gifFrames ? gifFrames + ' frames' : '-');
+  setText('an-colors-in', gifColors ? gifColors + ' colors' : 'N/A');
+  ['dims', 'frames', 'colors'].forEach((k) => setText('an-' + k + '-out', '-'));
+  renderFitState(0);
 }
 
 // `colorsCap` is the --colors value we sent, so the output is guaranteed to be at
 // or below it. Shown as "<=" rather than as a measured count we never took.
-function fillAnalysisOut(outBytes, colorsCap) {
-  setText('an-size-out', formatSize(outBytes));
+function fillAnalysisOut(_outBytes, colorsCap) {
   const dims = outputDims();
   setText('an-dims-out', dims.w + '\u00d7' + dims.h);
-  setText('an-frames-out', gifFrames || '-');
-  setText('an-colors-out', colorsCap ? '\u2264' + colorsCap : '-');
+  setText('an-frames-out', gifFrames ? gifFrames + ' frames' : '-');
+  setText('an-colors-out', colorsCap ? '\u2264' + colorsCap + ' colors' : '-');
   // "≤" needs explaining, otherwise it reads like a measurement we did not take.
   const colorsEl = $('an-colors-out');
   if (colorsEl) {
@@ -268,11 +292,10 @@ function fillAnalysisOut(outBytes, colorsCap) {
 // output column has to describe the ORIGINAL file, not the resize we asked for.
 // Reporting the attempted 800x600 here would be exactly the kind of lie the old
 // "Best method" row told — the panel would claim a change that never reached the user.
-function fillAnalysisUnchanged(outBytes) {
-  setText('an-size-out', formatSize(outBytes));
+function fillAnalysisUnchanged(_outBytes) {
   setText('an-dims-out', gifWidth ? gifWidth + '\u00d7' + gifHeight : '-');
-  setText('an-frames-out', gifFrames || '-');
-  setText('an-colors-out', gifColors || 'N/A');
+  setText('an-frames-out', gifFrames ? gifFrames + ' frames' : '-');
+  setText('an-colors-out', gifColors ? gifColors + ' colors' : 'N/A');
 }
 
 function setApplied(modeName, level, flags, notApplied) {
@@ -282,21 +305,19 @@ function setApplied(modeName, level, flags, notApplied) {
   setText('ap-flags', flags || '-');
 }
 
-// "Fits where" — driven from the same PRESETS table as the buttons above, so the
-// chips and the buttons can never disagree about what the platform limit is.
-function renderFitChips(outBytes) {
-  const box = $('fit-chips');
-  if (!box) return;
-  box.textContent = '';
-  PRESETS.forEach((p) => {
+// "Fits where" is shown ON the Target size buttons rather than as a second row of
+// chips: it is the same four platforms, so a separate row only repeated them. The
+// tick and the buttons both read the same PRESETS table, so they cannot disagree.
+function renderFitState(outBytes) {
+  document.querySelectorAll('.preset-btn').forEach((b) => {
+    const p = PRESETS.find((x) => x.id === b.dataset.preset);
+    if (!p) return;
+    const tick = b.querySelector('.fit-tick');
+    if (!tick) return;
     const fits = outBytes > 0 && outBytes <= p.maxSize;
-    const chip = document.createElement('span');
-    chip.className = fits
-      ? 'text-[10px] font-medium px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100'
-      : 'text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-50 text-slate-400 border border-slate-100';
-    chip.textContent = (fits ? '\u2713 ' : '') + p.label + ' ' + p.desc;
-    chip.title = (fits ? 'Fits ' : 'Too big for ') + p.label + ' (' + p.desc + ')';
-    box.appendChild(chip);
+    tick.classList.toggle('hidden', !fits);
+    b.dataset.fits = fits ? '1' : '0';
+    b.title = (fits ? 'Your result fits ' : 'Compress to fit ') + p.label + ' (' + p.desc + ')';
   });
 }
 
@@ -384,7 +405,7 @@ async function applyCompression() {
       compSizeEl.textContent = formatSize(origSize) + ' (no change)';
       setApplied(mode, level, cmd, true);
       fillAnalysisUnchanged(origSize);
-      renderFitChips(origSize);
+      renderFitState(origSize);
       setResult(origSize, origSize,
         'Already optimized — gifsicle could not make this file any smaller. Try Max mode, or convert to WebP or MP4 below.',
         0);
@@ -412,7 +433,7 @@ async function applyCompression() {
         : 'Dimensions unchanged — this is pure re-encoding.');
     setApplied(mode, level, cmd);
     fillAnalysisOut(compressedBlob.size, applied.colors);
-    renderFitChips(compressedBlob.size);
+    renderFitState(compressedBlob.size);
 
     // Speed badge
     const speedBadge = document.getElementById('speed-badge');
@@ -526,6 +547,54 @@ async function findLevelForTarget(targetBytes, modeName) {
   return { level: best, minSize: floor(), probes };
 }
 
+// ── The search itself, shared by the presets and the custom target box ──
+// They differ only in where the number comes from, so they share one path: the
+// search, the success test and the wording must stay identical, or the same file
+// would get two different explanations depending on which control was used.
+async function fitToTarget(maxBytes, label, desc, btn) {
+  if (!originalBytes || !originalFile) return;
+  const origSize = originalFile.size;
+
+  // Already fits — say so rather than returning silently. A control that looks like
+  // it did something but did not is worse than one that explains why it will not.
+  if (origSize <= maxBytes) {
+    setResult(origSize, origSize,
+      'Already under ' + desc + ' \u2014 nothing to compress for ' + label + '.', 0);
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+  setProgress(12, 'Searching for ' + desc + '\u2026');
+  try {
+    const found = await findLevelForTarget(maxBytes, mode);
+    levelSlider.value = found.level === null ? 100 : found.level;
+    levelVal.textContent = levelSlider.value;
+    await applyCompression();
+
+    // Judge success from the file we actually produced, not from what the search
+    // claimed. The level -> size curve is not monotone on every mode, so the real
+    // output is the only trustworthy answer.
+    const got = compressedBlob ? compressedBlob.size : origSize;
+    if (got <= maxBytes) {
+      const caveat = got < maxBytes / 4
+        ? ' This GIF\u2019s compression range is narrow, so it lands well under the limit.'
+        : '';
+      setResult(origSize, got,
+        'Fits ' + label + ' (' + desc + ') at level ' + levelSlider.value + '.' + caveat);
+    } else {
+      setResult(origSize, got,
+        'Cannot reach ' + desc + ' in ' + mode + ' mode \u2014 the smallest this tool can '
+        + 'make this GIF is ' + formatSize(got) + '. Try Max mode, or convert to WebP or MP4 below.');
+    }
+  } catch (err) {
+    console.error('Target-size search failed:', err);
+    showToast('Target-size search failed. Try a different mode.');
+  } finally {
+    if (btn) btn.disabled = false;
+    setProgress(-1);
+  }
+}
+
 function clearPresetHighlight() {
   document.querySelectorAll('.preset-btn').forEach((b) => {
     b.classList.remove('border-accent', 'bg-accent/5', 'text-accent');
@@ -553,62 +622,83 @@ function initPresets() {
   if (!container) return;
   PRESETS.forEach(p => {
     const btn = document.createElement('button');
-    btn.className = 'preset-btn px-2.5 py-1 text-[10px] font-medium rounded-md border border-slate-200 text-slate-500 hover:border-accent/50 hover:text-slate-700 transition-colors whitespace-nowrap';
-    btn.textContent = p.desc;
+    btn.className = 'preset-btn inline-flex items-center gap-1 px-2 py-1 text-[10px] font-medium rounded-md border border-slate-200 text-slate-500 hover:border-accent/50 hover:text-slate-700 transition-colors whitespace-nowrap';
     btn.dataset.preset = p.id;
+    // The platform name belongs on the button, not only in the tooltip: it is what the
+    // user is choosing between, and it is what the fit tick refers to.
+    const tick = document.createElement('span');
+    tick.className = 'fit-tick hidden text-emerald-600 font-bold';
+    tick.textContent = '\u2713';
+    const label = document.createElement('span');
+    label.textContent = p.label + ' ' + p.desc;
+    btn.append(tick, label);
     btn.addEventListener('click', async () => {
       if (!originalBytes || !originalFile) return;
-      const origSize = originalFile.size;
 
       clearPresetHighlight();
       btn.classList.remove('border-slate-200', 'text-slate-500');
       btn.classList.add('border-accent', 'bg-accent/5', 'text-accent');
       activePreset = p.id;
 
-      // Already fits — say so rather than returning silently.
-      if (origSize <= p.maxSize) {
-        setResult(origSize, origSize,
-          'Already under ' + p.desc + ' \u2014 nothing to compress for ' + p.label + '.', 0);
-        return;
-      }
-
-      btn.disabled = true;
-      setProgress(12, 'Searching for ' + p.desc + '\u2026');
-      try {
-        const found = await findLevelForTarget(p.maxSize, mode);
-        levelSlider.value = found.level === null ? 100 : found.level;
-        levelVal.textContent = levelSlider.value;
-        await applyCompression();
-
-        // Judge success from the file we actually produced, not from what the search
-        // claimed. The level -> size curve is not monotone on every mode, so the real
-        // output is the only trustworthy answer.
-        const got = compressedBlob ? compressedBlob.size : origSize;
-        if (got <= p.maxSize) {
-          const caveat = got < p.maxSize / 4
-            ? ' This GIF\u2019s compression range is narrow, so it lands well under the limit.'
-            : '';
-          setResult(origSize, got,
-            'Fits ' + p.label + ' (' + p.desc + ') at level ' + levelSlider.value + '.' + caveat);
-        } else {
-          setResult(origSize, got,
-            'Cannot reach ' + p.desc + ' in ' + mode + ' mode \u2014 the smallest this tool can '
-            + 'make this GIF is ' + formatSize(got) + '. Try Max mode, or convert to WebP or MP4 below.');
-        }
-      } catch (err) {
-        console.error('Target-size search failed:', err);
-        showToast('Target-size search failed. Try a different mode.');
-      } finally {
-        btn.disabled = false;
-        setProgress(-1);
-      }
+      await fitToTarget(p.maxSize, p.label, p.desc, btn);
     });
     container.appendChild(btn);
   });
 }
 
+// ── Custom target size ────────────────────────────────────
+// The four presets are platform caps. This is for every other number people actually
+// search for — 8MB, 10MB, 2MB, 512KB — which until now had no control at all, and
+// which is the one intent pattern that has ever produced a click on this site
+// ("compress gif to 256kb for discord"). It runs the same search as a preset.
+function initCustomTarget() {
+  const input = $('target-size');
+  const unit = $('target-unit');
+  const go = $('target-apply');
+  if (!input || !unit || !go) return;
+
+  const submit = async () => {
+    if (!originalBytes || !originalFile) {
+      showToast('Add a GIF first.');
+      return;
+    }
+    const n = parseFloat(input.value);
+    if (!isFinite(n) || n <= 0) {
+      showToast('Type a target size first, for example 8.');
+      input.focus();
+      return;
+    }
+    const bytes = Math.round(n * (unit.value === 'MB' ? 1048576 : 1024));
+    // Below 1KB there is no GIF left to make; above 200MB the search would only burn
+    // the probe budget to tell us what we already know.
+    if (bytes < 1024 || bytes > 200 * 1048576) {
+      showToast('Pick a target between 1KB and 200MB.');
+      input.focus();
+      return;
+    }
+
+    clearPresetHighlight();
+    activePreset = null;
+    await fitToTarget(bytes, 'your target', '\u2264 ' + n + ' ' + unit.value, go);
+  };
+
+  go.addEventListener('click', submit);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); submit(); }
+  });
+
+  // The quick chips are one click, not two: fill the box, then run the same search.
+  // The sizes this site has whole pages about should not need typing to reach.
+  document.querySelectorAll('.size-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      input.value = chip.dataset.size;
+      unit.value = chip.dataset.unit;
+      submit();
+    });
+  });
+}
+
 // ── Drop zone & file input ────────────────────────────────
-selectBtn.addEventListener('click', (e) => { e.stopPropagation(); fileInput.click(); });
 dropZone.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', (e) => { if (e.target.files[0]) loadFile(e.target.files[0]); });
 
@@ -626,35 +716,87 @@ dropZone.addEventListener('drop', (e) => {
 });
 
 document.addEventListener('paste', (e) => {
+  // Pasting INTO the URL box must not also be caught here, or one Ctrl+V would kick off
+  // two fetches: the box's own Enter/click path and this document-level handler.
+  const t = e.target;
+  if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+
   const items = e.clipboardData?.items;
   if (items) {
     for (const item of items) {
       if (item.type === 'image/gif') {
         loadFile(item.getAsFile());
-        break;
+        return;
       }
     }
   }
+
+  // A pasted URL is the other thing "paste a GIF" can mean, and until now it did
+  // nothing at all — no load, no error, no hint. The drop zone invites Ctrl+V and the
+  // tool has a URL loader, so a user who copied a link rather than the file got silence
+  // and reasonably reported that loading by link did not work. Handing it to the same
+  // loader the URL box uses keeps one code path for both.
+  const text = (e.clipboardData?.getData('text/plain') || '').trim();
+  if (/^https?:\/\/\S+$/i.test(text)) {
+    e.preventDefault();
+    loadFromUrl(text);
+  }
 });
 
-// ── URL input ─────────────────────────────────────────────
-if (urlLoadBtn) {
-  urlLoadBtn.addEventListener('click', async () => {
-    const url = (urlInput.value || '').trim();
-    if (!url) return;
-    setProgress(10, 'Fetching from URL...');
-    try {
-      const resp = await fetch(url);
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
-      const blob = await resp.blob();
-      const file = new File([blob], url.split('/').pop() || 'remote.gif', { type: 'image/gif' });
-      urlInput.value = '';
-      loadFile(file);
-    } catch (err) {
+// ── GIF from URL ──────────────────────────────────────────
+// One path, two entry points: the "paste a GIF URL" box and a URL pasted straight onto
+// the page. They must share it, or the same URL would behave differently depending on
+// where the user typed it — the same reason the presets and the custom target box share
+// fitToTarget().
+async function loadFromUrl(rawUrl) {
+  const url = (rawUrl || '').trim();
+  if (!url) return;
+  setProgress(10, 'Fetching from URL...');
+  try {
+    // referrerPolicy: 'no-referrer' is load-bearing here, not hygiene. A large share of
+    // image hosts run hotlink protection that answers 403 to any request carrying a
+    // Referer from another site — and a browser fetch always sends one, so the feature
+    // failed on exactly the sites people most often copy GIF URLs from. Verified
+    // 2026-09-24 against c-ssl.dtstatic.com (a duitang CDN): same URL, same page, 403
+    // with the default policy and 200 with this one. curl showed Referer is the only
+    // trigger (no-Referer and Origin-only both return 200), and that a Referer from the
+    // host's own domain also passes. On hosts with no such rule it costs nothing — the
+    // header is simply absent.
+    const resp = await fetch(url, { referrerPolicy: 'no-referrer' });
+    if (!resp.ok) {
       setProgress(-1);
-      showToast('Could not load GIF from URL. Try downloading first.');
+      // Name the failure. "Could not load" for both a 404 and a hotlink block sends the
+      // user back to retry the same dead URL instead of to another source.
+      showToast(resp.status === 401 || resp.status === 403
+        ? 'That site blocks hotlinking (HTTP ' + resp.status + '). Download the GIF and drop it here instead.'
+        : 'Could not fetch that URL (HTTP ' + resp.status + ').');
+      return;
     }
-  });
+    const blob = await resp.blob();
+    // A URL can answer 200 with an HTML page — a login wall, a consent page, an error
+    // page. Catching it on the magic bytes here gives a true reason, instead of the
+    // confusing "not a valid GIF" that surfaces much later from the parser.
+    const head = new Uint8Array(await blob.slice(0, 6).arrayBuffer());
+    if (!(head[0] === 0x47 && head[1] === 0x49 && head[2] === 0x46)) {
+      setProgress(-1);
+      showToast('That URL is not a GIF file.');
+      return;
+    }
+    const file = new File([blob], url.split('/').pop() || 'remote.gif', { type: 'image/gif' });
+    if (urlInput) urlInput.value = '';
+    loadFile(file);
+  } catch (err) {
+    // Reaching here means the request never produced a readable response: the host sends
+    // no CORS header, or there is no network. Both mean "you will have to get the file
+    // yourself", so both get the same actionable sentence rather than the bare TypeError
+    // ("Failed to fetch") the browser raises.
+    setProgress(-1);
+    showToast('Could not read that URL. The site may block outside access \u2014 download the GIF and drop it here.');
+  }
+}
+
+if (urlLoadBtn) {
+  urlLoadBtn.addEventListener('click', () => loadFromUrl(urlInput.value));
   urlInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') urlLoadBtn.click();
   });
@@ -712,6 +854,7 @@ function cleanup() {
   gifWidth = 0; gifHeight = 0;
   gifFrames = 0; gifColors = 0;
   usageCounted = false;
+  sideOrig.src = '';
   previewComp.src = '';
   comparisonOrig.src = '';
   comparisonComp.src = '';
@@ -730,6 +873,7 @@ async function loadFile(file) {
 
   // Show original preview
   const origUrl = URL.createObjectURL(file);
+  sideOrig.src = origUrl;
   comparisonOrig.src = origUrl;
   origSizeEl.textContent = formatSize(file.size);
   // Result card starts in a pending state so the top of the panel is never blank
@@ -796,6 +940,7 @@ function initUrlToggle() {
 function init() {
   renderUsageCounter();
   initPresets();
+  initCustomTarget();
   initComparisonSlider();
   initLightbox();
   initUrlToggle();

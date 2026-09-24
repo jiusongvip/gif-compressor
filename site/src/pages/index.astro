@@ -46,7 +46,7 @@ const faqSchema = JSON.stringify({
     { "@type": "Question", "name": "Will compression affect my GIF animation?", "acceptedAnswer": { "@type": "Answer", "text": "At moderate levels the animation stays smooth and visually identical. At higher compression levels you may notice slight color reduction. Use the live preview to verify quality before downloading." } },
     { "@type": "Question", "name": "Is my GIF file safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. All processing happens in your browser using WebAssembly. Files are never uploaded to any server. Your GIFs stay 100% private on your device." } },
     { "@type": "Question", "name": "What is the maximum file size?", "acceptedAnswer": { "@type": "Answer", "text": "You can compress GIFs up to 100MB. For best performance with large files, use Balanced mode and the compression slider at level 50-70.." } },
-    { "@type": "Question", "name": "How do I compress a GIF for Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Discord free accounts limit GIFs to 8MB. Use the Discord preset button or Balanced mode at level 60-80. Resize to 600px width first for best results." } },
+    { "@type": "Question", "name": "How do I compress a GIF for Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Discord's free tier accepts GIFs up to 20MB — the cap was raised from 10MB in August 2026, so guides that still say 8MB are out of date. To make a GIF play instantly in chat instead of arriving as a download link, target 2-5MB: type the size into the Any size box and press Go, or use the Discord preset for the full 20MB." } },
     { "@type": "Question", "name": "Can I compress multiple GIFs at once?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Toggle Batch mode to compress multiple GIFs simultaneously with the same settings. All compressed files download as a single ZIP." } }
   ]
 });
@@ -68,13 +68,12 @@ const howToSchema = JSON.stringify({
   description="Compress GIF files online for free. Reduce GIF size by up to 70% while keeping animation quality. Works in your browser - no upload needed, 100% private."
   schemas={[schema, orgSchema, faqSchema, howToSchema]}
 >
-  <section class="max-w-4xl mx-auto px-4 pt-6 pb-4">
+  <section class="max-w-4xl mx-auto px-4 pt-5 pb-4">
     <h1 class="text-2xl font-bold text-slate-900 leading-tight">
-      Compress GIF Files <span class="text-accent">&mdash; Free, Instant, Private</span>
+      GIF Compressor <span class="text-accent">&mdash; Free, Instant, Private</span>
     </h1>
-    <p class="text-[10px] text-slate-400 mb-1">Built by web performance engineers &middot; <a href="/about/" class="text-accent hover:underline">About us</a> &middot; Last updated: August 2026</p>
     <p class="text-sm text-slate-500 mt-1.5 max-w-xl leading-relaxed">
-      Drop a GIF below to shrink it by up to <strong class="text-slate-900">70%</strong>. Nothing ever leaves your browser.
+      Drop a GIF to shrink it up to <strong class="text-slate-900">70%</strong>. Nothing leaves your browser.
     </p>
   </section>
 
@@ -162,7 +161,7 @@ const howToSchema = JSON.stringify({
       <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Product demo</p><p class="text-lg font-bold text-accent">40-60%</p><p class="text-[10px] text-slate-400 mt-1">UI recordings, showcases</p></div>
       <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Photo / video</p><p class="text-lg font-bold text-accent">20-40%</p><p class="text-[10px] text-slate-400 mt-1">Complex scenes, gradients</p></div>
     </div>
-    <p class="text-xs text-slate-400 mt-4 text-center">Actual savings depend on your GIF's content. The tool's <strong class="text-slate-600">Analysis panel</strong> shows what went in, what came out, the exact settings applied, and whether the result fits each platform limit.</p>
+    <p class="text-xs text-slate-400 mt-4 text-center">Actual savings depend on your GIF's content. The tool shows what went in and what came out under each preview, the exact settings applied, and whether the result fits each platform limit.</p>
   </section>
 
   <section class="max-w-4xl mx-auto px-4 mt-16">
@@ -176,7 +175,7 @@ const howToSchema = JSON.stringify({
           </div>
           <h3 class="text-sm font-semibold text-slate-900">Discord</h3>
         </div>
-        <p class="text-xs text-slate-500 leading-relaxed">Under 8MB for free tier. Reactions, memes, and stickers that load instantly in chat.</p>
+        <p class="text-xs text-slate-500 leading-relaxed">Under 5MB for instant playback. Discord accepts up to 20MB on the free tier.</p>
         <p class="text-[10px] text-accent mt-2 group-hover:underline">Compress for Discord &rarr;</p>
       </a>
       <a href="/compress-gif-for-twitter/" class="tool-card p-5 group">
@@ -186,7 +185,7 @@ const howToSchema = JSON.stringify({
           </div>
           <h3 class="text-sm font-semibold text-slate-900">Twitter / X</h3>
         </div>
-        <p class="text-xs text-slate-500 leading-relaxed">Under 3MB for mobile, 5MB for web. GIFs that survive Twitter's MP4 auto-conversion.</p>
+        <p class="text-xs text-slate-500 leading-relaxed">Under 5MB. X accepts GIFs up to 15MB and re-encodes them to MP4.</p>
         <p class="text-[10px] text-accent mt-2 group-hover:underline">Compress for Twitter &rarr;</p>
       </a>
       <a href="/compress-gif-for-email/" class="tool-card p-5 group">
@@ -333,7 +332,7 @@ const howToSchema = JSON.stringify({
           How do I compress a GIF for Discord?
           <span class="text-slate-400 group-open:rotate-180 transition-transform"><Icon name="caret-down" size={14} /></span>
         </summary>
-        <p class="text-xs text-slate-500 mt-3 leading-relaxed">Discord free accounts limit GIF uploads to 8MB. Use the <strong class="text-slate-700">&lt; 8MB Discord preset</strong> in the tool, or set Balanced mode at level 60-80. For best results, <a href="/resize-gif/" class="text-accent hover:underline">resize to 600px width</a> before compressing. See our <a href="/compress-gif-for-discord/" class="text-accent hover:underline">full Discord GIF compression guide</a>.</p>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">Discord's free tier accepts GIFs up to 20MB — the cap was raised from 10MB in August 2026, so guides that still say 8MB are out of date. To make a GIF play instantly in chat rather than arrive as a download link, type <strong class="text-slate-700">5</strong> into the <strong class="text-slate-700">Any size</strong> box and press Go, or click the Discord preset for the full 20MB. For best results, <a href="/resize-gif/" class="text-accent hover:underline">resize to 600px width</a> before compressing. See our <a href="/compress-gif-for-discord/" class="text-accent hover:underline">full Discord GIF compression guide</a>.</p>
       </details>
       <details class="group tool-card p-4">
         <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
@@ -376,12 +375,12 @@ const howToSchema = JSON.stringify({
       <a href="/compress-gif-for-discord/" class="tool-card p-4 group">
         <span class="text-[#5865F2] text-sm font-bold">D</span>
         <p class="text-sm font-medium text-slate-900 mt-1">For Discord</p>
-        <p class="text-xs text-slate-400 mt-1">Under 8MB</p>
+        <p class="text-xs text-slate-400 mt-1">Under 20MB</p>
       </a>
       <a href="/compress-gif-for-twitter/" class="tool-card p-4 group">
         <span class="text-slate-700 text-sm font-bold">𝕏</span>
         <p class="text-sm font-medium text-slate-900 mt-1">For Twitter</p>
-        <p class="text-xs text-slate-400 mt-1">Under 3MB</p>
+        <p class="text-xs text-slate-400 mt-1">Under 15MB</p>
       </a>
       <a href="/compress-gif-for-email/" class="tool-card p-4 group">
         <span class="text-accent text-sm font-bold">@</span>
@@ -392,6 +391,10 @@ const howToSchema = JSON.stringify({
     <p class="text-xs text-slate-400 text-center mt-6">
       Want to learn more? Check our <a href="/faq/" class="text-accent hover:underline">full FAQ</a> or browse the <a href="/compress-gif/" class="text-accent hover:underline">compression guide</a>.
     </p>
+    <!-- Trust metadata lives at the bottom, not in the hero: it is the least useful
+         thing to read first, and three stacked lines above the tool pushed the tool
+         itself toward the fold. -->
+    <p class="text-[10px] text-slate-400 text-center mt-4">Built by web performance engineers &middot; <a href="/about/" class="text-accent hover:underline">About us</a> &middot; Last updated: September 2026</p>
   </section>
   <script>
     // 演示卡：载入示例 GIF 到工具

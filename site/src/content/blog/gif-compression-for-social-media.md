@@ -1,10 +1,10 @@
 ---
 title: "GIF Compression for Social Media — Discord, Twitter & More"
-description: "Platform-by-platform guide to GIF compression for social media: Discord 8MB, Twitter 5MB, Instagram rules, and how to hit every limit with one tool."
+description: "Platform-by-platform guide to GIF compression for social media: Discord 20MB (not the 8MB most guides still say), X 15MB for GIFs, Instagram rules, and how to hit every limit with one tool."
 publishDate: 2025-08-05
 ---
 
-Every social platform has a file size limit for GIF uploads. Discord caps at 8MB. Twitter enforces 5MB on web and a brutal 3MB on mobile. Email clients clip messages over 102KB. If you have ever had a GIF rejected by a platform at the last second, you know the frustration.
+Every social platform has a file size limit for GIF uploads. Discord allows 20MB on the free tier — raised from 10MB in August 2026, which is why so many guides still say 8MB. X allows 15MB for GIFs; the 5MB figure people quote is its still-image limit. Email clients clip messages over 102KB. If you have ever had a GIF rejected by a platform at the last second, you know the frustration.
 
 This guide breaks down every major platform's GIF size limit, why those limits exist, and exactly how to hit them — including fallback strategies when standard compression is not enough.
 
@@ -12,10 +12,10 @@ This guide breaks down every major platform's GIF size limit, why those limits e
 
 | Platform | Max GIF Size | Why This Limit Exists | What Happens If You Exceed It |
 |----------|-------------|----------------------|-------------------------------|
-| Discord (free) | 8MB | Server storage costs, message delivery speed | Upload blocked. Smaller file required. |
-| Discord (Nitro) | 25MB | Premium tier benefit | Upload blocked above 25MB |
-| Twitter / X (web) | 5MB | Bandwidth costs at Twitter scale | Upload rejected with error message |
-| Twitter / X (mobile) | 3MB | Cellular data constraints | Upload rejected. The real limit that catches people. |
+| Discord (free) | 20MB (was 8MB) | Server storage costs, message delivery speed | Upload blocked. Smaller file required. |
+| Discord (Nitro) | 500MB | Premium tier benefit | Upload blocked above 500MB |
+| X / Twitter (GIF) | 15MB | Bandwidth costs at X's scale | Upload rejected with error message |
+| X / Twitter (still image) | 5MB | Bandwidth costs | This is where the widely quoted 5MB figure comes from |
 | Instagram | N/A | Platform auto-converts GIFs to video on upload | GIF is silently converted, loses looping |
 | WhatsApp | 16MB | Message delivery over mobile networks | Upload blocked above 16MB |
 | Telegram | 2GB | No practical limit for GIFs | N/A |
@@ -29,8 +29,8 @@ This guide breaks down every major platform's GIF size limit, why those limits e
 
 Platform limits are not arbitrary. Each one reflects a different engineering constraint:
 
-- **Discord's 8MB** balances server storage costs against user experience in real-time chat. Every uploaded file is replicated across Discord's CDN. At Discord's scale (millions of messages per minute), even a 1MB increase in the limit would add petabytes of storage.
-- **Twitter's 3MB mobile limit** is about cellular data. Twitter's mobile app is used predominantly on cellular connections where every megabyte counts against data caps. A timeline full of 8MB GIFs would be unusable on mobile.
+- **Discord's 20MB** balances server storage costs against user experience in real-time chat. Every uploaded file is replicated across Discord's CDN. At Discord's scale (millions of messages per minute), even a 1MB increase in the limit adds petabytes of storage — which is why the cap moved slowly, from 8MB to 10MB and then to 20MB in August 2026.
+- **X's 5MB still-image limit** is about bandwidth at scale. The 15MB GIF allowance is looser because X converts GIFs to MP4 on upload, so it stores the re-encoded video rather than your original file.
 - **Gmail's 102KB clipping threshold** dates back to when most people read email on dial-up. It has never been raised because Gmail uses clipping as a design pattern — the full message loads on demand.
 
 Understanding these constraints helps you think about compression differently. You are not just trying to get under an arbitrary number. You are respecting the infrastructure constraints of platforms serving millions or billions of users.
@@ -40,7 +40,7 @@ Understanding these constraints helps you think about compression differently. Y
 Regardless of which platform you are targeting, the workflow is the same. The only thing that changes is the target size:
 
 1. **Resize first.** A 1920px GIF will never hit any platform limit. Resizing to 600-800px width alone removes 70-85% of the data. Use the [GIF Resizer](/resize-gif) before touching any compression settings.
-2. **Compress with presets.** Our [GIF Compressor](/) has one-click platform presets that auto-calculate the right compression level based on your file's current size.
+2. **Set your target.** Our [GIF Compressor](/) has one-click platform presets for the caps, plus an **Any size** box for everything else — type 5 MB, 8 MB, 2 MB, whatever the destination needs, and it searches for the lightest level that fits.
 3. **Preview before sharing.** The comparison slider shows exactly what your audience will see. Check for color banding, frame stutter, and text readability.
 4. **Have a fallback.** If compression is not enough, convert format. MP4 for long animations, WebP for web performance.
 
@@ -48,29 +48,29 @@ Regardless of which platform you are targeting, the workflow is the same. The on
 
 ### Discord
 
-Discord is where most GIF compression happens. The 8MB limit on free accounts is the single most common bottleneck for reaction GIFs and memes.
+Discord is where most GIF compression happens. The 8MB figure people still quote is out of date — the free-tier cap is 20MB, raised from 10MB in August 2026.
 
-**Typical scenario:** You find a perfect reaction GIF on GIPHY. It is 12MB. You paste it into Discord. Blocked.
+**Typical scenario:** You find a perfect reaction GIF on GIPHY. It is 12MB. You paste it into Discord. It uploads now — but it arrives as a download link nobody clicks. Size is still the problem; the threshold just moved.
 
 **The fix:**
 - Resize to 600px width first. A 1080px GIF at 600px is 70% smaller before any compression.
-- Use the **Discord preset** (< 8MB) in the compressor tool. It auto-calculates the level based on your current file size.
+- Type **5** into the **Any size** box in the compressor and press Go. It searches for the lightest level that lands under 5MB, which is where a GIF starts playing inline instead of arriving as a download link.
 - For best results, manually set Balanced mode at level 60-80. This keeps reaction GIFs looking crisp at 500KB-2MB — fast to load and still detailed.
-- Discord Nitro users can push to 25MB but should still compress. A 20MB GIF takes 5-10 seconds to load in chat, and most people will scroll past before it finishes.
+- Discord Nitro users can push to 500MB but should still compress. A 20MB GIF takes 5-10 seconds to load in chat, and most people will scroll past before it finishes.
 
 **Pro tip:** Discord converts all uploaded GIFs to a compressed internal format. If you upload a beautifully optimized 1MB GIF, Discord may recompress it and add artifacts. Compress to 2-5MB total — this gives Discord's recompressor enough data to work with without introducing visible quality loss.
 
 ### Twitter / X
 
-Twitter's limits are Byzantine: 5MB on web, 3MB on mobile. Since most Twitter usage is mobile, the 3MB limit is the one that matters.
+X's GIF limit is 15MB, not the 5MB you will see quoted everywhere — that figure is for still images. The mix-up is widespread enough that it is worth double-checking any guide you read on this.
 
 **The fix:**
-- Resize to 600px width. Twitter's feed displays GIFs at 500-600px wide on most devices.
-- Use Maximum mode at level 70-90. Twitter auto-loops GIFs, so 10fps looks perfectly smooth in a scrolling feed.
-- The tool's **Twitter preset** (< 5MB) targets the web limit. For mobile safety, manually push the level to 80-90 after applying the preset.
-- If your GIF started at 15MB and you need it under 3MB, resize first (to 600px), then compress. Together these two steps reduce a 15MB file to ~2MB.
+- Resize to 600px width. X's feed displays GIFs at 500-600px wide on most devices.
+- Use Maximum mode at level 70-90. X auto-loops GIFs, so 10fps looks perfectly smooth in a scrolling feed.
+- Type **5** into the **Any size** box in the compressor. You are allowed 15MB, but a 2-5MB source survives X's MP4 re-encoding with far better quality.
+- If your GIF started at 15MB, resize first (to 600px), then compress. Together these two steps reduce a 15MB file to ~2MB.
 
-**Pro tip:** Twitter supports GIFs up to 15 seconds. If your GIF is under 3 seconds and still over 3MB, you have a resolution or color problem — not a length problem.
+**Pro tip:** X supports GIFs up to 15 seconds. If your GIF is under 3 seconds and still over 5MB, you have a resolution or colour problem — not a length problem.
 
 ### Email (Gmail, Outlook, Apple Mail)
 

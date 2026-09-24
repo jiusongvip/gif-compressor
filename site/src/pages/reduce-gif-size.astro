@@ -6,8 +6,8 @@ const faqSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "What is the maximum file size Discord accepts for GIFs?", "acceptedAnswer": { "@type": "Answer", "text": "Discord free accounts accept GIFs up to 8MB. Discord Nitro increases this to 25MB. For best results, compress to 2-5MB for fast loading in chat." } },
-    { "@type": "Question", "name": "How do I make a GIF small enough for Twitter?", "acceptedAnswer": { "@type": "Answer", "text": "Twitter limits GIFs to 5MB on web and 3MB on mobile. Use the Balanced compression mode at level 70-90, or resize to 600px width first for dramatic savings." } },
+    { "@type": "Question", "name": "What is the maximum file size Discord accepts for GIFs?", "acceptedAnswer": { "@type": "Answer", "text": "Discord's free tier accepts GIFs up to 20MB per attachment. The cap was raised from 10MB in August 2026, and many older guides still quote the 8MB figure. Nitro raises it to 500MB. For fast loading in chat, compress to 2-5MB even though 20MB is allowed." } },
+    { "@type": "Question", "name": "How do I make a GIF small enough for Twitter?", "acceptedAnswer": { "@type": "Answer", "text": "X (Twitter) accepts GIFs up to 15MB. Its 5MB cap applies to still images, not GIFs, which is a common mix-up. Use the Balanced compression mode at level 70-90, or resize to 600px width first for dramatic savings." } },
     { "@type": "Question", "name": "What size should email GIFs be?", "acceptedAnswer": { "@type": "Answer", "text": "For email campaigns, keep GIFs under 500KB total. Gmail clips messages over 102KB — meaning your entire HTML plus all images must stay under that. Use aggressive palette reduction (32-64 colors) and keep animations under 3 seconds." } }
   ]
 });
@@ -17,16 +17,16 @@ const webAppSchema = JSON.stringify({
   "@type": "WebApplication",
   "name": "GIF Size Reducer",
   "url": Astro.url.href,
-  "description": "Reduce GIF file size instantly with platform-specific targets for Discord, Twitter, email, and websites.",
+  "description": "Reduce GIF file size instantly with platform-specific targets for Discord, Twitter, email, and websites — or any custom size you type.",
   "applicationCategory": "Multimedia",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "featureList": ["Discord Preset (8MB)", "Twitter Preset (5MB)", "Email Preset (1MB)", "Platform-specific Compression", "Live Preview"]
+  "featureList": ["Discord Preset (20MB)", "Twitter Preset (15MB)", "Email Preset (1MB)", "Custom Target Size", "Platform-specific Compression", "Live Preview"]
 });
 ---
 <Base
-  title="Reduce GIF Size Online — For Discord, Twitter &amp; Email"
-  description="Reduce GIF file size instantly with platform-specific targets for Discord (8MB), Twitter (5MB), email (1MB), and web. Real-time preview, 100% private."
+  title="Reduce GIF Size Online Free — Pick Your Target Size"
+  description="Reduce GIF file size instantly. Presets for Discord (20MB), X (15MB) and email (1MB), or type any target size. Real-time preview, 100% private."
   schemas={[webAppSchema, faqSchema]}
 >
 <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
@@ -40,13 +40,16 @@ const webAppSchema = JSON.stringify({
 <article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
   <h2 class="text-xl font-bold text-slate-900 mb-4">Platform Size Limits — Complete Reference</h2>
   <p class="text-sm text-slate-600 leading-relaxed mb-4">
-    Every platform has different GIF size restrictions. Use this reference table to find your target, then use the platform preset buttons in the tool above to automatically set the right compression level.
+    Every platform has different GIF size restrictions. Use this reference table to find your target, then either click a platform preset in the tool above or type the exact size you need into the <strong class="text-slate-800">Any size</strong> box next to them.
+  </p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">
+    <strong class="text-slate-800">Why other guides still say 8MB and 5MB:</strong> Discord raised its free upload cap from 10MB to 20MB in August 2026, and X's 5MB figure is its <em>still image</em> limit rather than its GIF limit. Both numbers get copied forward from older documentation, which is why they are still everywhere.
   </p>
   <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
     <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Platform</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Max size</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Preset</th><th class="py-2.5 text-slate-500 font-medium text-xs">Notes</th></tr></thead>
     <tbody>
-      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord</td><td class="py-2.5 pr-4 text-xs">8MB (free), 25MB (Nitro)</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 8MB</span></td><td class="py-2.5 text-xs text-slate-500">Auto-compress to 2-5MB for fast chat loading</td></tr>
-      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter / X</td><td class="py-2.5 pr-4 text-xs">5MB (web), 3MB (mobile)</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 5MB</span></td><td class="py-2.5 text-xs text-slate-500">Mobile app enforces stricter limits</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord</td><td class="py-2.5 pr-4 text-xs">20MB (free), 500MB (Nitro)</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 20MB</span></td><td class="py-2.5 text-xs text-slate-500">Raised from 10MB in Aug 2026. Compress to 2-5MB for instant chat loading.</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">X / Twitter</td><td class="py-2.5 pr-4 text-xs">15MB (GIF), 5MB (still image)</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 15MB</span></td><td class="py-2.5 text-xs text-slate-500">The 5MB figure applies to still images, not GIFs</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Gmail</td><td class="py-2.5 pr-4 text-xs">25MB attach, 102KB inline</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 1MB</span></td><td class="py-2.5 text-xs text-slate-500">Gmail clips messages >102KB. Keep total under 500KB.</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Outlook</td><td class="py-2.5 pr-4 text-xs">20MB attach</td><td class="py-2.5 pr-4"><span class="text-[10px] px-1.5 py-0.5 bg-accent/5 text-accent rounded font-medium">&lt; 1MB</span></td><td class="py-2.5 text-xs text-slate-500">Under 1MB for reliable inline display</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">WhatsApp</td><td class="py-2.5 pr-4 text-xs">16MB</td><td class="py-2.5 pr-4 text-xs text-slate-400">-</td><td class="py-2.5 text-xs text-slate-500">Compress to 2-5MB for fast mobile delivery</td></tr>
@@ -72,21 +75,21 @@ const webAppSchema = JSON.stringify({
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Step-by-Step: Reduce GIF Size for Each Platform</h2>
 
   <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">For Discord</h3>
-  <p class="text-sm text-slate-600 leading-relaxed mb-2">Discord is the most common GIF-sharing platform. Free users get 8MB per upload. The trick is to stay well under the limit so your GIF loads instantly in chat rather than appearing as a download link.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">Discord is the most common GIF-sharing platform. Free accounts accept up to 20MB per upload — the cap was raised from 10MB in August 2026. Staying well under it still matters, because a GIF near the cap arrives as a download link instead of playing inline.</p>
   <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
     <li>Upload your GIF to the tool above</li>
-    <li>Click the <strong class="text-slate-800">&lt; 8MB</strong> platform preset</li>
-    <li>If the GIF was under 8MB to begin with, use Balanced mode at level 40-60 for a smaller but still crisp result</li>
+    <li>Type <strong class="text-slate-800">5</strong> into the <strong class="text-slate-800">Any size</strong> box next to the presets and press <strong class="text-slate-800">Go</strong> — or click the <strong class="text-slate-800">Discord</strong> preset if you only need to get under 20MB</li>
+    <li>If the GIF was already under 5MB, use Balanced mode at level 40-60 for a smaller but still crisp result</li>
     <li>Use the comparison slider to verify quality</li>
     <li>Download and share</li>
   </ol>
 
-  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">For Twitter / X</h3>
-  <p class="text-sm text-slate-600 leading-relaxed mb-2">Twitter enforces 5MB on web and 3MB on mobile. The mobile limit is the real constraint — if it works on mobile, it works everywhere.</p>
+  <h3 class="text-base font-semibold text-slate-800 mt-6 mb-2">For X / Twitter</h3>
+  <p class="text-sm text-slate-600 leading-relaxed mb-2">X accepts GIFs up to 15MB. The 5MB figure quoted almost everywhere is its <em>still image</em> limit, not its GIF limit. X also re-encodes GIFs to MP4 on its servers, so a smaller source survives that round trip better.</p>
   <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
-    <li>Click the <strong class="text-slate-800">&lt; 5MB</strong> platform preset</li>
+    <li>Click the <strong class="text-slate-800">Twitter</strong> preset, or type a tighter target into the <strong class="text-slate-800">Any size</strong> box</li>
     <li>If still over, switch to Maximum mode and push the slider higher</li>
-    <li>For very large GIFs, <a href="/resize-gif/" class="text-accent hover:underline">resize to 600px width</a> first — this alone often brings 15MB GIFs under Twitter limits</li>
+    <li>For very large GIFs, <a href="/resize-gif/" class="text-accent hover:underline">resize to 600px width</a> first — this alone often brings a 15MB GIF under 5MB</li>
     <li>Preview and download</li>
   </ol>
 
@@ -101,9 +104,12 @@ const webAppSchema = JSON.stringify({
   </ol>
 
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Quick Compression Targets</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">
+    These are <em>recommended</em> sizes, not platform caps — each one sits comfortably below what the platform actually accepts. The cap is what gets your upload through; these are what make it play instantly instead of arriving as a download link. Type any of them into the <strong class="text-slate-800">Any size</strong> box in the tool above.
+  </p>
   <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-6">
-    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Discord</p><p class="text-lg font-bold text-accent">under 8MB</p><p class="text-[10px] text-slate-400 mt-1">Balanced, level 60-80</p></div>
-    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Twitter</p><p class="text-lg font-bold text-accent">under 3MB</p><p class="text-[10px] text-slate-400 mt-1">Balanced, level 70-90</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Discord (cap 20MB)</p><p class="text-lg font-bold text-accent">under 5MB</p><p class="text-[10px] text-slate-400 mt-1">Balanced, level 60-80</p></div>
+    <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">X / Twitter (cap 15MB)</p><p class="text-lg font-bold text-accent">under 5MB</p><p class="text-[10px] text-slate-400 mt-1">Balanced, level 70-90</p></div>
     <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Email</p><p class="text-lg font-bold text-accent">under 500KB</p><p class="text-[10px] text-slate-400 mt-1">Quality, level 30-50</p></div>
     <div class="tool-card p-4 text-center"><p class="text-xs text-slate-400 mb-1">Web</p><p class="text-lg font-bold text-accent">under 200KB</p><p class="text-[10px] text-slate-400 mt-1">Max, level 70-95</p></div>
   </div>

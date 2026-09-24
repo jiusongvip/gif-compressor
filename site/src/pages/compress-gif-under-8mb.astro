@@ -7,56 +7,58 @@ const webAppSchema = JSON.stringify({
   "@type": "WebApplication",
   "name": "Compress GIF Under 8MB",
   "url": Astro.url.href,
-  "description": "Compress animated GIFs under 8MB. Perfect for Discord free tier, Twitter, and most social platforms. Instant browser-based compression with live preview.",
+  "description": "Compress an animated GIF to exactly 8MB, or to any other target size, entirely in your browser. Also covers what the real platform limits are today — 8MB stopped being one in 2026.",
   "applicationCategory": "Multimedia",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "featureList": ["Under 8MB Target", "Discord Compatible", "Twitter Compatible", "Real-time Preview", "Platform Presets"]
+  "featureList": ["Exact 8MB Target", "Any Custom Target Size", "Real-time Preview", "Client-side Processing"]
 });
 const faqSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "Which platforms require GIFs under 8MB?", "acceptedAnswer": { "@type": "Answer", "text": "Discord free tier (8MB), Twitter/X web (5MB, but 8MB covers it), Facebook (25MB), Instagram (converts to video), Slack (1GB, but under 8MB for fast loading), and most messaging apps. 8MB is the sweet spot for universal social media compatibility." } },
-    { "@type": "Question", "name": "How do I compress a GIF to exactly under 8MB?", "acceptedAnswer": { "@type": "Answer", "text": "Use the Discord preset in our tool which targets under 8MB. For GIFs that were originally 10-20MB, Balanced mode at level 40-60 usually hits the target. For files over 30MB, use the Maximum mode or resize to 600px width first." } }
+    { "@type": "Question", "name": "Is 8MB still a platform limit?", "acceptedAnswer": { "@type": "Answer", "text": "No. 8MB was Discord's free-tier cap for years, which is why the number is still everywhere, but Discord now accepts 20MB per attachment (raised from 10MB in August 2026) and X accepts GIFs up to 15MB. 8MB is still worth targeting when something else enforces it — older forum software, some CMS media libraries, legacy tools — or simply as a quality target that plays instantly almost anywhere." } },
+    { "@type": "Question", "name": "How do I compress a GIF to exactly 8MB?", "acceptedAnswer": { "@type": "Answer", "text": "Type 8 into the Any size box in the tool, leave the unit on MB, and press Go. The tool searches for the lightest compression level that still lands under 8MB, so you keep as much quality as the target allows. For GIFs originally over 30MB, resize to 600px width first — that alone often removes 75% of the bytes." } }
   ]
 });
 ---
 <Base
-  title="Compress GIF Under 8MB — Universal Social Media Size Limit"
-  description="Compress animated GIFs under 8MB — the universal target for Discord free tier, social media, and messaging apps. Instant in-browser compression."
+  title="Compress GIF Under 8MB — And Why That Limit Is Outdated"
+  description="Compress an animated GIF to exactly 8MB or any target size, in your browser. Plus the current platform limits — 8MB is no longer one of them."
   schemas={[webAppSchema, faqSchema]}
 >
 <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
   <h1 class="text-2xl font-bold text-slate-900 leading-tight">Compress GIF <span class="text-accent">Under 8MB</span></h1>
   <p class="text-sm text-slate-500 mt-2 max-w-2xl leading-relaxed">
-    Shrink your animated GIF under the 8MB universal social media threshold. Compatible with Discord free tier, Twitter, and most messaging apps. One-click compression with live preview.
+    Hit exactly 8MB — or any other target — in your browser, with no upload. If you are compressing for Discord, read the next section first: 8MB has not been its limit since 2026.
   </p>
 </div>
 <section class="max-w-4xl mx-auto px-4"><GifTool /></section>
 
 <article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
-  <h2 class="text-xl font-bold text-slate-900 mb-4">Why 8MB Is the Magic Number</h2>
-  <p class="text-sm text-slate-600 leading-relaxed mb-4">Most social and messaging platforms have file size limits between 5MB and 25MB. Eight megabytes is the single most important threshold to know — it is Discord's free tier limit, and compressing under 8MB also satisfies Twitter's 5MB limit and most other platforms. A GIF compressed under 8MB works nearly everywhere.</p>
+  <h2 class="text-xl font-bold text-slate-900 mb-4">Why everyone says 8MB — and why it is out of date</h2>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">For years 8MB was Discord's free-tier upload cap, so "get your GIF under 8MB" became the standard advice and got copied into thousands of guides. Discord then raised that cap to 10MB and, in <strong class="text-slate-800">August 2026</strong>, to <strong class="text-slate-800">20MB</strong>. X (Twitter) accepts GIFs up to 15MB — the 5MB figure you see quoted is its <em>still image</em> limit, not its GIF limit.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4"><strong class="text-slate-800">So is 8MB still worth targeting?</strong> Yes, in two cases. First, when something other than a social platform enforces it: older forum software, some CMS media libraries, legacy tools, and plenty of internal systems still have a hard 8MB cap. Second, as a quality target in its own right — a GIF that size plays instantly almost anywhere, and it is a far more comfortable place to land than 20MB. If you are compressing for Discord specifically, <a href="/compress-gif-for-discord/" class="text-accent hover:underline">use the Discord guide instead</a>; you do not need to go this small.</p>
 
-  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Platforms That Accept Under 8MB</h2>
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Current Platform Limits (all of them accept 8MB)</h2>
   <div class="overflow-x-auto mb-6"><table class="w-full text-sm border-collapse">
-    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Platform</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Limit</th><th class="py-2.5 text-slate-500 font-medium text-xs">Under 8MB?</th></tr></thead>
+    <thead><tr class="border-b-2 border-slate-200 text-left"><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Platform</th><th class="py-2.5 pr-4 text-slate-500 font-medium text-xs">Limit today</th><th class="py-2.5 text-slate-500 font-medium text-xs">Does 8MB pass?</th></tr></thead>
     <tbody>
-      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord (free)</td><td class="py-2.5 pr-4 text-xs">8MB</td><td class="py-2.5 text-xs text-accent font-medium">&check; Exactly at limit</td></tr>
-      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter / X (web)</td><td class="py-2.5 pr-4 text-xs">5MB</td><td class="py-2.5 text-xs text-accent font-medium">&check; Well under</td></tr>
-      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Twitter / X (mobile)</td><td class="py-2.5 pr-4 text-xs">3MB</td><td class="py-2.5 text-xs text-accent font-medium">&check; Well under</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord (free)</td><td class="py-2.5 pr-4 text-xs">20MB <span class="text-slate-400">(was 8MB)</span></td><td class="py-2.5 text-xs text-accent font-medium">&check; With 12MB to spare</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Discord (Nitro)</td><td class="py-2.5 pr-4 text-xs">500MB</td><td class="py-2.5 text-xs text-accent font-medium">&check; Easily</td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">X / Twitter (GIF)</td><td class="py-2.5 pr-4 text-xs">15MB <span class="text-slate-400">(was 5MB)</span></td><td class="py-2.5 text-xs text-accent font-medium">&check; With 7MB to spare</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">WhatsApp</td><td class="py-2.5 pr-4 text-xs">16MB</td><td class="py-2.5 text-xs text-accent font-medium">&check; Well under</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Facebook</td><td class="py-2.5 pr-4 text-xs">25MB</td><td class="py-2.5 text-xs text-accent font-medium">&check; Well under</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Slack</td><td class="py-2.5 pr-4 text-xs">1GB</td><td class="py-2.5 text-xs text-accent font-medium">&check; Well under</td></tr>
       <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">Reddit</td><td class="py-2.5 pr-4 text-xs">20MB</td><td class="py-2.5 text-xs text-accent font-medium">&check; Well under</td></tr>
     </tbody>
   </table></div>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">Every platform above accepts an 8MB GIF — which is exactly what makes 8MB a good target. It is low enough to clear every cap on this list plus the legacy 8MB systems that are not social platforms at all, and high enough to keep the quality most GIFs need.</p>
 
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">How to Compress Any GIF Under 8MB</h2>
   <ol class="space-y-4 mb-6">
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">1. Drop your GIF into the tool above.</strong> Works with files up to 100MB. You can drag, paste, or click.</li>
-    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Click the Discord &lt; 8MB preset.</strong> This automatically sets the target below the 8MB threshold.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Type 8 into the Any size box and press Go.</strong> The box sits next to the platform presets. The tool searches for the lightest level that still lands under 8MB, so you keep as much quality as the target allows.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">3. For very large files (30MB+), resize first.</strong> Use our <a href="/resize-gif/" class="text-accent hover:underline">GIF resizer</a> to reduce dimensions to 600px width. This alone can cut 75% off the file size before compression begins.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">4. Fine-tune with the compression slider.</strong> Balanced mode at level 40-60 works for most GIFs. For stubborn files, switch to Maximum mode at level 70-90.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">5. Download and share.</strong> Your compressed GIF is now compatible with nearly every social and messaging platform.</li>
@@ -66,7 +68,7 @@ const faqSchema = JSON.stringify({
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Step-by-Step: Compress Any GIF Under 8MB</h2>
   <ol class="space-y-4 mb-6">
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">1. Drop your GIF into the tool above.</strong> Drag and drop, paste from clipboard, or click to select. GIFs up to 100MB are accepted. Because processing happens in your browser, the file never leaves your device — no upload delay, no privacy risk.</li>
-    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Click the Discord &lt; 8MB preset.</strong> The tool automatically calculates the compression level needed to bring your GIF under 8MB, using Balanced mode as the starting point.</li>
+    <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">2. Type 8 into the Any size box and press Go.</strong> The tool calculates the compression level needed to bring your GIF under 8MB using whichever mode is selected. Balanced is a good starting point; switch to Max if 8MB is still out of reach.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">3. Fine-tune based on your GIF type.</strong> For memes and simple graphics, you can push to Maximum mode for even smaller files. For product demos and reaction GIFs with photos, stay in Balanced or switch to Quality to preserve details.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">4. Verify with the comparison slider.</strong> Drag the slider across your GIF at different points in the animation. Check for color banding in gradients, text readability, and frame smoothness. The A/B comparison catches artifacts that single-view previews miss.</li>
     <li class="text-sm text-slate-600"><strong class="text-slate-800 block mb-1">5. Download and test in your target app.</strong> Always test in the actual platform — Discord dark mode, Twitter feed, or your messaging app. Some platforms apply their own compression on top of yours, and dark backgrounds can make compression artifacts more visible.</li>
@@ -79,18 +81,18 @@ const faqSchema = JSON.stringify({
     <tbody>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">256KB</td><td class="py-2.5 pr-4 text-xs text-red-500 font-medium">Significant loss</td><td class="py-2.5 pr-4 text-xs">Every platform</td><td class="py-2.5 text-xs text-slate-500">Discord emoji, extreme CWV, email body embedded</td></tr>
       <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700"><a href="/compress-gif-under-1mb/" class="text-accent hover:underline">1MB</a></td><td class="py-2.5 pr-4 text-xs text-amber-600 font-medium">Moderate loss</td><td class="py-2.5 pr-4 text-xs">Every platform</td><td class="py-2.5 text-xs text-slate-500">Email campaigns, web embeds, fast-loading social</td></tr>
-      <tr class="border-b border-slate-100 bg-accent/[0.02]"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700"><strong class="text-accent">8MB</strong></td><td class="py-2.5 pr-4 text-xs text-accent font-medium"><strong class="text-accent">Minimal to moderate loss</strong></td><td class="py-2.5 pr-4 text-xs">Every platform</td><td class="py-2.5 text-xs text-slate-500"><strong class="text-slate-700">Universal social sharing with good quality</strong></td></tr>
-      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">16MB</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">Good</td><td class="py-2.5 pr-4 text-xs">Most platforms</td><td class="py-2.5 text-xs text-slate-500">WhatsApp, Telegram, Slack, high-quality sharing</td></tr>
-      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">25MB</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">Excellent</td><td class="py-2.5 pr-4 text-xs">Discord Nitro, Facebook</td><td class="py-2.5 text-xs text-slate-500">Archival, Discord Nitro sharing, Facebook posts</td></tr>
+      <tr class="border-b border-slate-100 bg-accent/[0.02]"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700"><strong class="text-accent">8MB</strong></td><td class="py-2.5 pr-4 text-xs text-accent font-medium"><strong class="text-accent">Minimal to moderate loss</strong></td><td class="py-2.5 pr-4 text-xs">Every platform, plus legacy 8MB systems</td><td class="py-2.5 text-xs text-slate-500"><strong class="text-slate-700">Universal social sharing with good quality</strong></td></tr>
+      <tr class="border-b border-slate-100"><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">16MB</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">Good</td><td class="py-2.5 pr-4 text-xs">WhatsApp, Telegram, Slack</td><td class="py-2.5 text-xs text-slate-500">High-quality sharing where the platform allows it</td></tr>
+      <tr><td class="py-2.5 pr-4 text-xs font-medium text-slate-700">20MB</td><td class="py-2.5 pr-4 text-xs text-accent font-medium">Excellent</td><td class="py-2.5 pr-4 text-xs">Discord free, Reddit, Facebook</td><td class="py-2.5 text-xs text-slate-500">The largest a free Discord upload can be</td></tr>
     </tbody>
   </table></div>
-  <p class="text-sm text-slate-600 leading-relaxed mb-4">8MB is the sweet spot. It preserves enough quality for most GIFs to look good while passing every platform's limit. Below 8MB, you are making increasingly painful quality trade-offs. Above 8MB, you are losing Discord free tier compatibility — which alone covers roughly 150 million active users.</p>
+  <p class="text-sm text-slate-600 leading-relaxed mb-4">8MB is the sweet spot for sharing. It preserves enough quality for most GIFs to look good, it clears every platform limit in the table above, and it also clears the legacy 8MB caps that still exist outside social media. Below 8MB you are making increasingly painful quality trade-offs; above it you gain quality but lose compatibility with those older systems. Unless you have a specific reason to go larger, 8MB is the safest single number to aim at.</p>
 
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">When 8MB Is Enough — and When It Is Not</h2>
   <div class="space-y-3 mb-6">
     <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">&check; 8MB is perfect for:</h4><p class="text-xs text-slate-500 mt-1">Reaction GIFs and memes shared on Discord and Twitter. Product demos and tutorials shared with colleagues on Slack. High-quality animations shared on Facebook and WhatsApp. Most GIFs under 30 seconds, at reasonable dimensions (600-800px wide), easily compress to 2-5MB in Balanced mode — giving you a comfortable margin below the limit.</p></div>
     <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">&times; 8MB is not enough for:</h4><p class="text-xs text-slate-500 mt-1">Long screen recordings (30+ seconds). High-resolution cinematic GIFs (1920px+). GIFs with hundreds of frames at 30fps. Uncompressed source files exported directly from video editors. For these cases, <a href="/gif-to-webp/" class="text-accent hover:underline">WebP</a> or <a href="/gif-to-mp4/" class="text-accent hover:underline">MP4</a> conversion will produce far better results than trying to squeeze them into 8MB as GIF.</p></div>
-    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Pro tip: aim for 2-5MB, not exactly 8MB</h4><p class="text-xs text-slate-500 mt-1">The 8MB preset ensures compatibility, but for the best user experience, do not use the entire budget. A 2-5MB GIF loads instantly in chat as an inline preview. A 7.8MB GIF may display as a download link or take several seconds to buffer. Use the compression slider to push past "just under 8MB" to "comfortably fast." Your audience will thank you.</p></div>
+    <div class="tool-card p-4"><h4 class="text-sm font-semibold text-slate-900">Pro tip: aim for 2-5MB, not exactly 8MB</h4><p class="text-xs text-slate-500 mt-1">An 8MB target guarantees compatibility, but for the best experience do not spend the whole budget. A 2-5MB GIF loads instantly in chat as an inline preview; a 7.8MB one may display as a download link or take several seconds to buffer. Set the Any size box to 5 MB instead of 8 MB and you get both.</p></div>
   </div>
 
   <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Batch Processing for 8MB Targets</h2>
@@ -98,7 +100,7 @@ const faqSchema = JSON.stringify({
   <ol class="list-decimal list-inside space-y-1 mb-4 text-sm text-slate-600">
     <li>Toggle <strong class="text-slate-800">Batch mode</strong> in the GifTool component</li>
     <li>Drop or select multiple GIFs — up to 20 at once</li>
-    <li>Click the Discord &lt; 8MB preset to apply to all files</li>
+    <li>Set the target to 8 MB before compressing — every file in the batch uses the same settings</li>
     <li>All compressed GIFs download as a single ZIP</li>
   </ol>
   <p class="text-sm text-slate-600 leading-relaxed mb-4">Tip: For mixed batches (some memes, some photos, some screen recordings), use Balanced mode at level 50. Quality mode may leave some files above 8MB, and Maximum mode may destroy the photographic ones. Balanced 50 splits the difference and gives consistent results across content types.</p>
