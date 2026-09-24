@@ -1,0 +1,66 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "gifcompressors API",
+    "version": "1.0.0",
+    "summary": "Programmatic GIF compression from the gifcompressors.com team.",
+    "description": "Compress animated GIFs over a single REST endpoint. Files are processed in memory and never stored or logged. Rate limit: 12 requests per minute per IP, free, no API key. Human alternative with live preview: https://www.gifcompressors.com/compress-gif/",
+    "contact": { "url": "https://www.gifcompressors.com/api/" }
+  },
+  "servers": [{ "url": "https://api.gifcompressors.com" }],
+  "paths": {
+    "/v1/compress": {
+      "post": {
+        "summary": "Compress an animated GIF",
+        "description": "Returns the compressed GIF bytes directly (image/gif). Reduction is driven by palette quantization plus frame differencing: measured 96% on the public demo file, 99% when combined with max_width=240. Response headers X-Original-Bytes, X-Compressed-Bytes, X-Reduction-Percent, X-Gif-Frames, X-Gif-Colors report the run; X-Target-Met tells whether target_kb was reached.",
+        "operationId": "compressGif",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": { "type": "string", "format": "binary", "description": "Animated or static GIF, up to 25 MB" },
+                  "mode": { "type": "string", "enum": ["quality", "balanced", "maximum"], "default": "balanced", "description": "Palette budget: 128 / 64 / 32 colors" },
+                  "target_kb": { "type": "integer", "minimum": 1, "description": "Iterate settings until the output fits this size; nearest result is returned if unreachable" },
+                  "max_width": { "type": "integer", "minimum": 16, "description": "Optionally resize to this width (height keeps aspect) before compressing" }
+                }
+              }
+            },
+            "image/gif": {
+              "schema": { "type": "string", "format": "binary" },
+              "description": "Or send the GIF as the raw body and pass mode/target_kb/max_width as query parameters."
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The compressed GIF.",
+            "content": { "image/gif": { "schema": { "type": "string", "format": "binary" } } }
+          },
+          "400": { "description": "Invalid parameters.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "413": { "description": "File over 25 MB.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "422": { "description": "Unreadable GIF or animation beyond the processing budget (60M pixel-frames).", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded (12 req/min/IP). Browser tools have no limits.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Service metadata",
+        "responses": { "200": { "description": "Name, version, endpoint map.", "content": { "application/json": { "schema": { "type": "object" } } } } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": { "error": { "type": "string" }, "message": { "type": "string" } },
+        "required": ["error"]
+      }
+    }
+  }
+}

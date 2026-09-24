@@ -1,0 +1,18 @@
+# Netlify site settings: base directory = api/, build command = (none),
+# publish = public/, functions = functions/. Only this folder is deployed
+# to Netlify; the Astro site keeps deploying via Cloudflare Pages as before.
+
+[build.environment]
+NODE_VERSION = "22"
+
+[[redirects]]
+from = "/v1/compress"
+to = "/.netlify/functions/compress"
+status = 200
+force = true
+
+[[redirects]]
+from = "/"
+to = "/.netlify/functions/root"
+status = 200
+force = true
