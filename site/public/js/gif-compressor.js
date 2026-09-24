@@ -463,14 +463,21 @@ async function applyCompression() {
 }
 
 // ── UI mode buttons ───────────────────────────────────────
+// One place that changes the mode. The buttons and the automatic escalation in
+// fitToTarget both go through it, so the highlighted chip, the `Applied` row and the
+// flags actually sent to gifsicle can never disagree about which mode ran.
+function setMode(next) {
+  mode = next;
+  document.querySelectorAll('.mode-btn').forEach((b) => {
+    b.classList.toggle('bg-accent', b.dataset.mode === mode);
+    b.classList.toggle('text-white', b.dataset.mode === mode);
+    b.classList.toggle('text-slate-500', b.dataset.mode !== mode);
+  });
+}
+
 document.querySelectorAll('.mode-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
-    mode = btn.dataset.mode;
-    document.querySelectorAll('.mode-btn').forEach((b) => {
-      b.classList.toggle('bg-accent', b.dataset.mode === mode);
-      b.classList.toggle('text-white', b.dataset.mode === mode);
-      b.classList.toggle('text-slate-500', b.dataset.mode !== mode);
-    });
+    setMode(btn.dataset.mode);
     activePreset = null;
     document.querySelectorAll('.preset-btn').forEach(b => {
       b.classList.remove('border-accent', 'bg-accent/5', 'text-accent');
@@ -566,7 +573,23 @@ async function fitToTarget(maxBytes, label, desc, btn) {
   if (btn) btn.disabled = true;
   setProgress(12, 'Searching for ' + desc + '\u2026');
   try {
-    const found = await findLevelForTarget(maxBytes, mode);
+    let found = await findLevelForTarget(maxBytes, mode);
+
+    // The user named a number, so the number outranks the mode they happened to be in.
+    // Answering "Try Max mode" handed the work back to them: they had already said what
+    // they wanted, and switching a control we own is not their job. So when the current
+    // mode cannot reach the target AT ALL, the search continues at the strongest
+    // settings by itself. The mode is only escalated when the current one is short —
+    // if it can hit the target, its own level wins, because that is the lighter and
+    // better-looking output.
+    let escalatedFrom = null;
+    if (found.level === null && mode !== 'max') {
+      escalatedFrom = mode;
+      setProgress(30, 'Needs the strongest settings \u2014 continuing in Max\u2026');
+      setMode('max');
+      found = await findLevelForTarget(maxBytes, 'max');
+    }
+
     levelSlider.value = found.level === null ? 100 : found.level;
     levelVal.textContent = levelSlider.value;
     await applyCompression();
@@ -579,12 +602,19 @@ async function fitToTarget(maxBytes, label, desc, btn) {
       const caveat = got < maxBytes / 4
         ? ' This GIF\u2019s compression range is narrow, so it lands well under the limit.'
         : '';
+      const viaMax = escalatedFrom
+        ? ' ' + escalatedFrom.charAt(0).toUpperCase() + escalatedFrom.slice(1)
+          + ' mode could not reach it, so the search continued in Max.'
+        : '';
       setResult(origSize, got,
-        'Fits ' + label + ' (' + desc + ') at level ' + levelSlider.value + '.' + caveat);
+        'Fits ' + label + ' (' + desc + ') at level ' + levelSlider.value + '.' + viaMax + caveat);
     } else {
+      // No "try another mode" here: Max is the strongest this tool has and it has just
+      // been searched, so pointing at it would be advice we already took. What is left
+      // is a true statement of the floor and the one route that genuinely goes lower.
       setResult(origSize, got,
-        'Cannot reach ' + desc + ' in ' + mode + ' mode \u2014 the smallest this tool can '
-        + 'make this GIF is ' + formatSize(got) + '. Try Max mode, or convert to WebP or MP4 below.');
+        'Cannot reach ' + desc + ' \u2014 the smallest this tool can make this GIF is '
+        + formatSize(got) + ', even at the strongest settings. Convert to WebP or MP4 below to go smaller.');
     }
   } catch (err) {
     console.error('Target-size search failed:', err);
