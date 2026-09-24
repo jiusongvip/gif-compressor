@@ -599,8 +599,23 @@ async function fitToTarget(maxBytes, label, desc, btn) {
     // output is the only trustworthy answer.
     const got = compressedBlob ? compressedBlob.size : origSize;
     if (got <= maxBytes) {
+      // A target far above what the file can become is the NORMAL case for a GIF, not an
+      // edge case, so it needs a real explanation rather than "the range is narrow" —
+      // which is true but reads as "we fell short". Measured on a 1.17MB test GIF:
+      // gifsicle's gentlest real setting lands at 68KB, -O2 at 41KB, and a plain re-mux
+      // stays at 1130KB. Nothing exists in between, because -O2 optimises the LZW stream
+      // as a whole: it is a switch, not a dial. So "compress to exactly 800KB" is not a
+      // setting that exists, and saying so is more useful than implying we missed it.
+      const atLightest = parseInt(levelSlider.value, 10) <= 10;
       const caveat = got < maxBytes / 4
-        ? ' This GIF\u2019s compression range is narrow, so it lands well under the limit.'
+        ? (atLightest
+          // "Nothing in between" carries the fact; "lands well under" carries the reassurance.
+          // The earlier wording named the *target* as the thing that was unreachable — literally
+          // true, but it read as a failure notice on a preset the user had just beaten 14x over.
+          ? ' GIF re-encoding is not a dial: this file either optimises to about ' + formatSize(got)
+            + ' or stays near ' + formatSize(origSize) + ', with nothing in between \u2014 so it lands '
+            + 'well under ' + formatSize(maxBytes) + '. This is its highest-quality version.'
+          : ' This GIF\u2019s compression range is narrow, so it lands well under the limit.')
         : '';
       const viaMax = escalatedFrom
         ? ' ' + escalatedFrom.charAt(0).toUpperCase() + escalatedFrom.slice(1)
