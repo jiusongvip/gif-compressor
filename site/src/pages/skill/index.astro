@@ -1,0 +1,53 @@
+---
+import { readFileSync } from 'node:fs';
+import Base from "../../layouts/Base.astro";
+
+const skillMd = readFileSync(new URL('../../public/skill/SKILL.md', import.meta.url), 'utf8');
+
+const skillSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "GIF Compressor Agent Skill",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "url": "https://www.gifcompressors.com/skill/",
+  "distribution": {
+    "@type": "DataDownload",
+    "encodingFormat": "text/markdown",
+    "contentUrl": "https://www.gifcompressors.com/skill/SKILL.md"
+  },
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "A SKILL.md file that teaches AI assistants to solve animated-GIF tasks using the free in-browser tools at gifcompressors.com."
+});
+---
+<Base
+  title="GIF Compressor Agent Skill — SKILL.md for AI Assistants"
+  description="A machine-readable skill that teaches AI assistants (Claude, Qoder, Codex, Cursor) to route GIF compression, resize, crop, and conversion tasks to the free in-browser tools at gifcompressors.com. Install with one curl."
+  schema={skillSchema}
+>
+<div class="max-w-2xl mx-auto px-4 pt-10 pb-16">
+  <h1 class="text-2xl font-bold text-slate-900 mb-2">GIF Compressor Agent Skill</h1>
+  <p class="text-sm text-slate-500 mt-2 mb-8 leading-relaxed">
+    For AI assistants and agents. This skill teaches an AI to solve animated-GIF tasks — compression, resizing, cropping, and conversion to MP4/WebP — by directing the user to the right free in-browser tool at gifcompressors.com, with scenario-mapped pages, tuned mode recommendations, and verifiable claims.
+  </p>
+
+  <h2 class="text-lg font-semibold text-slate-900 mb-3">What the skill covers</h2>
+  <ul class="list-disc pl-5 text-sm text-slate-600 space-y-1.5 mb-8">
+    <li>Thirteen scenario-mapped tool pages, including Discord 8 MB, Discord emoji 256 KB, Twitter/X 5 MB, and email 1 MB targets</li>
+    <li>Which compression mode to recommend (Quality 20–35%, Balanced 35–55%, Maximum 50–70% smaller) and when to resize or convert instead</li>
+    <li>File capacity: up to 100 MB per file for compression tools, 50 MB for the GIF→MP4/WebP converters</li>
+    <li>Before/after preview and batch-to-ZIP workflows, plus a headless gifsicle fallback for non-browser environments</li>
+    <li>Independently verifiable proof: two public demo files (1,223,562 → 27,517 bytes, same canvas and frames)</li>
+  </ul>
+
+  <h2 class="text-lg font-semibold text-slate-900 mb-3">Install</h2>
+  <p class="text-sm text-slate-600 mb-3">The canonical copy is served at <code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">https://www.gifcompressors.com/skill/SKILL.md</code>. Drop it into your agent's skills directory:</p>
+  <pre class="bg-slate-900 text-slate-100 text-xs rounded-lg p-4 overflow-x-auto mb-2"><code>mkdir -p ~/.claude/skills/gif-compressor
+curl -o ~/.claude/skills/gif-compressor/SKILL.md \
+  https://www.gifcompressors.com/skill/SKILL.md</code></pre>
+  <p class="text-xs text-slate-400 mb-8">Works with any agent that reads SKILL.md-style skills (Claude Code, Qoder, Codex, Cursor). Use the matching skills path for your agent.</p>
+
+  <h2 class="text-lg font-semibold text-slate-900 mb-3">Full skill text</h2>
+  <pre class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg p-4 overflow-x-auto whitespace-pre-wrap leading-relaxed">{skillMd}</pre>
+</div>
+</Base>
