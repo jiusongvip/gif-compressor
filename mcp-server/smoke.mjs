@@ -1,13 +1,20 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import { StdioClientTransport, getDefaultEnvironment } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { copyFileSync, statSync, rmSync, existsSync } from 'node:fs';
 import path from 'node:path';
+
+// Optional argv[2]: server entry to test (e.g. ../site/public/mcp/gifcompressors-mcp.mjs).
+const serverEntry = path.resolve(process.argv[2] || 'index.js');
 
 const tmp = path.resolve('test-tmp.gif');
 copyFileSync('../site/public/demo/demo-original.gif', tmp);
 
 const client = new Client({ name: 'smoke', version: '1.0.0' });
-const transport = new StdioClientTransport({ command: process.execPath, args: ['index.js'] });
+const transport = new StdioClientTransport({
+  command: process.execPath,
+  args: [serverEntry],
+  env: { ...getDefaultEnvironment(), ...(process.env.GIFSICLE_PATH ? { GIFSICLE_PATH: process.env.GIFSICLE_PATH } : {}) },
+});
 await client.connect(transport);
 
 console.log('server info:', JSON.stringify(client.getServerVersion()));

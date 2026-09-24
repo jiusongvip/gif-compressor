@@ -15,7 +15,8 @@
   "homepage": "https://www.gifcompressors.com/mcp/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gifcompressors/mcp.git"
+    "url": "git+https://github.com/jiusongvip/gif-compressor.git",
+    "directory": "mcp-server"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",

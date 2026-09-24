@@ -8,7 +8,17 @@ import path from 'node:path';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
-import gifsicle from 'gifsicle';
+
+// Engine resolution order: GIFSICLE_PATH env → gifsicle npm package binary (when
+// installed with dependencies) → gifsicle on PATH (single-file hosted mode).
+let gifsicle = process.env.GIFSICLE_PATH || null;
+if (!gifsicle) {
+  try {
+    gifsicle = (await import('gifsicle')).default || null;
+  } catch {
+    gifsicle = 'gifsicle';
+  }
+}
 
 const run = promisify(execFile);
 const OK = (text) => ({ content: [{ type: 'text', text }] });

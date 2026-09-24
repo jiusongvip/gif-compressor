@@ -32,3 +32,8 @@
 /skill/SKILL.md
   Content-Type: text/plain; charset=utf-8
   Cache-Control: public, max-age=3600
+
+# MCP 单文件服务器：显式 JS MIME，短缓存便于随部署更新
+/mcp/gifcompressors-mcp.mjs
+  Content-Type: text/javascript; charset=utf-8
+  Cache-Control: public, max-age=3600
