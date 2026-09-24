@@ -2,7 +2,14 @@
 // host it at /mcp/gifcompressors-mcp.mjs so agents can install without npm.
 // Run from site/ as part of `npm run build`.
 import { build } from 'esbuild';
-import { readFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, mkdirSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+
+// CI (Cloudflare Pages) only installs site/ deps; the bundle resolves imports
+// from mcp-server/, so make sure its lockfile-pinned deps exist first.
+if (!existsSync('../mcp-server/node_modules/@modelcontextprotocol/sdk')) {
+  execFileSync('npm', ['ci', '--prefix', '../mcp-server', '--silent', '--no-audit', '--no-fund'], { stdio: 'inherit', shell: process.platform === 'win32' });
+}
 
 const version = JSON.parse(readFileSync('../mcp-server/package.json', 'utf8')).version;
 
