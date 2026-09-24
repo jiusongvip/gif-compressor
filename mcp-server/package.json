@@ -1,0 +1,25 @@
+{
+  "name": "@gifcompressors/mcp",
+  "version": "0.1.0",
+  "description": "Local-first MCP server for GIF compression, resizing, conversion and platform recommendations, powered by gifsicle. Files are processed on your machine and never uploaded. Built by gifcompressors.com.",
+  "type": "module",
+  "bin": {
+    "gifcompressors-mcp": "index.js"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["mcp", "model-context-protocol", "gif", "compress", "optimize", "gifsicle"],
+  "license": "MIT",
+  "homepage": "https://www.gifcompressors.com/mcp/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gifcompressors/mcp.git"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "gifsicle": "^7.0.0",
+    "zod": "^3.23.0"
+  }
+}

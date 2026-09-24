@@ -1,0 +1,5 @@
+node_modules/
+test-tmp*.gif
+test-tmp*.mp4
+test-tmp*.webp
+r*.gif
