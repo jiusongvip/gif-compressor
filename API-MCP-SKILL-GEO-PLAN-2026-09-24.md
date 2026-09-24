@@ -238,6 +238,11 @@ llms.txt 和三个页面统一使用这套表述。这样 AI 引用时得到的�
                   ↳ 上线日回填：Developer Access 小节首次出现 MCP 条目（真实可 npx）
 阶段 3（5~8 天）  API：纯 JS 管线 + Netlify Functions（免费档，$0/月）→ openapi.json + /api/ 页
                   ↳ 本地部分已完成（api/ 目录 11 项冒烟全绿）；上线动作 = 用户注册/授权 Netlify + 绑 api.gifcompressors.com
+                  ↳ **状态（2026-09-24 用户决定）：暂缓**。代码已入库但构建被 api/netlify.toml 的
+                    ignore 闸门挡住（缺 api/DEPLOY_ENABLED 文件即跳过构建）；Netlify 站点
+                    *.netlify.app 另有登录保护双保险。启用清单：① 创建 api/DEPLOY_ENABLED 并推送；
+                    ② 实测网关 body 上限/超时/冷启动，按实测回填 openapi 与文档；
+                    ③ 绑 api.gifcompressors.com；④ 当天上线 /api/ 页 + llms.txt 回填 API 条目。
                   ↳ 上线日回填：API 条目 + ⑤"要自动化→用 API"改指本站，不再劝退
 阶段 4（2 天）    交叉内链、schema、3 篇博客、HN/PH 发布
 阶段 5（持续）    验证闭环（见下）

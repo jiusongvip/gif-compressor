@@ -2,6 +2,11 @@
 # publish = public/, functions = functions/. Only this folder is deployed
 # to Netlify; the Astro site keeps deploying via Cloudflare Pages as before.
 
+[build]
+# Deploy gate: builds are skipped until api/DEPLOY_ENABLED exists in the repo.
+# To go live: create that file and push (user decision, 2026-09-24: API on hold).
+ignore = "test ! -f DEPLOY_ENABLED"
+
 [build.environment]
 NODE_VERSION = "22"
 
