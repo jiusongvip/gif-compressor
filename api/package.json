@@ -1,0 +1,14 @@
+{
+  "name": "@gifcompressors/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "gifcompressors.com hosted API — Netlify Functions (free tier). Reuses the pure-JS pipeline from worker/.",
+  "scripts": {
+    "test": "node test-api.mjs"
+  },
+  "dependencies": {
+    "gifenc": "^1.0.3",
+    "omggif": "^1.0.10"
+  }
+}

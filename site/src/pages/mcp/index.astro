@@ -1,0 +1,75 @@
+---
+import Base from "../../layouts/Base.astro";
+
+const mcpSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "gifcompressors MCP Server",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any (Node.js >= 18)",
+  "url": "https://www.gifcompressors.com/mcp/",
+  "distribution": {
+    "@type": "DataDownload",
+    "encodingFormat": "text/javascript",
+    "contentUrl": "https://www.gifcompressors.com/mcp/gifcompressors-mcp.mjs"
+  },
+  "softwareVersion": "0.1.0",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "A single-file, local-first Model Context Protocol server giving AI agents GIF compression, resizing, conversion, and platform-fit recommendations, executed on the user's own machine with gifsicle."
+});
+
+const configJson = `{
+  "mcpServers": {
+    "gifcompressors": {
+      "command": "node",
+      "args": ["/ABSOLUTE/PATH/TO/.gifcompressors/gifcompressors-mcp.mjs"]
+    }
+  }
+}`;
+
+const verifyCmd = `echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' \\
+  | node ~/.gifcompressors/gifcompressors-mcp.mjs`;
+---
+<Base
+  title="gifcompressors MCP Server — Local GIF Tools for AI Agents"
+  description="A single-file MCP server that gives AI agents four GIF tools — compress, resize, convert to MP4/WebP, and platform recommendations — running locally with gifsicle. Files are never uploaded. Install with one curl, no npm account needed."
+  schema={mcpSchema}
+>
+<div class="max-w-2xl mx-auto px-4 pt-10 pb-16">
+  <h1 class="text-2xl font-bold text-slate-900 mb-2">gifcompressors MCP Server</h1>
+  <p class="text-sm text-slate-500 mt-2 mb-8 leading-relaxed">
+    A Model Context Protocol server for AI agents, shipped as one self-contained file. It gives an agent four GIF tools that run <strong>on the user's own machine</strong> with the gifsicle engine — files are never uploaded anywhere. Same engine and same results as the in-browser tools on this site.
+  </p>
+
+  <h2 class="text-lg font-semibold text-slate-900 mb-3">Tools</h2>
+  <ul class="list-disc pl-5 text-sm text-slate-600 space-y-1.5 mb-8">
+    <li><code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">compress_gif</code> — mode quality (20–35% smaller) / balanced (35–55%) / maximum (50–70%), optional <code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">target_kb</code> budget; writes <em>name</em>-compressed.gif next to the input</li>
+    <li><code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">resize_gif</code> — by exact width or percentage, animation and timing preserved</li>
+    <li><code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">convert_gif</code> — to MP4 or WebP (uses ffmpeg when present; otherwise points the user to the free in-browser converters on this site)</li>
+    <li><code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">get_recommendations</code> — reads a file's size/frames/dimensions and returns per-platform settings (Discord, Twitter/X, email, emoji) plus the matching page URLs</li>
+  </ul>
+
+  <h2 class="text-lg font-semibold text-slate-900 mb-3">Requirements</h2>
+  <ul class="list-disc pl-5 text-sm text-slate-600 space-y-1.5 mb-8">
+    <li>Node.js ≥ 18 (no npm install, no dependencies — the file is self-contained)</li>
+    <li>gifsicle: the server uses, in order, the <code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">GIFSICLE_PATH</code> environment variable, a gifsicle on <code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">PATH</code>, or the <code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">gifsicle</code> npm package if the project already has it</li>
+    <li>Files up to 100 MB per operation; everything is processed locally and in place</li>
+  </ul>
+
+  <h2 class="text-lg font-semibold text-slate-900 mb-3">Install (two commands)</h2>
+  <pre class="bg-slate-900 text-slate-100 text-xs rounded-lg p-4 overflow-x-auto mb-3"><code>mkdir -p ~/.gifcompressors
+curl -o ~/.gifcompressors/gifcompressors-mcp.mjs \
+  https://www.gifcompressors.com/mcp/gifcompressors-mcp.mjs</code></pre>
+  <p class="text-sm text-slate-600 mb-3">Then register it with your MCP client (Claude Desktop, Claude Code, Cursor, Qoder, Codex, …) — in Claude-style config JSON:</p>
+  <pre class="bg-slate-900 text-slate-100 text-xs rounded-lg p-4 overflow-x-auto mb-8"><code>{configJson}</code></pre>
+
+  <h2 class="text-lg font-semibold text-slate-900 mb-3">Verify it works</h2>
+  <p class="text-sm text-slate-600 mb-3">After connecting, ask the agent to call <code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">get_recommendations</code> on any GIF. Or check the transport directly:</p>
+  <pre class="bg-slate-900 text-slate-100 text-xs rounded-lg p-4 overflow-x-auto mb-8"><code>{verifyCmd}</code></pre>
+
+  <h2 class="text-lg font-semibold text-slate-900 mb-3">Source &amp; license</h2>
+  <p class="text-sm text-slate-600 mb-8">
+    MIT-licensed, built from <a href="https://github.com/jiusongvip/gif-compressor/tree/master/mcp-server" class="text-accent hover:underline">github.com/jiusongvip/gif-compressor/mcp-server</a>. This page's file is regenerated from that source on every site deploy, so it always matches the latest release (v0.1.0).
+  </p>
+</div>
+</Base>

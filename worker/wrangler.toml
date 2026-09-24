@@ -1,0 +1,13 @@
+name = "gifcompressors-api"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+# Deploy target (fill in before first deploy — deploy is a confirmed external action):
+#   npx wrangler deploy
+# Then point DNS api.gifcompressors.com (AAAA 100::, proxy-only) at this Worker
+# and set allowed_origins / routes here.
+
+[observability]
+enabled = true
+
+# No analytcs of file content: nothing is logged beyond request metadata.

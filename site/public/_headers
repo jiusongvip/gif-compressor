@@ -21,3 +21,19 @@
   Cache-Control: public, max-age=0, must-revalidate
 /manifest.json
   Cache-Control: public, max-age=3600
+
+# AI 语料文件：确保以可解析文本返回，短缓存便于随时更新
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+/skill/SKILL.md
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+# MCP 单文件服务器：显式 JS MIME，短缓存便于随部署更新
+/mcp/gifcompressors-mcp.mjs
+  Content-Type: text/javascript; charset=utf-8
+  Cache-Control: public, max-age=3600
