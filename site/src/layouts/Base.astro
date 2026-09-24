@@ -6,12 +6,15 @@ import "../styles/global.css";
 export interface Props {
   title: string;
   description?: string;
+  // Google has ignored <meta keywords> since 2009, so this is hygiene rather than
+  // ranking fuel — it exists because TDK is the conventional triple.
+  keywords?: string;
   ogImage?: string;
   schema?: string;
   schemas?: string[];
 }
 
-const { title, description = "Free online GIF compression tool. Reduce animated GIF file size instantly. Processed in your browser - files never uploaded.", ogImage = "/og-default.png", schema, schemas = [] } = Astro.props;
+const { title, description = "Free online GIF compression tool. Reduce animated GIF file size instantly. Processed in your browser - files never uploaded.", keywords = "", ogImage = "/og-default.png", schema, schemas = [] } = Astro.props;
 
 // 多个 JSON-LD 必须拆分为独立 <script> 标签，拼接在单个标签内是非法 JSON
 const allSchemas = [...(schema ? [schema] : []), ...schemas];
@@ -68,6 +71,7 @@ const breadcrumbSchema = breadcrumbItems.length > 1 ? JSON.stringify({
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
