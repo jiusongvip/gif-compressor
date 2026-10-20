@@ -6,9 +6,25 @@ const faqSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "Does resizing a GIF affect its animation?", "acceptedAnswer": { "@type": "Answer", "text": "No. All frames are resized proportionally and animation timing is preserved. The GIF plays exactly as before, just at the new dimensions." } },
+    { "@type": "Question", "name": "How do I change the size of a GIF?", "acceptedAnswer": { "@type": "Answer", "text": "Load the GIF into the resizer above, then type a new width or height — the other dimension follows automatically when Keep aspect ratio is on. You can also type a percentage into the Scale box, or unlock the ratio and set a width and a height independently. Press Download Resized GIF when the preview looks right." } },
+    { "@type": "Question", "name": "Does resizing a GIF affect its animation?", "acceptedAnswer": { "@type": "Answer", "text": "No. Every frame is resized, not just the first one, and frame delays and disposal methods are copied across unchanged. The GIF plays at exactly the original speed, only at the new dimensions." } },
     { "@type": "Question", "name": "What dimensions should I resize my GIF to?", "acceptedAnswer": { "@type": "Answer", "text": "For social media: 600-800px width. For Discord stickers: 320px. For website performance: 400-600px. For email inline: 200-400px." } },
-    { "@type": "Question", "name": "Should I resize or compress first?", "acceptedAnswer": { "@type": "Answer", "text": "Always resize first, then compress. Resizing permanently removes pixel data, giving the compressor less data to work with. Together they often achieve 70-85% total file size reduction." } }
+    { "@type": "Question", "name": "Should I resize or compress first?", "acceptedAnswer": { "@type": "Answer", "text": "Always resize first, then compress. Resizing permanently removes pixel data, giving the compressor less data to work with. Together they often achieve 70-85% total file size reduction." } },
+    { "@type": "Question", "name": "Can I resize a GIF to an exact pixel size?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. With Keep aspect ratio on, the size you type is the size you get as long as it matches the original proportions. For a box that is a different shape — 320x320 from a wide GIF, say — unlock the ratio and choose Fit inside, pad edges: the output measures exactly the width and height you entered, with any leftover space left transparent. Choose Stretch to size instead if you would rather fill the box and accept the distortion." } }
+  ]
+});
+
+
+const howToSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Resize a GIF",
+  "description": "Change the size of an animated GIF in three steps, entirely in your browser.",
+  "totalTime": "PT1M",
+  "step": [
+    { "@type": "HowToStep", "name": "Load your GIF", "text": "Drop a GIF onto the resizer, click to select a file, or paste a GIF URL.", "position": 1 },
+    { "@type": "HowToStep", "name": "Set the new size", "text": "Type a width or height, enter a percentage in the Scale box, or unlock Keep aspect ratio and set a width and a height independently.", "position": 2 },
+    { "@type": "HowToStep", "name": "Download", "text": "Check the resized preview, then click Download Resized GIF. All frames are resized and the animation timing is unchanged.", "position": 3 }
   ]
 });
 
@@ -28,15 +44,15 @@ const webAppSchema = JSON.stringify({
 
 
 <Base
-  title="Resize GIF - Change GIF Dimensions Online Free"
-  description="Resize animated GIFs online free. Change GIF width and height, scale by percentage, or set exact dimensions. Instant processing in your browser."
- schemas={[webAppSchema, faqSchema]}>
+  title="Resize GIF — Change GIF Size and Dimensions Online Free"
+  description="Free online GIF resizer. Change the size of an animated GIF: scale by percentage, set exact width and height, or fit a platform size. Runs in your browser."
+ schemas={[webAppSchema, faqSchema, howToSchema]}>
   <div class="max-w-4xl mx-auto px-4 pt-8 pb-6">
     <h1 class="text-2xl font-bold text-slate-900 leading-tight">
-      Resize GIF <span class="text-accent">Online</span>
+      Resize GIF <span class="text-accent">&mdash; Change Size, Width &amp; Height</span>
     </h1>
     <p class="text-sm text-slate-500 mt-2 max-w-xl leading-relaxed">
-      We recommend always resizing your GIF before compressing — it removes pixel data permanently and gives the compression engine less work to do, often doubling your final savings. Our resizer preserves frame timing and animation quality while working entirely on your device.
+      We recommend always resizing your GIF before compressing — it removes pixel data permanently and gives the compression engine less work to do, often doubling your final savings. Our resizer works on every frame, preserves frame timing, and runs entirely on your device.
     </p>
   </div>
 
@@ -95,13 +111,22 @@ const webAppSchema = JSON.stringify({
           <input type="number" id="scale-inp" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-accent" value="100" min="1" max="400" />
         </div>
       </div>
-      <div class="mt-4 flex items-center gap-3">
+      <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
         <label class="flex items-center gap-2 text-xs text-slate-500 cursor-pointer">
           <input type="checkbox" id="keep-ratio" checked class="accent-accent" /> Keep aspect ratio
         </label>
+        <div id="fit-wrap" class="hidden items-center gap-1.5">
+          <label class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold" for="fit-mode">Unlocked size</label>
+          <select id="fit-mode" class="px-2 py-1 border border-slate-200 rounded-lg text-xs text-slate-600 focus:outline-none focus:border-accent">
+            <option value="stretch" selected>Stretch to size</option>
+            <option value="pad">Fit inside, pad edges</option>
+          </select>
+        </div>
       </div>
 
-      <div class="mt-6 text-center">
+      <p id="resize-status" class="mt-4 text-xs text-slate-500 text-center min-h-[1.25rem]"></p>
+
+      <div class="mt-4 text-center">
         <button id="download-btn" disabled
           class="px-5 py-2.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed">
           Download Resized GIF
@@ -111,6 +136,16 @@ const webAppSchema = JSON.stringify({
   </div>
 
   <article class="max-w-2xl mx-auto px-4 mt-16 pb-12">
+    <h2 class="text-xl font-bold text-slate-900 mb-4">How to Change the Size of a GIF</h2>
+    <ol class="space-y-2 mb-6">
+      <li class="text-sm text-slate-600"><strong class="text-slate-800">1. Load the GIF</strong> into the resizer above &mdash; drop the file, click to select it, or paste a GIF URL.</li>
+      <li class="text-sm text-slate-600"><strong class="text-slate-800">2. Give it a new size.</strong> Type a width or a height and the other follows automatically; or put a number in <strong class="text-slate-800">Scale (%)</strong> &mdash; 50 halves both dimensions; or unlock <strong class="text-slate-800">Keep aspect ratio</strong> and set both boxes yourself.</li>
+      <li class="text-sm text-slate-600"><strong class="text-slate-800">3. Download.</strong> Every frame is resized into a new animated GIF, at the same speed as the original. The status line reports the real output size.</li>
+    </ol>
+    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+      Nothing is uploaded: the resize runs on your own device, so the tool works with files you could not send to a server.
+    </p>
+
     <h2 class="text-xl font-bold text-slate-900 mb-4">Why Resize a GIF?</h2>
     <p class="text-sm text-slate-600 leading-relaxed mb-4">
       Resizing is the single most effective way to reduce a GIF's file size — more effective than any compression technique. A 1200px-wide GIF resized to 600px is <strong class="text-slate-800">75% smaller</strong> before any compression is applied. That is 75% gone just by changing dimensions. Combine resize with compression, and total savings routinely exceed 90%.
@@ -163,8 +198,11 @@ const webAppSchema = JSON.stringify({
     <p class="text-sm text-slate-600 leading-relaxed mb-3">
       <strong class="text-slate-800">Keep aspect ratio</strong> (the default) preserves proportions. Your GIF will not look stretched or squashed. The tool automatically calculates the matching dimension when you change one side. This is the right choice 95% of the time.
     </p>
+    <p class="text-sm text-slate-600 leading-relaxed mb-3">
+      Unlock the ratio and the two boxes become independent, which is when shape has to change. <strong class="text-slate-800">Stretch to size</strong> re-scales width and height by different amounts, so the picture fills the box and looks distorted. <strong class="text-slate-800">Fit inside, pad edges</strong> keeps the drawing undistorted inside your box and leaves the leftover space transparent, which is what you want for a fixed sticker or thumbnail slot. The status line names whichever one ran.
+    </p>
     <p class="text-sm text-slate-600 leading-relaxed mb-4">
-      <strong class="text-slate-800">Unlock aspect ratio</strong> when you need specific pixel dimensions that do not match the original — usually for platform requirements. A 1920×1080 GIF resized to 600×600 (square) will look stretched unless you also crop. In that case, <a href="/crop-gif/" class="text-accent hover:underline">crop first</a>, then resize.
+      Neither is a crop. If you want 600x600 from a 1920×1080 GIF with the subject intact and no padding, <a href="/crop-gif/" class="text-accent hover:underline">crop first</a>, then resize.
     </p>
 
     <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Resize + Compress: The Complete Workflow</h2>
@@ -183,6 +221,45 @@ const webAppSchema = JSON.stringify({
     <p class="text-sm text-slate-600 leading-relaxed mb-4">
       Use <strong class="text-slate-800">exact pixel dimensions</strong> when you have a specific target — platform requirements, layout constraints, or Core Web Vitals thresholds.
     </p>
+
+    <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Resizing GIFs: common questions</h2>
+    <div class="space-y-3 mb-8">
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          How do I change the size of a GIF?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform">&#9662;</span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">Load the GIF into the resizer at the top of this page, then type a new width or height &mdash; the other dimension follows automatically while <strong class="text-slate-700">Keep aspect ratio</strong> is on. You can also type a percentage into <strong class="text-slate-700">Scale</strong>, or unlock <strong class="text-slate-700">Keep aspect ratio</strong> and set a width and a height independently. Press Download Resized GIF when the preview looks right.</p>
+      </details>
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          Does resizing a GIF affect its animation?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform">&#9662;</span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">No. Every frame is resized, not just the first one, and frame delays and disposal methods are copied across unchanged. The GIF plays at exactly the original speed, only at the new dimensions.</p>
+      </details>
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          What dimensions should I resize my GIF to?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform">&#9662;</span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">For social media: 600&ndash;800px wide. For Discord stickers: 320px. For website performance: 400&ndash;600px. For inline email: 200&ndash;400px. The table above maps each use case to a width and the reason behind it.</p>
+      </details>
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          Should I resize or compress first?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform">&#9662;</span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">Always resize first, then compress. Resizing permanently removes pixel data, so the compressor has less to work with and produces a smaller file. Taken together, the two steps routinely save <a href="/" class="text-accent hover:underline">80&ndash;95% of the original size</a>.</p>
+      </details>
+      <details class="group tool-card p-4">
+        <summary class="text-sm font-medium text-slate-900 cursor-pointer list-none flex justify-between items-center">
+          Can I resize a GIF to an exact pixel size?
+          <span class="text-slate-400 group-open:rotate-180 transition-transform">&#9662;</span>
+        </summary>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">Yes. With <strong class="text-slate-700">Keep aspect ratio</strong> on, the size you type is the size you get as long as it matches the original proportions. For a box of a different shape &mdash; 320x320 from a wide GIF &mdash; unlock the ratio and choose <strong class="text-slate-700">Fit inside, pad edges</strong>: the output measures exactly the width and height you entered, with leftover space left transparent. Choose <strong class="text-slate-700">Stretch to size</strong> if you would rather fill the box and accept the distortion.</p>
+      </details>
+    </div>
 
     <div class="mt-8 pt-6 border-t border-slate-100">
       <p class="text-xs text-slate-400">Related: <a href="/" class="text-accent hover:underline">Compress GIF</a> &middot; <a href="/crop-gif/" class="text-accent hover:underline">Crop GIF</a> &middot; <a href="/gif-to-webp/" class="text-accent hover:underline">GIF to WebP</a> &middot; <a href="/gif-to-mp4/" class="text-accent hover:underline">GIF to MP4</a></p>
@@ -212,10 +289,23 @@ const webAppSchema = JSON.stringify({
   const heightInp = document.getElementById("height-inp");
   const scaleInp = document.getElementById("scale-inp");
   const keepRatio = document.getElementById("keep-ratio");
+  const fitMode = document.getElementById("fit-mode");
+  const fitWrap = document.getElementById("fit-wrap");
+  const statusEl = document.getElementById("resize-status");
   const urlInput = document.getElementById("url-input");
   const urlLoadBtn = document.getElementById("url-load-btn");
 
-  let origW = 0, origH = 0, imgEl = null, resultBlob = null;
+  let origW = 0, origH = 0, imgEl = null, srcFile = null, resultBlob = null, runSeq = 0;
+
+  // gifsicle is fetched on first use, not on page load: the WASM engine would
+  // otherwise compete with the LCP image for critical bandwidth.
+  let enginePromise = null;
+  function loadEngine() {
+    if (!enginePromise) {
+      enginePromise = import("https://esm.sh/gifsicle-wasm-browser").then((gs) => gs.default);
+    }
+    return enginePromise;
+  }
 
   selectBtn.addEventListener("click", (e) => { e.stopPropagation(); fileInput.click(); });
   dropZone.addEventListener("click", () => fileInput.click());
@@ -250,52 +340,126 @@ const webAppSchema = JSON.stringify({
   urlInput.addEventListener("keydown", (e) => { if (e.key === "Enter") urlLoadBtn.click(); });
 
   function loadFile(file) {
-    previewOrig.src = URL.createObjectURL(file);
+    srcFile = file;
+    const objUrl = URL.createObjectURL(file);
+    previewOrig.src = objUrl;
     document.getElementById("orig-size").textContent = formatSize(file.size);
     imgEl = new Image();
-    imgEl.src = URL.createObjectURL(file);
+    imgEl.src = objUrl;
     imgEl.onload = () => {
       origW = imgEl.naturalWidth; origH = imgEl.naturalHeight;
       widthInp.value = origW; heightInp.value = origH;
       scaleInp.value = 100;
       dropZone.classList.add("hidden"); editorPanel.classList.remove("hidden");
-      updatePreview();
+      previewCanvasFrame(objUrl, origW, origH);
+      statusEl.textContent = "Set a new width, height, or percentage to resize every frame.";
     };
+  }
+
+  function previewCanvasFrame(url, w, h) {
+    const canvas = previewResized;
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    const shot = new Image();
+    shot.onload = () => ctx.drawImage(shot, 0, 0, w, h);
+    shot.src = url;
+    document.getElementById("resized-dims").textContent = w + " x " + h + " px";
   }
 
   widthInp.addEventListener("input", () => {
     const w = parseInt(widthInp.value);
-    if (keepRatio.checked && w > 0 && origW > 0) {
-      heightInp.value = Math.round(w * origH / origW);
-    }
+    if (keepRatio.checked && w > 0 && origW > 0) heightInp.value = Math.round(w * origH / origW);
     scaleInp.value = origW > 0 ? Math.round(w / origW * 100) : 100;
-    updatePreview();
+    runResize();
   });
   heightInp.addEventListener("input", () => {
     const h = parseInt(heightInp.value);
-    if (keepRatio.checked && h > 0 && origH > 0) {
-      widthInp.value = Math.round(h * origW / origH);
-    }
+    if (keepRatio.checked && h > 0 && origH > 0) widthInp.value = Math.round(h * origW / origH);
     scaleInp.value = origH > 0 ? Math.round(h / origH * 100) : 100;
-    updatePreview();
+    runResize();
   });
   scaleInp.addEventListener("input", () => {
     const s = parseInt(scaleInp.value);
     if (s > 0) { widthInp.value = Math.round(origW * s / 100); heightInp.value = Math.round(origH * s / 100); }
-    updatePreview();
+    runResize();
   });
+  keepRatio.addEventListener("change", () => {
+    fitWrap.classList.toggle("hidden", keepRatio.checked);
+    fitWrap.classList.toggle("flex", !keepRatio.checked);
+    if (keepRatio.checked && origW > 0) {
+      const w = parseInt(widthInp.value) || origW;
+      heightInp.value = Math.round(w * origH / origW);
+    }
+    runResize();
+  });
+  fitMode.addEventListener("change", runResize);
 
-  function updatePreview() {
-    if (!imgEl) return;
-    const w = parseInt(widthInp.value) || origW;
-    const h = parseInt(heightInp.value) || origH;
-    if (w <= 0 || h <= 0) return;
-    const canvas = previewResized;
-    canvas.width = w; canvas.height = h;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(imgEl, 0, 0, w, h);
-    document.getElementById("resized-dims").textContent = w + " x " + h + " px";
-    canvas.toBlob((blob) => { resultBlob = blob; downloadBtn.disabled = false; }, "image/gif");
+  // A canvas cannot encode an animated GIF — toBlob silently falls back to PNG,
+  // which flattened every resize to frame one. gifsicle resizes the whole stream
+  // and keeps frame timing and disposal intact, so it is the encoder here.
+  async function runResize() {
+    if (!srcFile || origW <= 0) return;
+    const w = parseInt(widthInp.value);
+    const h = parseInt(heightInp.value);
+    if (!(w > 0) || !(h > 0) || w > 4096 || h > 4096) {
+      statusEl.textContent = "Enter a width and height between 1 and 4096 px.";
+      downloadBtn.disabled = true;
+      return;
+    }
+
+    const cmd = keepRatio.checked
+      ? `--resize-fit ${w}x${h}`
+      : (fitMode.value === "pad" ? `--resize ${w}x${h}` : `--scale ${+(w / origW).toFixed(4)}x${+(h / origH).toFixed(4)}`);
+
+    const seq = ++runSeq;
+    downloadBtn.disabled = true;
+    statusEl.textContent = "Resizing all frames...";
+
+    try {
+      const gifsicle = await loadEngine();
+      const [outFile] = await gifsicle.run({
+        input: [{ file: srcFile, name: "input.gif" }],
+        command: [`${cmd} input.gif -o /out/output.gif`],
+      });
+
+      // A later keystroke superseded this run; its callback owns the panel.
+      if (seq !== runSeq) return;
+
+      // gifsicle.run() hands back a plain File, so the new canvas size comes out
+      // of the GIF's own logical screen descriptor (bytes 6-9, little-endian).
+      const dims = await readGifDims(outFile);
+      if (!dims) {
+        statusEl.textContent = "The result was not a GIF. Try the compressor instead.";
+        downloadBtn.disabled = true;
+        return;
+      }
+
+      resultBlob = outFile;
+      const url = URL.createObjectURL(outFile);
+      previewCanvasFrame(url, dims.w, dims.h);
+      const how = keepRatio.checked
+        ? "kept proportions"
+        : (fitMode.value === "pad" ? "letterboxed to your box" : "stretched to your box");
+      statusEl.textContent =
+        `${dims.w} x ${dims.h} px · ${formatSize(outFile.size)} · ${how} · ` +
+        `every frame resized, animation timing preserved`;
+      downloadBtn.disabled = false;
+    } catch {
+      if (seq !== runSeq) return;
+      statusEl.textContent = "Could not resize this file. If it is not an animated GIF, use the compressor instead.";
+      downloadBtn.disabled = true;
+    }
+  }
+
+  async function readGifDims(blob) {
+    if (!blob || blob.size < 10) return null;
+    const head = new Uint8Array(await blob.slice(0, 10).arrayBuffer());
+    const sig = String.fromCharCode(head[0], head[1], head[2], head[3], head[4], head[5]);
+    if (sig !== "GIF87a" && sig !== "GIF89a") return null;
+    return {
+      w: head[6] | (head[7] << 8),
+      h: head[8] | (head[9] << 8),
+    };
   }
 
   function formatSize(bytes) {
